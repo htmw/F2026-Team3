@@ -1,0 +1,243 @@
+{
+  "legend": [
+    {
+      "label": "Class"
+    },
+    {
+      "label": "Office hours"
+    },
+    {
+      "label": "Advising"
+    },
+    {
+      "label": "Study"
+    },
+    {
+      "label": "Team"
+    }
+  ],
+  "days": [
+    {
+      "name": "Mon",
+      "date": "28",
+      "events": [
+        {
+          "id": "0-13:00",
+          "time": "13:00–15:00",
+          "title": "Study · CS 675 labs",
+          "type": "Study",
+          "where": "Library, 3rd floor",
+          "note": "Personal study block for lab work.",
+          "day": "Mon 28"
+        },
+        {
+          "id": "0-18:10",
+          "time": "18:10–20:55",
+          "title": "CS 608 Algorithms",
+          "type": "Class",
+          "where": "Room [Room]",
+          "note": "Lecture. Problem set 4 is due Oct 9.",
+          "day": "Mon 28"
+        }
+      ],
+      "due": []
+    },
+    {
+      "name": "Tue",
+      "date": "29",
+      "events": [
+        {
+          "id": "1-12:00",
+          "time": "12:00–13:00",
+          "title": "Study · CS 661",
+          "type": "Study",
+          "where": "Online",
+          "note": "Work on the Week 6 tutorial.",
+          "day": "Tue 29"
+        }
+      ],
+      "due": []
+    },
+    {
+      "name": "Wed",
+      "date": "30",
+      "events": [
+        {
+          "id": "2-14:00",
+          "time": "14:00–15:00",
+          "title": "CS 675 office hours",
+          "type": "Office hours",
+          "where": "Prof. [Name]’s office",
+          "note": "Optional. Bring questions about the project proposal.",
+          "day": "Wed 30"
+        },
+        {
+          "id": "2-18:00",
+          "time": "18:00–20:00",
+          "title": "Study · CS 608",
+          "type": "Study",
+          "where": "Library",
+          "note": "Problem set 4.",
+          "day": "Wed 30"
+        }
+      ],
+      "due": []
+    },
+    {
+      "name": "Thu",
+      "date": "1",
+      "events": [
+        {
+          "id": "3-10:00",
+          "time": "10:00–12:45",
+          "title": "CS 675 Data Science",
+          "type": "Class",
+          "where": "Room 1201",
+          "note": "Lecture.",
+          "day": "Thu 1"
+        },
+        {
+          "id": "3-13:30",
+          "time": "13:30–14:15",
+          "title": "Team project sync",
+          "type": "Team",
+          "where": "Study room 3",
+          "note": "Finalize the topic proposal.",
+          "day": "Thu 1"
+        },
+        {
+          "id": "3-15:00",
+          "time": "15:00–15:30",
+          "title": "Advising check-in",
+          "type": "Advising",
+          "where": "Online · Dr. [Advisor]",
+          "note": "Review the Spring 2027 plan from Acadmate.",
+          "day": "Thu 1"
+        },
+        {
+          "id": "3-18:10",
+          "time": "18:10–20:55",
+          "title": "CS 661 Python",
+          "type": "Class",
+          "where": "Room 318",
+          "note": "Lab session.",
+          "day": "Thu 1"
+        }
+      ],
+      "due": []
+    },
+    {
+      "name": "Fri",
+      "date": "2",
+      "events": [
+        {
+          "id": "4-16:00",
+          "time": "16:00–17:30",
+          "title": "CS 608 study group",
+          "type": "Team",
+          "where": "Study room 1",
+          "note": "Review dynamic programming.",
+          "day": "Fri 2"
+        }
+      ],
+      "due": []
+    },
+    {
+      "name": "Sat",
+      "date": "3",
+      "events": [
+        {
+          "id": "5-10:00",
+          "time": "10:00–12:00",
+          "title": "Study · proposal edits",
+          "type": "Study",
+          "where": "Home",
+          "note": "Final read-through before submitting.",
+          "day": "Sat 3"
+        }
+      ],
+      "due": [
+        "CS 675 proposal due"
+      ]
+    },
+    {
+      "name": "Sun",
+      "date": "4",
+      "events": [],
+      "due": []
+    }
+  ],
+  "hours": [
+    {
+      "label": "08:00"
+    },
+    {
+      "label": "09:00"
+    },
+    {
+      "label": "10:00"
+    },
+    {
+      "label": "11:00"
+    },
+    {
+      "label": "12:00"
+    },
+    {
+      "label": "13:00"
+    },
+    {
+      "label": "14:00"
+    },
+    {
+      "label": "15:00"
+    },
+    {
+      "label": "16:00"
+    },
+    {
+      "label": "17:00"
+    },
+    {
+      "label": "18:00"
+    },
+    {
+      "label": "19:00"
+    },
+    {
+      "label": "20:00"
+    },
+    {
+      "label": "21:00"
+    }
+  ],
+  "sel": {
+    "id": "3-15:00",
+    "time": "15:00–15:30",
+    "title": "Advising check-in",
+    "type": "Advising",
+    "where": "Online · Dr. [Advisor]",
+    "note": "Review the Spring 2027 plan from Acadmate.",
+    "day": "Thu 1",
+    "when": "Thu 1 · 15:00–15:30"
+  },
+  "aiText": "You have a free 2-hour window on Tuesday evening. Blocking it for Problem set 4 gives you two sessions before the Oct 9 deadline.",
+  "aiBtn": "Add study block",
+  "deadlines": [
+    {
+      "date": "Oct 3",
+      "title": "Project topic proposal",
+      "course": "CS 675 · team"
+    },
+    {
+      "date": "Oct 5",
+      "title": "Week 6 tutorial",
+      "course": "CS 661"
+    },
+    {
+      "date": "Oct 9",
+      "title": "Problem set 4",
+      "course": "CS 608"
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "roles": [
+    {
+      "label": "All"
+    },
+    {
+      "label": "Admin"
+    },
+    {
+      "label": "Advisor"
+    },
+    {
+      "label": "Student"
+    },
+    {
+      "label": "System"
+    }
+  ],
+  "ranges": [
+    {
+      "label": "Today"
+    },
+    {
+      "label": "7 days"
+    },
+    {
+      "label": "30 days"
+    }
+  ],
+  "rows": [
+    {
+      "id": "e1",
+      "when": "Today 14:02",
+      "age": 0,
+      "who": "Dr. [Advisor]",
+      "role": "Advisor",
+      "action": "Approved Spring 2027 plan for Amara O.",
+      "link": "AdvisorApprovals.html",
+      "linkLabel": "Open approvals"
+    },
+    {
+      "id": "e2",
+      "when": "Today 13:47",
+      "age": 0,
+      "who": "Acadmate",
+      "role": "System",
+      "action": "Flagged an answer about visa rules for human review",
+      "link": "AdminAI.html",
+      "linkLabel": "Open AI settings"
+    },
+    {
+      "id": "e3",
+      "when": "Today 12:30",
+      "age": 0,
+      "who": "[Admin]",
+      "role": "Admin",
+      "action": "Turned on grade-based insights",
+      "link": "AdminAI.html",
+      "linkLabel": "Open AI settings"
+    },
+    {
+      "id": "e4",
+      "when": "Today 11:15",
+      "age": 0,
+      "who": "Amara O.",
+      "role": "Student",
+      "action": "Booked a meeting with Dr. [Advisor] for Oct 8",
+      "link": "AdminUsers.html",
+      "linkLabel": "Open user"
+    },
+    {
+      "id": "e5",
+      "when": "Today 09:05",
+      "age": 0,
+      "who": "[Admin]",
+      "role": "Admin",
+      "action": "Invited 12 students from a CSV import",
+      "link": "AdminUsers.html",
+      "linkLabel": "Open users"
+    },
+    {
+      "id": "e6",
+      "when": "Today 06:00",
+      "age": 0,
+      "who": "CSV import",
+      "role": "System",
+      "action": "Imported 1,284 grades from a CSV file",
+      "link": "AdminIntegrations.html",
+      "linkLabel": "Open integrations"
+    },
+    {
+      "id": "e7",
+      "when": "Yesterday 17:20",
+      "age": 1,
+      "who": "[Advisor 2]",
+      "role": "Advisor",
+      "action": "Requested changes on Lina H.’s Spring plan",
+      "link": "AdvisorApprovals.html",
+      "linkLabel": "Open approvals"
+    },
+    {
+      "id": "e8",
+      "when": "Yesterday 10:42",
+      "age": 1,
+      "who": "[Admin]",
+      "role": "Admin",
+      "action": "Changed CS 612 to not offered in Spring 2027",
+      "link": "AdminCatalog.html",
+      "linkLabel": "Open catalog"
+    },
+    {
+      "id": "e9",
+      "when": "Sep 28 16:10",
+      "age": 3,
+      "who": "[Admin]",
+      "role": "Admin",
+      "action": "Reassigned 5 advisees to [Advisor 3]",
+      "link": "AdminAdvisors.html",
+      "linkLabel": "Open advisors"
+    },
+    {
+      "id": "e10",
+      "when": "Sep 21 09:00",
+      "age": 10,
+      "who": "[Admin]",
+      "role": "Admin",
+      "action": "Published the 2026–27 catalog",
+      "link": "AdminCatalog.html",
+      "linkLabel": "Open catalog"
+    },
+    {
+      "id": "e11",
+      "when": "Sep 12 15:33",
+      "age": 19,
+      "who": "Marcus T.",
+      "role": "Student",
+      "action": "Signed in from a new device",
+      "link": "AdminUsers.html",
+      "linkLabel": "Open user"
+    }
+  ],
+  "detail": [
+    {
+      "k": "Time",
+      "v": "Today 14:02"
+    },
+    {
+      "k": "Actor",
+      "v": "Dr. [Advisor] (Advisor)"
+    },
+    {
+      "k": "Action",
+      "v": "Approved Spring 2027 plan for Amara O."
+    },
+    {
+      "k": "Event ID",
+      "v": "evt_e1_2026"
+    },
+    {
+      "k": "IP address",
+      "v": "[IP address]"
+    },
+    {
+      "k": "Result",
+      "v": "Success"
+    }
+  ],
+  "empty": false,
+  "selLink": "AdvisorApprovals.html",
+  "selLinkLabel": "Open approvals",
+  "q": "",
+  "exportLabel": "Export CSV"
+}

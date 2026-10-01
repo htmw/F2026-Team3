@@ -1,0 +1,138 @@
+{
+  "showInvite": false,
+  "showImport": false,
+  "invEmails": "",
+  "invRoles": [
+    {
+      "label": "Student"
+    },
+    {
+      "label": "Advisor"
+    },
+    {
+      "label": "Admin"
+    }
+  ],
+  "fileLabel": "Choose file",
+  "noFile": true,
+  "hasNotice": false,
+  "notice": "",
+  "resetLabel": "Send password reset",
+  "tabs": [
+    {
+      "label": "All",
+      "count": "1,348"
+    },
+    {
+      "label": "Students",
+      "count": "1,284"
+    },
+    {
+      "label": "Advisors",
+      "count": "58"
+    },
+    {
+      "label": "Admins",
+      "count": "6"
+    }
+  ],
+  "rows": [
+    {
+      "id": "u1",
+      "name": "Amara O.",
+      "role": "Student",
+      "dept": "M.S. Computer Science",
+      "advisor": "Dr. [Advisor]",
+      "status": "Active",
+      "last": "Today",
+      "av": "AO"
+    },
+    {
+      "id": "u2",
+      "name": "Daniel K.",
+      "role": "Student",
+      "dept": "M.S. Computer Science",
+      "advisor": "Dr. [Advisor]",
+      "status": "Active",
+      "last": "Yesterday",
+      "av": "DK"
+    },
+    {
+      "id": "u3",
+      "name": "Priya S.",
+      "role": "Student",
+      "dept": "M.S. Data Science",
+      "advisor": "Dr. M. Chen",
+      "status": "Active",
+      "last": "Today",
+      "av": "PS"
+    },
+    {
+      "id": "u4",
+      "name": "Sam R.",
+      "role": "Student",
+      "dept": "M.S. Information Systems",
+      "advisor": "Dr. S. Patel",
+      "status": "Invited",
+      "last": "Never",
+      "av": "SR"
+    },
+    {
+      "id": "u5",
+      "name": "Jonah P.",
+      "role": "Student",
+      "dept": "M.S. Computer Science (graduated)",
+      "advisor": "Dr. L. Okafor",
+      "status": "Deactivated",
+      "last": "Aug 2026",
+      "av": "JP"
+    },
+    {
+      "id": "u6",
+      "name": "Dr. [Advisor]",
+      "role": "Advisor",
+      "dept": "Computer Science",
+      "advisor": "",
+      "status": "Active",
+      "last": "Today",
+      "av": "DA"
+    },
+    {
+      "id": "u7",
+      "name": "Dr. M. Chen",
+      "role": "Advisor",
+      "dept": "Data Science",
+      "advisor": "",
+      "status": "Active",
+      "last": "Today",
+      "av": "DM"
+    },
+    {
+      "id": "u8",
+      "name": "[Admin]",
+      "role": "Admin",
+      "dept": "IT services",
+      "advisor": "",
+      "status": "Active",
+      "last": "Today",
+      "av": "A"
+    }
+  ],
+  "sel": {
+    "id": "u1",
+    "name": "Amara O.",
+    "role": "Student",
+    "dept": "M.S. Computer Science",
+    "advisor": "Dr. [Advisor]",
+    "status": "Active",
+    "last": "Today",
+    "av": "AO",
+    "isStudent": true,
+    "email": "[amara]@[school].edu"
+  },
+  "empty": false,
+  "shown": 8,
+  "total": "1,348",
+  "q": "",
+  "statusBtn": "Deactivate account"
+}

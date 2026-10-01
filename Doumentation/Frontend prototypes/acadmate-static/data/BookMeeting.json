@@ -1,0 +1,161 @@
+{
+  "people": [
+    {
+      "id": "adv",
+      "name": "Dr. [Advisor]",
+      "role": "Faculty advisor",
+      "initials": "AD",
+      "c": [
+        "#FEF3C7",
+        "#92400E"
+      ],
+      "helps": "Degree plan, capstone, course approvals"
+    },
+    {
+      "id": "career",
+      "name": "[Career advisor]",
+      "role": "Career services",
+      "initials": "CA",
+      "c": [
+        "#E0E7FF",
+        "#3730A3"
+      ],
+      "helps": "Internships, CPT, résumé reviews"
+    },
+    {
+      "id": "grad",
+      "name": "[Graduate office]",
+      "role": "Student services",
+      "initials": "GO",
+      "c": [
+        "#E6EBEF",
+        "#374151"
+      ],
+      "helps": "Graduation application, records"
+    }
+  ],
+  "topics": [
+    {
+      "label": "Spring 2027 plan"
+    },
+    {
+      "label": "Capstone topics"
+    },
+    {
+      "label": "Add or drop a course"
+    },
+    {
+      "label": "Internship or career"
+    },
+    {
+      "label": "Something else"
+    }
+  ],
+  "formats": [
+    {
+      "label": "In person"
+    },
+    {
+      "label": "Online"
+    }
+  ],
+  "days": [
+    {
+      "dow": "Mon",
+      "date": "5",
+      "free": "5 open"
+    },
+    {
+      "dow": "Tue",
+      "date": "6",
+      "free": "Full"
+    },
+    {
+      "dow": "Wed",
+      "date": "7",
+      "free": "6 open"
+    },
+    {
+      "dow": "Thu",
+      "date": "8",
+      "free": "5 open"
+    },
+    {
+      "dow": "Fri",
+      "date": "9",
+      "free": "4 open"
+    }
+  ],
+  "slots": [
+    {
+      "label": "09:00",
+      "taken": false
+    },
+    {
+      "label": "10:00",
+      "taken": false
+    },
+    {
+      "label": "11:00",
+      "taken": true
+    },
+    {
+      "label": "13:00",
+      "taken": false
+    },
+    {
+      "label": "14:00",
+      "taken": true
+    },
+    {
+      "label": "15:00",
+      "taken": false
+    },
+    {
+      "label": "16:00",
+      "taken": false
+    },
+    {
+      "label": "17:00",
+      "taken": false
+    }
+  ],
+  "summary": [
+    {
+      "label": "With",
+      "value": "Dr. [Advisor] · Faculty advisor"
+    },
+    {
+      "label": "When",
+      "value": "Pick a time"
+    },
+    {
+      "label": "Format",
+      "value": "In person · [Office location]"
+    },
+    {
+      "label": "Topic",
+      "value": "Capstone topics · plan attached"
+    }
+  ],
+  "note": "",
+  "attach": true,
+  "cantConfirm": true,
+  "booked": false,
+  "notBooked": true,
+  "bookedText": "You’re meeting Dr. [Advisor] on Pick a time (in person) about capstone topics. A confirmation is in your Messages.",
+  "upcoming": [
+    {
+      "mon": "Oct",
+      "day": "1",
+      "title": "Advising check-in",
+      "meta": "Today · 15:00 · Online · Dr. [Advisor]"
+    },
+    {
+      "mon": "Oct",
+      "day": "8",
+      "title": "Capstone topics",
+      "meta": "Thu · 15:00 · In person · Dr. [Advisor]"
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acadmate advisor student review</title>
+<link rel="stylesheet" href="css/acadmate.css">
+</head>
+<body>
+<div class="app">
+<div class="app-frame">
+<nav class="sidebar" aria-label="Main">
+<div class="row-5">
+<div class="row-6">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg>
+</div>
+<span class="el-3">Acadmate</span>
+</div>
+<span class="el-22">Advisor</span>
+<div class="stack-1">
+
+<a href="AdvisorDashboard.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Dashboard</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorAdvisees.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--surface); background: var(--ink-2)">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--accent-bright)"></span>
+<span data-bind="nav[].label">Advisees</span>
+<span class="el-1" data-bind="nav[].badge">42</span>
+</a>
+
+<a href="AdvisorApprovals.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Approvals</span>
+<span class="el-1" data-bind="nav[].badge">5</span>
+</a>
+
+<a href="AdvisorMeetings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Meetings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorMessages.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Messages</span>
+<span class="el-1" data-bind="nav[].badge">3</span>
+</a>
+
+<a href="AdvisorReports.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Reports</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorSettings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Settings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+</div>
+<div class="stack-4">
+<span class="el-8">Preview other views</span>
+<a class="row-1" href="Main.html">Student view</a>
+<a class="row-1" href="AdvisorDashboard.html">Advisor view</a>
+<a class="row-1" href="AdminDashboard.html">Admin view</a>
+</div>
+</nav>
+<main class="main">
+<header class="row-7">
+<div class="stack-1">
+<h1 class="page-title">Amara O.</h1>
+<span class="text-4">M.S. Computer Science · your advisee since Fall 2025</span>
+</div>
+<div class="row-4">
+<a class="btn-secondary" href="AdvisorMessages.html">Message Amara</a>
+<a class="btn-primary" href="AdvisorMeetings.html">Schedule follow-up</a>
+<div class="row-18">AD</div>
+</div>
+</header>
+<nav class="text-muted-6" aria-label="Breadcrumb"><a href="AdvisorAdvisees.html">Advisees</a> / Amara O.</nav>
+<section class="grid-2" aria-label="Summary">
+
+<div class="stat-card" data-repeat="stats">
+<div class="row-10">
+<span class="text-5" data-bind="stats[].label">Cumulative GPA</span>
+<span data-bind="stats[].tag" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-dark)">On track</span>
+</div>
+<span class="el-5" data-bind="stats[].value">3.72</span>
+<span class="text-muted-1" data-bind="stats[].note">Up 0.08 from last term</span>
+</div>
+
+<div class="stat-card" data-repeat="stats">
+<div class="row-10">
+<span class="text-5" data-bind="stats[].label">Credits</span>
+<span data-bind="stats[].tag" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--indigo-tint); color: var(--indigo-text)">58%</span>
+</div>
+<span class="el-5" data-bind="stats[].value">21 / 36</span>
+<span class="text-muted-1" data-bind="stats[].note">9 in progress · 6 left after Fall</span>
+</div>
+
+<div class="stat-card" data-repeat="stats">
+<div class="row-10">
+<span class="text-5" data-bind="stats[].label">On-time submission</span>
+<span data-bind="stats[].tag" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-dark)">Good</span>
+</div>
+<span class="el-5" data-bind="stats[].value">94%</span>
+<span class="text-muted-1" data-bind="stats[].note">17 of 18 on time</span>
+</div>
+
+<div class="stat-card" data-repeat="stats">
+<div class="row-10">
+<span class="text-5" data-bind="stats[].label">Expected graduation</span>
+<span data-bind="stats[].tag" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--amber-tint); color: var(--amber-text)">Pending</span>
+</div>
+<span class="el-5" data-bind="stats[].value">May 2027</span>
+<span class="text-muted-1" data-bind="stats[].note">If this plan is approved</span>
+</div>
+
+</section>
+<div class="row-8">
+<div class="stack-35">
+<section class="card" aria-label="Plan review">
+<div class="row-87">
+<div class="stack-1">
+<h2 class="el-40">Spring 2027 plan</h2>
+<span class="text-muted-1">Built with Acadmate · shared by Amara on Sep 30</span>
+</div>
+<span data-bind="statusText" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--amber-tint); color: var(--amber-text)">Waiting for you</span>
+</div>
+
+<div class="row-67" data-repeat="plan">
+<span data-bind="plan[].code" style="align-self: flex-start; flex-shrink: 0; font-family: var(--font-display); font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 8px; background: var(--accent-tint); color: var(--accent-dark)">CS 691</span>
+<div class="stack-39">
+<span class="text-11" data-bind="plan[].name">Capstone Project</span>
+<span class="text-muted-1" data-bind="plan[].when">Mon 18:10–20:55 · 3 credits</span>
+</div>
+<span data-bind="plan[].fulfills" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--indigo-tint); color: var(--indigo-text)">Capstone</span>
+</div>
+
+<div class="row-67" data-repeat="plan">
+<span data-bind="plan[].code" style="align-self: flex-start; flex-shrink: 0; font-family: var(--font-display); font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 8px; background: var(--accent-tint); color: var(--accent-dark)">CS 6xx</span>
+<div class="stack-39">
+<span class="text-11" data-bind="plan[].name">[AI elective]</span>
+<span class="text-muted-1" data-bind="plan[].when">Wed 18:10–20:55 · 3 credits</span>
+</div>
+<span data-bind="plan[].fulfills" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--indigo-tint); color: var(--indigo-text)">Elective 5 of 5</span>
+</div>
+
+<div class="stack-12">
+<h3 class="el-82">Acadmate checks</h3>
+
+<div class="row-20" data-repeat="checks">
+<span data-bind="checks[].mark" style="width: 24px; height: 24px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; background: var(--accent-tint); color: var(--accent-dark)">✓</span>
+<span class="text-6" data-bind="checks[].text">Covers all remaining requirements (6 credits)</span>
+</div>
+
+<div class="row-20" data-repeat="checks">
+<span data-bind="checks[].mark" style="width: 24px; height: 24px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; background: var(--accent-tint); color: var(--accent-dark)">✓</span>
+<span class="text-6" data-bind="checks[].text">Prerequisites met for both courses</span>
+</div>
+
+<div class="row-20" data-repeat="checks">
+<span data-bind="checks[].mark" style="width: 24px; height: 24px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; background: var(--accent-tint); color: var(--accent-dark)">✓</span>
+<span class="text-6" data-bind="checks[].text">No clashes with her evening preference</span>
+</div>
+
+<div class="row-20" data-repeat="checks">
+<span data-bind="checks[].mark" style="width: 24px; height: 24px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; background: var(--amber-tint); color: var(--amber-text)">!</span>
+<span class="text-6" data-bind="checks[].text">Capstone pre-approval form not submitted yet (due Oct 20)</span>
+</div>
+
+</div>
+<div class="stack-65">
+<span class="text-58">Amara’s note</span>
+<span class="text-46">I prefer evening classes. Can we talk about capstone topics at our Oct 8 meeting?</span>
+</div>
+
+<div class="stack-34">
+<label class="text-2" for="adv-comment">Comment to Amara (optional)</label>
+<textarea class="el-42" id="adv-comment" rows="3" placeholder="For example: Approved. Please send the capstone form before Oct 20."></textarea>
+<div class="row-21">
+<button class="btn-primary">Approve plan</button>
+<button class="btn-secondary">Request changes</button>
+</div>
+</div>
+
+
+</section>
+
+<section class="card" aria-label="Degree progress">
+<h2 class="el-2">Degree progress</h2>
+
+<div class="stack-2" data-repeat="reqs">
+<div class="row-9"><span class="el-4" data-bind="reqs[].label">Foundation</span><span class="el-6" data-bind="reqs[].count">2 of 2</span></div>
+<div class="row-19"><div style="height: 100%; width: 100%; background: var(--accent)"></div><div style="height: 100%; width: 0%; background: var(--accent-soft)"></div></div>
+</div>
+
+<div class="stack-2" data-repeat="reqs">
+<div class="row-9"><span class="el-4" data-bind="reqs[].label">Core</span><span class="el-6" data-bind="reqs[].count">4 of 4</span></div>
+<div class="row-19"><div style="height: 100%; width: 100%; background: var(--accent)"></div><div style="height: 100%; width: 0%; background: var(--accent-soft)"></div></div>
+</div>
+
+<div class="stack-2" data-repeat="reqs">
+<div class="row-9"><span class="el-4" data-bind="reqs[].label">Electives</span><span class="el-6" data-bind="reqs[].count">1 of 5 · 3 in progress</span></div>
+<div class="row-19"><div style="height: 100%; width: 20%; background: var(--accent)"></div><div style="height: 100%; width: 60%; background: var(--accent-soft)"></div></div>
+</div>
+
+<div class="stack-2" data-repeat="reqs">
+<div class="row-9"><span class="el-4" data-bind="reqs[].label">Capstone</span><span class="el-6" data-bind="reqs[].count">0 of 1</span></div>
+<div class="row-19"><div style="height: 100%; width: 0%; background: var(--accent)"></div><div style="height: 100%; width: 0%; background: var(--accent-soft)"></div></div>
+</div>
+
+</section>
+</div>
+
+<aside class="stack-40">
+<section class="card-4" aria-label="Meetings">
+<h2 class="el-66">Meetings</h2>
+
+<div class="stack-11" data-repeat="meet">
+<span class="text-2" data-bind="meet[].title">Advising check-in</span>
+<span class="text-1" data-bind="meet[].meta">Today · 15:00 · Online</span>
+</div>
+
+<div class="stack-11" data-repeat="meet">
+<span class="text-2" data-bind="meet[].title">Capstone topics</span>
+<span class="text-1" data-bind="meet[].meta">Thu, Oct 8 · 15:00 · In person</span>
+</div>
+
+</section>
+<section class="card-7" aria-label="Private notes">
+<h2 class="el-32">Private notes</h2>
+<span class="text-1">Only advisors can see these.</span>
+
+<div class="stack-66" data-repeat="notes">
+<span class="text-44" data-bind="notes[].text">Strong in data science; consider recommending her for the research assistant opening.</span>
+<span class="text-23" data-bind="notes[].when">Sep 12</span>
+</div>
+
+<div class="row-25">
+<label class="sr" for="adv-note">Add a private note</label>
+<input class="el-83" id="adv-note" type="text" value="" placeholder="Add a note…">
+<button class="btn-primary">Add</button>
+</div>
+</section>
+<section class="card-4" aria-label="Shared activity">
+<h2 class="el-32">Shared activity</h2>
+<span class="text-59">Only what Amara chose to share. Her AI chats stay private.</span>
+
+<div class="row-39" data-repeat="activity">
+<span class="text-35" data-bind="activity[].when">Sep 30</span>
+<span class="text-36" data-bind="activity[].text">Shared her Spring 2027 plan from Acadmate.</span>
+</div>
+
+<div class="row-39" data-repeat="activity">
+<span class="text-35" data-bind="activity[].when">Sep 30</span>
+<span class="text-36" data-bind="activity[].text">Booked “Capstone topics” for Oct 8.</span>
+</div>
+
+<div class="row-39" data-repeat="activity">
+<span class="text-35" data-bind="activity[].when">Sep 28</span>
+<span class="text-36" data-bind="activity[].text">Completed the CS 608 dynamic programming set (84%).</span>
+</div>
+
+<div class="row-39" data-repeat="activity">
+<span class="text-35" data-bind="activity[].when">Sep 14</span>
+<span class="text-36" data-bind="activity[].text">Asked to confirm taking CS 608 and CS 675 together.</span>
+</div>
+
+</section>
+</aside>
+</div>
+
+</main>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+{
+  "stats": [
+    {
+      "label": "Cumulative GPA",
+      "value": "3.72",
+      "note": "Up 0.08 from last term",
+      "tag": "On track"
+    },
+    {
+      "label": "Credits",
+      "value": "21 / 36",
+      "note": "9 in progress · 6 left after Fall",
+      "tag": "58%"
+    },
+    {
+      "label": "On-time submission",
+      "value": "94%",
+      "note": "17 of 18 on time",
+      "tag": "Good"
+    },
+    {
+      "label": "Expected graduation",
+      "value": "May 2027",
+      "note": "If this plan is approved",
+      "tag": "Pending"
+    }
+  ],
+  "plan": [
+    {
+      "code": "CS 691",
+      "name": "Capstone Project",
+      "when": "Mon 18:10–20:55 · 3 credits",
+      "fulfills": "Capstone"
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[AI elective]",
+      "when": "Wed 18:10–20:55 · 3 credits",
+      "fulfills": "Elective 5 of 5"
+    }
+  ],
+  "checks": [
+    {
+      "text": "Covers all remaining requirements (6 credits)",
+      "mark": "✓"
+    },
+    {
+      "text": "Prerequisites met for both courses",
+      "mark": "✓"
+    },
+    {
+      "text": "No clashes with her evening preference",
+      "mark": "✓"
+    },
+    {
+      "text": "Capstone pre-approval form not submitted yet (due Oct 20)",
+      "mark": "!"
+    }
+  ],
+  "notes": [
+    {
+      "text": "Strong in data science; consider recommending her for the research assistant opening.",
+      "when": "Sep 12"
+    }
+  ],
+  "reqs": [
+    {
+      "label": "Foundation",
+      "count": "2 of 2"
+    },
+    {
+      "label": "Core",
+      "count": "4 of 4"
+    },
+    {
+      "label": "Electives",
+      "count": "1 of 5 · 3 in progress"
+    },
+    {
+      "label": "Capstone",
+      "count": "0 of 1"
+    }
+  ],
+  "statusText": "Waiting for you",
+  "pending": true,
+  "decided": false,
+  "comment": "",
+  "decisionTitle": "Changes requested",
+  "decisionText": "Amara will see your request in Acadmate and can revise the plan.",
+  "meet": [
+    {
+      "title": "Advising check-in",
+      "meta": "Today · 15:00 · Online"
+    },
+    {
+      "title": "Capstone topics",
+      "meta": "Thu, Oct 8 · 15:00 · In person"
+    }
+  ],
+  "noteDraft": "",
+  "activity": [
+    {
+      "when": "Sep 30",
+      "text": "Shared her Spring 2027 plan from Acadmate."
+    },
+    {
+      "when": "Sep 30",
+      "text": "Booked “Capstone topics” for Oct 8."
+    },
+    {
+      "when": "Sep 28",
+      "text": "Completed the CS 608 dynamic programming set (84%)."
+    },
+    {
+      "when": "Sep 14",
+      "text": "Asked to confirm taking CS 608 and CS 675 together."
+    }
+  ]
+}

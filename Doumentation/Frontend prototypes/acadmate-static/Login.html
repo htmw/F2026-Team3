@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in to Acadmate</title>
+<link rel="stylesheet" href="css/acadmate.css">
+</head>
+<body>
+<div class="app-2">
+<div class="row-90">
+
+<section class="stack-71" aria-label="About Acadmate">
+<div class="row-49">
+<div class="row-91">
+<svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg>
+</div>
+<span class="el-88">Acadmate</span>
+</div>
+<h1 class="el-89">Plan your degree with an advisor in your pocket.</h1>
+<div class="stack-43">
+
+<div class="row-51" data-repeat="points">
+<span class="row-52">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+</span>
+<div class="stack-9">
+<span class="text-31" data-bind="points[].title">See your whole degree at once</span>
+<span class="text-47" data-bind="points[].text">Requirements, credits and your graduation date in one place.</span>
+</div>
+</div>
+
+<div class="row-51" data-repeat="points">
+<span class="row-52">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+</span>
+<div class="stack-9">
+<span class="text-31" data-bind="points[].title">Ask the AI advisor anything</span>
+<span class="text-47" data-bind="points[].text">Course plans and answers based on your own degree audit.</span>
+</div>
+</div>
+
+<div class="row-51" data-repeat="points">
+<span class="row-52">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+</span>
+<div class="stack-9">
+<span class="text-31" data-bind="points[].title">Your advisor stays in charge</span>
+<span class="text-47" data-bind="points[].text">Every AI plan goes to your faculty advisor for approval.</span>
+</div>
+</div>
+
+</div>
+<span class="el-90">For students, faculty advisors and administrators.</span>
+</section>
+
+<section class="stack-72" aria-label="Sign in">
+<div class="stack-73">
+
+
+<div class="stack-43">
+<div class="stack-2">
+<h2 class="el-91">Welcome back</h2>
+<span class="text-4">Sign in to continue to Acadmate.</span>
+</div>
+<div class="stack-12">
+<span class="text-7" id="role-label">Prototype: sign in as</span>
+<div class="row-92" role="group" aria-labelledby="role-label">
+
+<button aria-pressed="true" data-repeat="roles" data-bind="roles[].label" style="flex: 1; min-height: 40px; border-radius: 9px; border: 0; font-size: 14px; font-weight: 700; cursor: pointer; background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(19,33,46,0.15)">Student</button>
+
+<button aria-pressed="false" data-repeat="roles" data-bind="roles[].label" style="flex: 1; min-height: 40px; border-radius: 9px; border: 0; font-size: 14px; font-weight: 700; cursor: pointer; background: transparent; color: var(--ink); box-shadow: none">Advisor</button>
+
+<button aria-pressed="false" data-repeat="roles" data-bind="roles[].label" style="flex: 1; min-height: 40px; border-radius: 9px; border: 0; font-size: 14px; font-weight: 700; cursor: pointer; background: transparent; color: var(--ink); box-shadow: none">Admin</button>
+
+</div>
+</div>
+<a href="Main.html" style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; box-sizing: border-box; width: 100%; cursor: pointer; border: 1px solid #C4CDD5; background: var(--surface); color: var(--ink)">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+Sign in with Google
+</a>
+<div class="row-93">
+<span class="el-67"></span>or use your email<span class="el-67"></span>
+</div>
+<div class="stack-2">
+<label class="text-7" for="login-email">Email</label>
+<input id="login-email" type="email" autocomplete="email" value="" placeholder="you@[school].edu" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid var(--line); padding: 0 14px; font-size: 15px; color: var(--ink); background: var(--surface); width: 100%">
+</div>
+<div class="stack-2">
+<div class="row-32">
+<label class="text-7" for="login-pw">Password</label>
+<button class="el-92">Forgot password?</button>
+</div>
+<div class="row-25">
+<input id="login-pw" type="password" autocomplete="current-password" value="" placeholder="Your password" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid var(--line); padding: 0 14px; font-size: 15px; color: var(--ink); background: var(--surface); width: 100%; flex: 1; min-width: 0">
+<button class="row-94" aria-label="Show password">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+</button>
+</div>
+</div>
+<div class="row-68">
+<input class="el-93" type="checkbox" id="login-remember" checked>
+<label class="text-6" for="login-remember">Keep me signed in on this device</label>
+</div>
+
+
+
+<button style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; box-sizing: border-box; width: 100%; cursor: pointer; border: 0; background: #C4CDD5; color: var(--text-2)">Sign in</button>
+
+<span class="text-60" role="status" data-bind="hint"></span>
+<span class="text-61">New to Acadmate?
+<button class="el-94">Create an account</button></span>
+</div>
+
+
+
+
+
+
+
+
+
+
+</div>
+</section>
+</div>
+</div>
+</body>
+</html>

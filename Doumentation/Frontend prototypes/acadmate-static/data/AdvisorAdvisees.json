@@ -1,0 +1,134 @@
+{
+  "tabs": [
+    {
+      "label": "All",
+      "count": 8
+    },
+    {
+      "label": "Needs attention",
+      "count": 3
+    },
+    {
+      "label": "On track",
+      "count": 3
+    },
+    {
+      "label": "Graduating",
+      "count": 2
+    }
+  ],
+  "rows": [
+    {
+      "id": "ao",
+      "name": "Amara O.",
+      "av": "AO",
+      "prog": "M.S. Computer Science",
+      "credits": 21,
+      "gpa": "3.72",
+      "status": "On track",
+      "flag": "Spring 2027 plan waiting for your approval",
+      "next": "Today · 15:00",
+      "grad": "May 2027",
+      "record": true
+    },
+    {
+      "id": "dk",
+      "name": "Daniel K.",
+      "av": "DK",
+      "prog": "M.S. Computer Science",
+      "credits": 24,
+      "gpa": "3.41",
+      "status": "Needs attention",
+      "flag": "Capstone pre-approval form is missing a project summary",
+      "next": "Oct 5 · 11:00",
+      "grad": "May 2027"
+    },
+    {
+      "id": "ps",
+      "name": "Priya S.",
+      "av": "PS",
+      "prog": "M.S. Data Science",
+      "credits": 27,
+      "gpa": "3.88",
+      "status": "On track",
+      "flag": "Spring 2027 plan meets all requirements",
+      "next": "Today · 13:00",
+      "grad": "May 2027"
+    },
+    {
+      "id": "mt",
+      "name": "Marcus T.",
+      "av": "MT",
+      "prog": "M.S. Computer Science",
+      "credits": 18,
+      "gpa": "3.05",
+      "status": "Needs attention",
+      "flag": "Requested to drop CS 608, which ends full-time status",
+      "next": "Oct 7 · 14:00",
+      "grad": "Dec 2027"
+    },
+    {
+      "id": "lh",
+      "name": "Lina H.",
+      "av": "LH",
+      "prog": "M.S. Information Systems",
+      "credits": 24,
+      "gpa": "3.30",
+      "status": "Needs attention",
+      "flag": "Spring plan is missing a capstone prerequisite",
+      "next": "Not booked",
+      "grad": "May 2027"
+    },
+    {
+      "id": "jp",
+      "name": "Jonah P.",
+      "av": "JP",
+      "prog": "M.S. Computer Science",
+      "credits": 12,
+      "gpa": "3.60",
+      "status": "On track",
+      "flag": "Asked about switching an elective",
+      "next": "Today · 10:00",
+      "grad": "Dec 2027"
+    },
+    {
+      "id": "sr",
+      "name": "Sofia R.",
+      "av": "SR",
+      "prog": "M.S. Computer Science",
+      "credits": 33,
+      "gpa": "3.79",
+      "status": "Graduating",
+      "flag": "Final graduation audit due",
+      "next": "Not booked",
+      "grad": "Dec 2026"
+    },
+    {
+      "id": "ka",
+      "name": "Kwame A.",
+      "av": "KA",
+      "prog": "M.S. Data Science",
+      "credits": 30,
+      "gpa": "3.52",
+      "status": "Graduating",
+      "flag": "Graduation application not filed",
+      "next": "Not booked",
+      "grad": "Dec 2026"
+    }
+  ],
+  "sel": {
+    "id": "ao",
+    "name": "Amara O.",
+    "av": "AO",
+    "prog": "M.S. Computer Science",
+    "credits": 21,
+    "gpa": "3.72",
+    "status": "On track",
+    "flag": "Spring 2027 plan waiting for your approval",
+    "next": "Today · 15:00",
+    "grad": "May 2027",
+    "record": true
+  },
+  "empty": false,
+  "q": ""
+}

@@ -1,0 +1,93 @@
+{
+  "rows": [
+    {
+      "id": "a1",
+      "name": "Dr. [Advisor]",
+      "dept": "Computer Science",
+      "load": 42,
+      "cap": 45,
+      "pending": 5,
+      "resp": "1.4 days"
+    },
+    {
+      "id": "a2",
+      "name": "[Advisor 2]",
+      "dept": "Computer Science",
+      "load": 47,
+      "cap": 45,
+      "pending": 9,
+      "resp": "2.8 days"
+    },
+    {
+      "id": "a3",
+      "name": "[Advisor 3]",
+      "dept": "Data Science",
+      "load": 31,
+      "cap": 45,
+      "pending": 2,
+      "resp": "0.9 days"
+    },
+    {
+      "id": "a4",
+      "name": "[Advisor 4]",
+      "dept": "Information Systems",
+      "load": 38,
+      "cap": 40,
+      "pending": 4,
+      "resp": "1.7 days"
+    },
+    {
+      "id": "a5",
+      "name": "[Advisor 5]",
+      "dept": "Cybersecurity",
+      "load": 22,
+      "cap": 40,
+      "pending": 1,
+      "resp": "1.1 days"
+    }
+  ],
+  "sel": {
+    "id": "a2",
+    "name": "[Advisor 2]",
+    "dept": "Computer Science",
+    "load": 47,
+    "cap": 45,
+    "pending": 9,
+    "resp": "2.8 days",
+    "loadLabel": "Over capacity"
+  },
+  "targets": [
+    {
+      "label": "Dr. [Advisor] (42/45)"
+    },
+    {
+      "label": "[Advisor 3] (31/45)"
+    },
+    {
+      "label": "[Advisor 4] (38/40)"
+    },
+    {
+      "label": "[Advisor 5] (22/40)"
+    }
+  ],
+  "noTarget": true,
+  "msg": "",
+  "showAdd": false,
+  "addFields": [
+    {
+      "id": "add-name",
+      "label": "Full name",
+      "value": ""
+    },
+    {
+      "id": "add-dept",
+      "label": "Department",
+      "value": ""
+    },
+    {
+      "id": "add-cap",
+      "label": "Advisee capacity",
+      "value": "40"
+    }
+  ]
+}

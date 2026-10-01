@@ -1,0 +1,170 @@
+{
+  "exportLabel": "Export report",
+  "stats": [
+    {
+      "label": "Active students",
+      "value": "1,284",
+      "note": "Signed in during the last 30 days",
+      "tag": "+86"
+    },
+    {
+      "label": "Advisors",
+      "value": "58",
+      "note": "3 invited, not yet signed in",
+      "tag": "Faculty"
+    },
+    {
+      "label": "AI questions this week",
+      "value": "3,912",
+      "note": "About 3 per active student",
+      "tag": "Week 6"
+    },
+    {
+      "label": "Plans awaiting approval",
+      "value": "213",
+      "note": "Spring registration opens Nov 3",
+      "tag": "Rising"
+    }
+  ],
+  "weeks": [
+    {
+      "v": "812",
+      "d": "Aug 24"
+    },
+    {
+      "v": "1,040",
+      "d": "Aug 31"
+    },
+    {
+      "v": "1,188",
+      "d": "Sep 7"
+    },
+    {
+      "v": "1,102",
+      "d": "Sep 14"
+    },
+    {
+      "v": "1,076",
+      "d": "Sep 21"
+    },
+    {
+      "v": "1,145",
+      "d": "Sep 28"
+    }
+  ],
+  "quality": [
+    {
+      "label": "Rated helpful",
+      "value": "91%",
+      "note": "From 1,140 student ratings this week"
+    },
+    {
+      "label": "Handed to an advisor",
+      "value": "6%",
+      "note": "Questions Acadmate routed to a human"
+    },
+    {
+      "label": "Flagged as wrong",
+      "value": "0.4%",
+      "note": "14 answers this week"
+    }
+  ],
+  "flags": [
+    {
+      "id": 1,
+      "q": "Is CS 6xx offered in Spring?",
+      "issue": "Answer listed a course that isn’t on the Spring 2027 schedule.",
+      "source": "Reported by student",
+      "when": "Today",
+      "status": "Open",
+      "btn": "Mark resolved"
+    },
+    {
+      "id": 2,
+      "q": "Can I skip the advanced theory prerequisite?",
+      "issue": "Advisor says the waiver rule quoted is out of date.",
+      "source": "Reported by Dr. M. Chen",
+      "when": "Yesterday",
+      "status": "Open",
+      "btn": "Mark resolved"
+    },
+    {
+      "id": 3,
+      "q": "How many credits make me full-time?",
+      "issue": "Gave the undergraduate threshold, not the graduate one.",
+      "source": "Auto-check",
+      "when": "Sep 29",
+      "status": "Open",
+      "btn": "Mark resolved"
+    },
+    {
+      "id": 4,
+      "q": "When is the graduation application due?",
+      "issue": "No date in the catalog, so the answer guessed.",
+      "source": "Auto-check",
+      "when": "Sep 28",
+      "status": "Open",
+      "btn": "Mark resolved"
+    }
+  ],
+  "systems": [
+    {
+      "name": "CSV data import",
+      "detail": "Grades and enrollments · last import today 06:00",
+      "status": "Healthy"
+    },
+    {
+      "name": "Course catalog import",
+      "detail": "2026–27 catalog · loaded Sep 1",
+      "status": "Healthy"
+    },
+    {
+      "name": "Calendar feeds (.ics)",
+      "detail": "1,031 students subscribed",
+      "status": "Healthy"
+    },
+    {
+      "name": "Email notifications",
+      "detail": "Delays of up to 15 minutes",
+      "status": "Degraded"
+    }
+  ],
+  "advisors": [
+    {
+      "name": "Dr. [Advisor]",
+      "n": 42,
+      "wait": 5,
+      "reply": "1.2 days",
+      "load": "OK"
+    },
+    {
+      "name": "Dr. M. Chen",
+      "n": 38,
+      "wait": 2,
+      "reply": "0.8 days",
+      "load": "OK"
+    },
+    {
+      "name": "Dr. S. Patel",
+      "n": 51,
+      "wait": 14,
+      "reply": "3.5 days",
+      "load": "Over"
+    },
+    {
+      "name": "Dr. L. Okafor",
+      "n": 29,
+      "wait": 0,
+      "reply": "0.5 days",
+      "load": "OK"
+    },
+    {
+      "name": "Prof. J. Weiss",
+      "n": 45,
+      "wait": 7,
+      "reply": "2.1 days",
+      "load": "OK"
+    }
+  ],
+  "openCount": "4 open · 0 resolved"
+}

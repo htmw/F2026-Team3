@@ -1,0 +1,193 @@
+{
+  "stats": [
+    {
+      "label": "Advisees",
+      "value": "42",
+      "note": "M.S. CS and Data Science",
+      "tag": "Fall 2026"
+    },
+    {
+      "label": "Waiting for you",
+      "value": "5",
+      "note": "Plans, forms and requests",
+      "tag": "Action"
+    },
+    {
+      "label": "Meetings this week",
+      "value": "9",
+      "note": "4 today",
+      "tag": "Busy"
+    },
+    {
+      "label": "Need attention",
+      "value": "3",
+      "note": "Flagged by Acadmate",
+      "tag": "Review"
+    }
+  ],
+  "tabs": [
+    {
+      "label": "All"
+    },
+    {
+      "label": "Plans"
+    },
+    {
+      "label": "Forms and requests"
+    }
+  ],
+  "queue": [
+    {
+      "id": 1,
+      "name": "Amara O.",
+      "av": "AO",
+      "type": "Course plan",
+      "item": "Spring 2027 plan · Capstone + AI elective",
+      "when": "Sep 30",
+      "check": "meets all remaining requirements",
+      "ok": true,
+      "review": "AdvisorStudent.html",
+      "checkIcon": "✓",
+      "blocked": false
+    },
+    {
+      "id": 2,
+      "name": "Daniel K.",
+      "av": "DK",
+      "type": "Form",
+      "item": "Capstone pre-approval form",
+      "when": "Sep 29",
+      "check": "project summary is missing",
+      "ok": false,
+      "review": "AdvisorApprovals.html",
+      "checkIcon": "!",
+      "blocked": true
+    },
+    {
+      "id": 3,
+      "name": "Priya S.",
+      "av": "PS",
+      "type": "Course plan",
+      "item": "Spring 2027 plan · 3 electives",
+      "when": "Sep 29",
+      "check": "meets all remaining requirements",
+      "ok": true,
+      "review": "AdvisorApprovals.html",
+      "checkIcon": "✓",
+      "blocked": false
+    },
+    {
+      "id": 4,
+      "name": "Marcus T.",
+      "av": "MT",
+      "type": "Request",
+      "item": "Drop CS 608 Algorithms",
+      "when": "Sep 28",
+      "check": "drops him below full-time status",
+      "ok": false,
+      "review": "AdvisorApprovals.html",
+      "checkIcon": "!",
+      "blocked": true
+    },
+    {
+      "id": 5,
+      "name": "Lina H.",
+      "av": "LH",
+      "type": "Course plan",
+      "item": "Spring 2027 plan · Capstone",
+      "when": "Sep 27",
+      "check": "missing a capstone prerequisite",
+      "ok": false,
+      "review": "AdvisorApprovals.html",
+      "checkIcon": "!",
+      "blocked": true
+    }
+  ],
+  "meetings": [
+    {
+      "time": "10:00",
+      "who": "Jonah P.",
+      "topic": "Course change · In person",
+      "action": "Notes",
+      "href": "AdvisorMeetings.html"
+    },
+    {
+      "time": "13:00",
+      "who": "Priya S.",
+      "topic": "Spring 2027 plan · Online",
+      "action": "Join",
+      "href": "AdvisorMeetings.html"
+    },
+    {
+      "time": "15:00",
+      "who": "Amara O.",
+      "topic": "Advising check-in · Online",
+      "action": "Open",
+      "href": "AdvisorStudent.html"
+    },
+    {
+      "time": "16:30",
+      "who": "Drop-in office hours",
+      "topic": "Room [Room] · 1 hour",
+      "action": "Details",
+      "href": "AdvisorMeetings.html"
+    }
+  ],
+  "attention": [
+    {
+      "name": "Marcus T.",
+      "av": "MT",
+      "flag": "Term GPA fell from 3.4 to 2.9 and he asked to drop a course.",
+      "gpa": "2.9",
+      "last": "Sep 10",
+      "level": "High"
+    },
+    {
+      "name": "Lina H.",
+      "av": "LH",
+      "flag": "Missed 3 deadlines in the last 2 weeks.",
+      "gpa": "3.3",
+      "last": "Aug 30",
+      "level": "High"
+    },
+    {
+      "name": "Sam R.",
+      "av": "SR",
+      "flag": "Hasn’t signed in for 3 weeks and has no Spring plan yet.",
+      "gpa": "3.5",
+      "last": "Aug 21",
+      "level": "Medium"
+    }
+  ],
+  "caseload": [
+    {
+      "label": "On track",
+      "n": 34
+    },
+    {
+      "label": "Needs attention",
+      "n": 5
+    },
+    {
+      "label": "At risk",
+      "n": 3
+    }
+  ],
+  "grad": [
+    {
+      "n": "6",
+      "label": "Dec 2026"
+    },
+    {
+      "n": "15",
+      "label": "May 2027"
+    },
+    {
+      "n": "21",
+      "label": "Later"
+    }
+  ],
+  "queueEmpty": false,
+  "hasToast": false,
+  "toast": ""
+}

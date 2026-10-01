@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acadmate schedule</title>
+<link rel="stylesheet" href="css/acadmate.css">
+</head>
+<body>
+<div class="app">
+<div class="app-frame">
+<nav class="sidebar" aria-label="Main">
+<div class="row-5">
+<div class="row-6">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg>
+</div>
+<span class="el-3">Acadmate</span>
+</div>
+<div class="stack-1">
+
+<a href="Main.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Dashboard</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="MyCourses.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">My courses</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="DegreePlan.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Degree plan</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AIAdvisor.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">AI advisor</span>
+<span class="el-1" data-bind="nav[].badge">New</span>
+</a>
+
+<a href="Schedule.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--surface); background: var(--ink-2)">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--accent-bright)"></span>
+<span data-bind="nav[].label">Schedule</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="Assignments.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Assignments</span>
+<span class="el-1" data-bind="nav[].badge">3</span>
+</a>
+
+<a href="Messages.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Messages</span>
+<span class="el-1" data-bind="nav[].badge">2</span>
+</a>
+
+<a href="Settings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Settings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+</div>
+<div class="stack-4">
+<span class="el-19">Need a human advisor?</span>
+<span class="text-18">Hand off your AI plan to your faculty advisor for sign-off.</span>
+<a class="el-17" href="BookMeeting.html">Book a meeting</a>
+</div>
+</nav>
+<main class="main">
+<header class="row-7">
+<div class="stack-1">
+<h1 class="page-title">Schedule</h1>
+<span class="text-4">Week of Sep 28 – Oct 4, 2026</span>
+</div>
+<div class="row-4">
+<button class="btn-secondary-3" aria-label="Previous week"><svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+<button class="btn-secondary">Today</button>
+<button class="btn-secondary-3" aria-label="Next week"><svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+<a class="btn-primary" href="#">Add event</a>
+<div class="row-15">AO</div>
+</div>
+</header>
+
+<div class="row-108">
+
+<span class="el-37" data-repeat="legend" data-bind="legend[].label"><span style="width: 12px; height: 12px; border-radius: 4px; background: var(--accent-tint); border: 1px solid var(--accent-dark)"></span>Class</span>
+
+<span class="el-37" data-repeat="legend" data-bind="legend[].label"><span style="width: 12px; height: 12px; border-radius: 4px; background: var(--track); border: 1px solid var(--ink)"></span>Office hours</span>
+
+<span class="el-37" data-repeat="legend" data-bind="legend[].label"><span style="width: 12px; height: 12px; border-radius: 4px; background: var(--amber-tint); border: 1px solid var(--amber-deep)"></span>Advising</span>
+
+<span class="el-37" data-repeat="legend" data-bind="legend[].label"><span style="width: 12px; height: 12px; border-radius: 4px; background: var(--indigo-tint); border: 1px solid var(--indigo-text)"></span>Study</span>
+
+<span class="el-37" data-repeat="legend" data-bind="legend[].label"><span style="width: 12px; height: 12px; border-radius: 4px; background: #FCE7F3; border: 1px solid #9D174D"></span>Team</span>
+
+</div>
+<div class="row-8">
+<section class="el-108" aria-label="Week calendar">
+<div class="el-41">
+<div class="stack-81">
+<div class="grid-6">
+<span></span>
+
+<div data-repeat="days" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; background: transparent; color: var(--ink)">
+<span class="text-12" data-bind="days[].name">Mon</span>
+<span class="el-28" data-bind="days[].date">28</span>
+</div>
+
+<div data-repeat="days" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; background: transparent; color: var(--ink)">
+<span class="text-12" data-bind="days[].name">Tue</span>
+<span class="el-28" data-bind="days[].date">29</span>
+</div>
+
+<div data-repeat="days" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; background: transparent; color: var(--ink)">
+<span class="text-12" data-bind="days[].name">Wed</span>
+<span class="el-28" data-bind="days[].date">30</span>
+</div>
+
+<div data-repeat="days" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; background: var(--ink); color: var(--surface)">
+<span class="text-12" data-bind="days[].name">Thu</span>
+<span class="el-28" data-bind="days[].date">1</span>
+</div>
+
+<div data-repeat="days" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; background: transparent; color: var(--ink)">
+<span class="text-12" data-bind="days[].name">Fri</span>
+<span class="el-28" data-bind="days[].date">2</span>
+</div>
+
+<div data-repeat="days" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; background: transparent; color: var(--ink)">
+<span class="text-12" data-bind="days[].name">Sat</span>
+<span class="el-28" data-bind="days[].date">3</span>
+</div>
+
+<div data-repeat="days" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; background: transparent; color: var(--ink)">
+<span class="text-12" data-bind="days[].name">Sun</span>
+<span class="el-28" data-bind="days[].date">4</span>
+</div>
+
+</div>
+<div class="grid-6">
+<span class="text-62">DUE</span>
+
+<div class="stack-13" data-repeat="days">
+
+</div>
+
+<div class="stack-13" data-repeat="days">
+
+</div>
+
+<div class="stack-13" data-repeat="days">
+
+</div>
+
+<div class="stack-13" data-repeat="days">
+
+</div>
+
+<div class="stack-13" data-repeat="days">
+
+</div>
+
+<div class="stack-13" data-repeat="days">
+
+<span class="text-63" data-repeat="days[].due" data-bind="days[].due[]">CS 675 proposal due</span>
+
+</div>
+
+<div class="stack-13" data-repeat="days">
+
+</div>
+
+</div>
+<div class="grid-6">
+<div class="el-109">
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: -6px; font-size: 11px; color: var(--muted)">08:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 42px; font-size: 11px; color: var(--muted)">09:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 90px; font-size: 11px; color: var(--muted)">10:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 138px; font-size: 11px; color: var(--muted)">11:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 186px; font-size: 11px; color: var(--muted)">12:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 234px; font-size: 11px; color: var(--muted)">13:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 282px; font-size: 11px; color: var(--muted)">14:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 330px; font-size: 11px; color: var(--muted)">15:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 378px; font-size: 11px; color: var(--muted)">16:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 426px; font-size: 11px; color: var(--muted)">17:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 474px; font-size: 11px; color: var(--muted)">18:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 522px; font-size: 11px; color: var(--muted)">19:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 570px; font-size: 11px; color: var(--muted)">20:00</span>
+
+<span data-repeat="hours" data-bind="hours[].label" style="position: absolute; right: 8px; top: 618px; font-size: 11px; color: var(--muted)">21:00</span>
+
+</div>
+
+<div class="el-29" data-repeat="days">
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 240px; height: 93px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--indigo-tint); color: var(--indigo-text); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">13:00–15:00</span>
+<span class="text-15" data-bind="days[].events[].title">Study · CS 675 labs</span>
+</button>
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 488.00000000000006px; height: 129px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--accent-tint); color: var(--accent-dark); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">18:10–20:55</span>
+<span class="text-15" data-bind="days[].events[].title">CS 608 Algorithms</span>
+</button>
+
+</div>
+
+<div class="el-29" data-repeat="days">
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 192px; height: 45px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--indigo-tint); color: var(--indigo-text); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">12:00–13:00</span>
+<span class="text-15" data-bind="days[].events[].title">Study · CS 661</span>
+</button>
+
+</div>
+
+<div class="el-29" data-repeat="days">
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 288px; height: 45px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--track); color: var(--ink); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">14:00–15:00</span>
+<span class="text-15" data-bind="days[].events[].title">CS 675 office hours</span>
+</button>
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 480px; height: 93px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--indigo-tint); color: var(--indigo-text); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">18:00–20:00</span>
+<span class="text-15" data-bind="days[].events[].title">Study · CS 608</span>
+</button>
+
+</div>
+
+<div class="el-29" data-repeat="days">
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 96px; height: 129px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--accent-tint); color: var(--accent-dark); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">10:00–12:45</span>
+<span class="text-15" data-bind="days[].events[].title">CS 675 Data Science</span>
+</button>
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 264px; height: 33px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: #FCE7F3; color: #9D174D; border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">13:30–14:15</span>
+<span class="text-15" data-bind="days[].events[].title">Team project sync</span>
+</button>
+
+<button aria-pressed="true" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 336px; height: 21px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--amber-tint); color: var(--amber-deep); border: 2px solid var(--amber-deep)">
+<span class="text-14" data-bind="days[].events[].time">15:00–15:30</span>
+<span class="text-15" data-bind="days[].events[].title">Advising check-in</span>
+</button>
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 488.00000000000006px; height: 129px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--accent-tint); color: var(--accent-dark); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">18:10–20:55</span>
+<span class="text-15" data-bind="days[].events[].title">CS 661 Python</span>
+</button>
+
+</div>
+
+<div class="el-29" data-repeat="days">
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 384px; height: 69px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: #FCE7F3; color: #9D174D; border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">16:00–17:30</span>
+<span class="text-15" data-bind="days[].events[].title">CS 608 study group</span>
+</button>
+
+</div>
+
+<div class="el-29" data-repeat="days">
+
+<button aria-pressed="false" data-repeat="days[].events" style="position: absolute; left: 3px; right: 3px; top: 96px; height: 93px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 8px; border-radius: 8px; overflow: hidden; text-align: left; cursor: pointer; background: var(--indigo-tint); color: var(--indigo-text); border: 2px solid transparent">
+<span class="text-14" data-bind="days[].events[].time">10:00–12:00</span>
+<span class="text-15" data-bind="days[].events[].title">Study · proposal edits</span>
+</button>
+
+</div>
+
+<div class="el-29" data-repeat="days">
+
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<aside class="stack-82">
+<div class="card-12">
+<span class="text-42">Selected event</span>
+<h2 class="el-40" data-bind="sel.title">Advising check-in</h2>
+<span data-bind="sel.type" style="align-self: flex-start; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--amber-tint); color: var(--amber-deep)">Advising</span>
+<div class="stack-46">
+<span class="text-1">When</span>
+<span class="text-8" data-bind="sel.when">Thu 1 · 15:00–15:30</span>
+</div>
+<div class="stack-46">
+<span class="text-1">Where</span>
+<span class="text-8" data-bind="sel.where">Online · Dr. [Advisor]</span>
+</div>
+<p class="el-110" data-bind="sel.note">Review the Spring 2027 plan from Acadmate.</p>
+<div class="row-2">
+<a class="btn-secondary" href="#">Edit</a>
+<a class="btn-secondary" href="#">Set reminder</a>
+</div>
+</div>
+<div class="stack-83">
+<div class="row-24"><div class="row-16"><svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg></div><span class="text-25">Acadmate suggestion</span></div>
+<span class="text-46" data-bind="aiText">You have a free 2-hour window on Tuesday evening. Blocking it for Problem set 4 gives you two sessions before the Oct 9 deadline.</span>
+<button data-bind="aiBtn" style="min-height: 44px; border-radius: 12px; border: 0; cursor: pointer; font-weight: 700; font-size: 14px; background: var(--amber); color: var(--ink)">Add study block</button>
+</div>
+<div class="card-5">
+<h2 class="el-51">Coming deadlines</h2>
+
+<a class="row-56" href="Assignments.html" data-repeat="deadlines">
+<span class="el-61" data-bind="deadlines[].date">Oct 3</span>
+<span class="stack-7">
+<span class="text-8" data-bind="deadlines[].title">Project topic proposal</span>
+<span class="text-1" data-bind="deadlines[].course">CS 675 · team</span>
+</span>
+</a>
+
+<a class="row-56" href="Assignments.html" data-repeat="deadlines">
+<span class="el-61" data-bind="deadlines[].date">Oct 5</span>
+<span class="stack-7">
+<span class="text-8" data-bind="deadlines[].title">Week 6 tutorial</span>
+<span class="text-1" data-bind="deadlines[].course">CS 661</span>
+</span>
+</a>
+
+<a class="row-56" href="Assignments.html" data-repeat="deadlines">
+<span class="el-61" data-bind="deadlines[].date">Oct 9</span>
+<span class="stack-7">
+<span class="text-8" data-bind="deadlines[].title">Problem set 4</span>
+<span class="text-1" data-bind="deadlines[].course">CS 608</span>
+</span>
+</a>
+
+</div>
+</aside>
+</div>
+
+</main>
+</div>
+</div>
+</body>
+</html>

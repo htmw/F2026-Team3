@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acadmate advisor meetings</title>
+<link rel="stylesheet" href="css/acadmate.css">
+</head>
+<body>
+<div class="app">
+<div class="app-frame">
+<nav class="sidebar" aria-label="Main">
+<div class="row-5">
+<div class="row-6">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg>
+</div>
+<span class="el-3">Acadmate</span>
+</div>
+<span class="el-22">Advisor</span>
+<div class="stack-1">
+
+<a href="AdvisorDashboard.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Dashboard</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorAdvisees.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Advisees</span>
+<span class="el-1" data-bind="nav[].badge">42</span>
+</a>
+
+<a href="AdvisorApprovals.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Approvals</span>
+<span class="el-1" data-bind="nav[].badge">5</span>
+</a>
+
+<a href="AdvisorMeetings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--surface); background: var(--ink-2)">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--accent-bright)"></span>
+<span data-bind="nav[].label">Meetings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorMessages.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Messages</span>
+<span class="el-1" data-bind="nav[].badge">3</span>
+</a>
+
+<a href="AdvisorReports.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Reports</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorSettings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Settings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+</div>
+<div class="stack-4">
+<span class="el-8">Preview other views</span>
+<a class="row-1" href="Main.html">Student view</a>
+<a class="row-1" href="AdvisorDashboard.html">Advisor view</a>
+<a class="row-1" href="AdminDashboard.html">Admin view</a>
+</div>
+</nav>
+<main class="main">
+<header class="row-7">
+<div class="stack-1">
+<h1 class="page-title">Meetings</h1>
+<span class="text-4">Your agenda, booking requests and office hours</span>
+</div>
+<div class="row-4">
+<a class="btn-secondary" href="#office-hours">Office hours</a>
+<a class="btn-primary" href="AdvisorAdvisees.html">Book with an advisee</a>
+<div class="row-18">AD</div>
+</div>
+</header>
+
+<div class="row-8">
+<div class="stack-35">
+<section class="card-3" aria-label="Meetings">
+<div class="row-26">
+<h2 class="el-2">Agenda</h2>
+<div class="row-78" role="group" aria-label="Range">
+
+<button aria-pressed="true" data-repeat="ranges" data-bind="ranges[].label" style="min-height: 40px; padding: 0 14px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--surface)">Today</button>
+
+<button aria-pressed="false" data-repeat="ranges" data-bind="ranges[].label" style="min-height: 40px; padding: 0 14px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">Next 7 days</button>
+
+</div>
+</div>
+
+<button aria-pressed="false" data-repeat="meetings" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px; border: 0; border-top: 1px solid var(--bg); border-radius: 12px; text-align: left; cursor: pointer; color: var(--ink); background: var(--surface)">
+<span class="stack-20">
+<span class="text-1" data-bind="meetings[].day">Today</span>
+<span class="el-44" data-bind="meetings[].time">10:00</span>
+</span>
+<span class="stack-6">
+<span class="text-2" data-bind="meetings[].who">Jonah P.</span>
+<span class="text-muted-1" data-bind="meetings[].topic">Course change: swap one elective</span>
+</span>
+<span data-bind="meetings[].format" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--track); color: var(--text-2)">In person</span>
+</button>
+
+<button aria-pressed="false" data-repeat="meetings" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px; border: 0; border-top: 1px solid var(--bg); border-radius: 12px; text-align: left; cursor: pointer; color: var(--ink); background: var(--surface)">
+<span class="stack-20">
+<span class="text-1" data-bind="meetings[].day">Today</span>
+<span class="el-44" data-bind="meetings[].time">13:00</span>
+</span>
+<span class="stack-6">
+<span class="text-2" data-bind="meetings[].who">Priya S.</span>
+<span class="text-muted-1" data-bind="meetings[].topic">Review Spring 2027 plan</span>
+</span>
+<span data-bind="meetings[].format" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--indigo-tint); color: var(--indigo-text)">Online</span>
+</button>
+
+<button aria-pressed="true" data-repeat="meetings" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px; border: 0; border-top: 1px solid var(--bg); border-radius: 12px; text-align: left; cursor: pointer; color: var(--ink); background: var(--accent-wash)">
+<span class="stack-20">
+<span class="text-1" data-bind="meetings[].day">Today</span>
+<span class="el-44" data-bind="meetings[].time">15:00</span>
+</span>
+<span class="stack-6">
+<span class="text-2" data-bind="meetings[].who">Amara O.</span>
+<span class="text-muted-1" data-bind="meetings[].topic">Advising check-in: Spring plan from Acadmate</span>
+</span>
+<span data-bind="meetings[].format" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--indigo-tint); color: var(--indigo-text)">Online</span>
+</button>
+
+<button aria-pressed="false" data-repeat="meetings" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px; border: 0; border-top: 1px solid var(--bg); border-radius: 12px; text-align: left; cursor: pointer; color: var(--ink); background: var(--surface)">
+<span class="stack-20">
+<span class="text-1" data-bind="meetings[].day">Today</span>
+<span class="el-44" data-bind="meetings[].time">16:30</span>
+</span>
+<span class="stack-6">
+<span class="text-2" data-bind="meetings[].who">Drop-in office hours</span>
+<span class="text-muted-1" data-bind="meetings[].topic">Open to all advisees</span>
+</span>
+<span data-bind="meetings[].format" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--track); color: var(--text-2)">In person</span>
+</button>
+
+</section>
+
+<section class="card-3" aria-label="Booking requests">
+<h2 class="el-54">Booking requests</h2>
+
+<div class="row-23" data-repeat="requests">
+<div class="stack-36">
+<span class="text-2" data-bind="requests[].who requests[].when">Lina H. · Tue, Oct 6 · 14:00</span>
+<span class="text-muted-1" data-bind="requests[].topic">Capstone prerequisite question · Online</span>
+</div>
+
+<div class="row-25">
+<button class="btn-primary">Accept</button>
+<button class="btn-secondary">Suggest another time</button>
+</div>
+
+
+</div>
+
+<div class="row-23" data-repeat="requests">
+<div class="stack-36">
+<span class="text-2" data-bind="requests[].who requests[].when">Sofia R. · Fri, Oct 9 · 10:00</span>
+<span class="text-muted-1" data-bind="requests[].topic">Final graduation audit · In person</span>
+</div>
+
+<div class="row-25">
+<button class="btn-primary">Accept</button>
+<button class="btn-secondary">Suggest another time</button>
+</div>
+
+
+</div>
+
+</section>
+
+<section class="card" id="office-hours" aria-label="Office hours">
+<div class="row-48">
+<h2 class="el-2">Office hours</h2>
+<span class="text-muted-1" data-bind="ohSummary">Wed · 16:30–17:30</span>
+</div>
+<span class="text-7">Days</span>
+<div class="row-2" role="group" aria-label="Office hour days">
+
+<button aria-pressed="false" data-repeat="ohDays" data-bind="ohDays[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">Mon</button>
+
+<button aria-pressed="false" data-repeat="ohDays" data-bind="ohDays[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">Tue</button>
+
+<button aria-pressed="true" data-repeat="ohDays" data-bind="ohDays[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--accent); background: var(--accent-wash)">Wed</button>
+
+<button aria-pressed="false" data-repeat="ohDays" data-bind="ohDays[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">Thu</button>
+
+<button aria-pressed="false" data-repeat="ohDays" data-bind="ohDays[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">Fri</button>
+
+</div>
+<span class="text-7">Time</span>
+<div class="row-2" role="group" aria-label="Office hour time">
+
+<button aria-pressed="false" data-repeat="ohTimes" data-bind="ohTimes[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">12:00–13:00</button>
+
+<button aria-pressed="false" data-repeat="ohTimes" data-bind="ohTimes[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">14:00–15:00</button>
+
+<button aria-pressed="true" data-repeat="ohTimes" data-bind="ohTimes[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--accent); background: var(--accent-wash)">16:30–17:30</button>
+
+<button aria-pressed="false" data-repeat="ohTimes" data-bind="ohTimes[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">18:00–19:00</button>
+
+</div>
+<div class="row-79">
+<button class="btn-primary">Publish office hours</button>
+<span class="text-20" role="status" data-bind="ohSaved"></span>
+</div>
+</section>
+</div>
+
+<aside class="stack-25" aria-label="Meeting details">
+<span class="text-42">Selected meeting</span>
+<h2 class="el-39" data-bind="sel.who">Amara O.</h2>
+<span class="text-4" data-bind="sel.day sel.time sel.format">Today · 15:00 · Online</span>
+<span class="text-44" data-bind="sel.topic">Advising check-in: Spring plan from Acadmate</span>
+<div class="stack-2">
+<label class="text-7" for="mtg-notes">Meeting notes (private)</label>
+<textarea class="el-42" id="mtg-notes" rows="5" placeholder="Agenda, decisions, follow-ups…"></textarea>
+</div>
+<div class="row-80">
+<button class="btn-primary">Save notes</button>
+<button class="btn-secondary" data-bind="joinLabel">Copy video link</button>
+</div>
+<span class="text-20" role="status" data-bind="selStatus"></span>
+<div class="row-81">
+<a class="btn-secondary" href="AdvisorStudent.html">Open student</a>
+<a class="btn-secondary" href="AdvisorMessages.html">Message</a>
+</div>
+</aside>
+</div>
+
+</main>
+</div>
+</div>
+</body>
+</html>

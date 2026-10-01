@@ -1,0 +1,147 @@
+{
+  "tabs": [
+    {
+      "label": "Courses"
+    },
+    {
+      "label": "Degree requirements"
+    },
+    {
+      "label": "Terms"
+    }
+  ],
+  "courses": [
+    {
+      "code": "CS 501",
+      "name": "[Foundation course]",
+      "type": "Foundation",
+      "offered": true,
+      "offer": "Spring 27"
+    },
+    {
+      "code": "CS 502",
+      "name": "[Foundation course]",
+      "type": "Foundation",
+      "offered": true,
+      "offer": "Spring 27"
+    },
+    {
+      "code": "CS 608",
+      "name": "Algorithms & Computing Theory",
+      "type": "Elective",
+      "offered": true,
+      "offer": "Spring 27"
+    },
+    {
+      "code": "CS 612",
+      "name": "[Course name]",
+      "type": "Core",
+      "offered": false,
+      "offer": "Not offered"
+    },
+    {
+      "code": "CS 661",
+      "name": "Python Programming",
+      "type": "Elective",
+      "offered": true,
+      "offer": "Spring 27"
+    },
+    {
+      "code": "CS 675",
+      "name": "Data Science",
+      "type": "Elective",
+      "offered": true,
+      "offer": "Spring 27"
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[AI elective]",
+      "type": "Elective",
+      "offered": true,
+      "offer": "Spring 27"
+    },
+    {
+      "code": "CS 691",
+      "name": "Capstone Project",
+      "type": "Capstone",
+      "offered": true,
+      "offer": "Spring 27"
+    }
+  ],
+  "sel": {
+    "code": "CS 612",
+    "name": "[Course name]",
+    "type": "Core",
+    "offered": false,
+    "offeredOn": "false"
+  },
+  "types": [
+    {
+      "label": "Foundation"
+    },
+    {
+      "label": "Core"
+    },
+    {
+      "label": "Elective"
+    },
+    {
+      "label": "Capstone"
+    }
+  ],
+  "reqs": [
+    {
+      "label": "Foundation",
+      "n": 2,
+      "decLabel": "Fewer Foundation courses",
+      "incLabel": "More Foundation courses"
+    },
+    {
+      "label": "Core",
+      "n": 4,
+      "decLabel": "Fewer Core courses",
+      "incLabel": "More Core courses"
+    },
+    {
+      "label": "Electives",
+      "n": 5,
+      "decLabel": "Fewer Electives courses",
+      "incLabel": "More Electives courses"
+    },
+    {
+      "label": "Capstone",
+      "n": 1,
+      "decLabel": "Fewer Capstone courses",
+      "incLabel": "More Capstone courses"
+    }
+  ],
+  "totalCredits": 36,
+  "dates": [
+    {
+      "id": "date-reg",
+      "label": "Registration opens",
+      "value": "2026-11-03"
+    },
+    {
+      "id": "date-add",
+      "label": "Last day to add",
+      "value": "2027-01-29"
+    },
+    {
+      "id": "date-drop",
+      "label": "Last day to drop",
+      "value": "2027-03-12"
+    },
+    {
+      "id": "date-start",
+      "label": "Classes begin",
+      "value": "2027-01-20"
+    }
+  ],
+  "msg": "",
+  "isCourses": true,
+  "isReqs": false,
+  "isTerms": false,
+  "q": "",
+  "publishLabel": "Publish catalog"
+}

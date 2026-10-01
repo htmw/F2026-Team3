@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acadmate admin advisors</title>
+<link rel="stylesheet" href="css/acadmate.css">
+</head>
+<body>
+<div class="app">
+<div class="app-frame">
+<nav class="sidebar" aria-label="Main">
+<div class="row-5">
+<div class="row-6">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg>
+</div>
+<span class="el-3">Acadmate</span>
+</div>
+<span class="el-21">Admin</span>
+<div class="stack-1">
+
+<a href="AdminDashboard.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Overview</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdminUsers.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Users</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdminAdvisors.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--surface); background: var(--ink-2)">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--accent-bright)"></span>
+<span data-bind="nav[].label">Advisors</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdminCatalog.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Courses &amp; catalog</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdminAI.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">AI settings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdminIntegrations.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Integrations</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdminAudit.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Audit log</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdminSettings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Settings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+</div>
+<div class="stack-4">
+<span class="el-8">Preview other views</span>
+<a class="row-1" href="Main.html">Student view</a>
+<a class="row-1" href="AdvisorDashboard.html">Advisor view</a>
+<a class="row-1" href="AdminDashboard.html">Admin view</a>
+</div>
+</nav>
+<main class="main">
+<header class="row-7">
+<div class="stack-1">
+<h1 class="page-title">Advisors</h1>
+<span class="text-4">Caseloads, capacity and reassignment</span>
+</div>
+<div class="row-4">
+<button class="btn-primary">Add advisor</button>
+<div class="row-17">IT</div>
+</div>
+</header>
+
+
+<div class="row-8">
+<section class="stack-24" aria-label="Advisor list">
+<div class="grid-8">
+<span>Advisor</span><span>Caseload</span><span>Pending</span><span>Avg. response</span>
+</div>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="stack-8"><span class="text-2" data-bind="rows[].name">Dr. [Advisor]</span><span class="text-1" data-bind="rows[].dept">Computer Science</span></span>
+<span class="stack-1">
+<span class="text-26" data-bind="rows[].load rows[].cap">42 / 45</span>
+<span class="el-33"><span style="display: block; height: 100%; border-radius: inherit; width: 93%; background: var(--amber-dark)"></span></span>
+</span>
+<span class="text-2" data-bind="rows[].pending">5</span>
+<span class="text-3" data-bind="rows[].resp">1.4 days</span>
+</button>
+
+<button aria-pressed="true" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--accent-wash)">
+<span class="stack-8"><span class="text-2" data-bind="rows[].name">[Advisor 2]</span><span class="text-1" data-bind="rows[].dept">Computer Science</span></span>
+<span class="stack-1">
+<span class="text-26" data-bind="rows[].load rows[].cap">47 / 45</span>
+<span class="el-33"><span style="display: block; height: 100%; border-radius: inherit; width: 100%; background: var(--danger)"></span></span>
+</span>
+<span class="text-2" data-bind="rows[].pending">9</span>
+<span class="text-3" data-bind="rows[].resp">2.8 days</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="stack-8"><span class="text-2" data-bind="rows[].name">[Advisor 3]</span><span class="text-1" data-bind="rows[].dept">Data Science</span></span>
+<span class="stack-1">
+<span class="text-26" data-bind="rows[].load rows[].cap">31 / 45</span>
+<span class="el-33"><span style="display: block; height: 100%; border-radius: inherit; width: 69%; background: var(--accent)"></span></span>
+</span>
+<span class="text-2" data-bind="rows[].pending">2</span>
+<span class="text-3" data-bind="rows[].resp">0.9 days</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="stack-8"><span class="text-2" data-bind="rows[].name">[Advisor 4]</span><span class="text-1" data-bind="rows[].dept">Information Systems</span></span>
+<span class="stack-1">
+<span class="text-26" data-bind="rows[].load rows[].cap">38 / 40</span>
+<span class="el-33"><span style="display: block; height: 100%; border-radius: inherit; width: 95%; background: var(--amber-dark)"></span></span>
+</span>
+<span class="text-2" data-bind="rows[].pending">4</span>
+<span class="text-3" data-bind="rows[].resp">1.7 days</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="stack-8"><span class="text-2" data-bind="rows[].name">[Advisor 5]</span><span class="text-1" data-bind="rows[].dept">Cybersecurity</span></span>
+<span class="stack-1">
+<span class="text-26" data-bind="rows[].load rows[].cap">22 / 40</span>
+<span class="el-33"><span style="display: block; height: 100%; border-radius: inherit; width: 55%; background: var(--accent)"></span></span>
+</span>
+<span class="text-2" data-bind="rows[].pending">1</span>
+<span class="text-3" data-bind="rows[].resp">1.1 days</span>
+</button>
+
+</section>
+<aside class="stack-25" aria-label="Advisor details">
+<h2 class="el-39" data-bind="sel.name">[Advisor 2]</h2>
+<span class="text-4" data-bind="sel.dept">Computer Science</span>
+<span data-bind="sel.loadLabel" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #FEE2E2; color: #991B1B; align-self: flex-start">Over capacity</span>
+<div class="grid-9">
+<div class="stack-10"><span class="text-1">Advisees</span><span class="text-19" data-bind="sel.load sel.cap">47 of 45</span></div>
+<div class="stack-10"><span class="text-1">Pending approvals</span><span class="text-19" data-bind="sel.pending">9</span></div>
+</div>
+<h3 class="el-72">Move 5 advisees to</h3>
+<div class="row-2" role="group" aria-label="Reassign to">
+
+<button aria-pressed="false" data-repeat="targets" data-bind="targets[].label" style="min-height: 40px; padding: 0 12px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">Dr. [Advisor] (42/45)</button>
+
+<button aria-pressed="false" data-repeat="targets" data-bind="targets[].label" style="min-height: 40px; padding: 0 12px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">[Advisor 3] (31/45)</button>
+
+<button aria-pressed="false" data-repeat="targets" data-bind="targets[].label" style="min-height: 40px; padding: 0 12px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">[Advisor 4] (38/40)</button>
+
+<button aria-pressed="false" data-repeat="targets" data-bind="targets[].label" style="min-height: 40px; padding: 0 12px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); border: 1px solid var(--line); background: var(--surface)">[Advisor 5] (22/40)</button>
+
+</div>
+<div class="row-60">
+<button disabled style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 12px; border: 0; font-weight: 700; font-size: 14px; cursor: not-allowed; background: #C4CDD5; color: var(--text-2)">Reassign</button>
+<a class="btn-secondary" href="AdminUsers.html">View account</a>
+</div>
+<span class="text-20" role="status" data-bind="msg"></span>
+</aside>
+</div>
+
+</main>
+</div>
+</div>
+</body>
+</html>

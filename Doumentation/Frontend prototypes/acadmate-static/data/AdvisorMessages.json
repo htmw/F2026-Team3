@@ -1,0 +1,190 @@
+{
+  "convos": [
+    {
+      "id": "ao",
+      "name": "Amara O.",
+      "role": "Advisee · M.S. Computer Science",
+      "initials": "AO",
+      "color": [
+        "#CCFBF1",
+        "#115E59"
+      ],
+      "time": "9:40",
+      "unread": 0,
+      "record": "AdvisorStudent.html",
+      "msgs": [
+        {
+          "from": "You",
+          "mine": true,
+          "text": "Hi Amara, I looked at the Spring plan Acadmate put together. Capstone plus one AI elective works for May 2027.",
+          "time": "Yesterday 16:05"
+        },
+        {
+          "from": "Amara O.",
+          "text": "Thank you! Could we go over capstone topics at our Oct 8 meeting?",
+          "time": "Yesterday 17:20"
+        },
+        {
+          "from": "You",
+          "mine": true,
+          "text": "Yes. Bring two or three ideas, and please send the capstone pre-approval form by Oct 20.",
+          "time": "9:42"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "You: Yes. Bring two or three ideas, and please send the capstone pre-approval form by Oct 20."
+    },
+    {
+      "id": "mt",
+      "name": "Marcus T.",
+      "role": "Advisee · M.S. Computer Science",
+      "initials": "MT",
+      "color": [
+        "#FEF3C7",
+        "#92400E"
+      ],
+      "time": "8:15",
+      "unread": 0,
+      "record": "AdvisorAdvisees.html",
+      "msgs": [
+        {
+          "from": "Marcus T.",
+          "text": "I’d like to drop CS 608. My work hours changed this month.",
+          "time": "8:10"
+        },
+        {
+          "from": "Marcus T.",
+          "text": "Is there a way to stay full-time if I drop it?",
+          "time": "8:15"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "Is there a way to stay full-time if I drop it?"
+    },
+    {
+      "id": "dk",
+      "name": "Daniel K.",
+      "role": "Advisee · M.S. Computer Science",
+      "initials": "DK",
+      "color": [
+        "#FEF3C7",
+        "#92400E"
+      ],
+      "time": "Yesterday",
+      "unread": 1,
+      "record": "AdvisorAdvisees.html",
+      "msgs": [
+        {
+          "from": "Daniel K.",
+          "text": "I submitted my capstone form. Do you need anything else from me?",
+          "time": "Yesterday 11:02"
+        }
+      ],
+      "hasUnread": true,
+      "preview": "I submitted my capstone form. Do you need anything else from me?"
+    },
+    {
+      "id": "team",
+      "name": "CS advising team",
+      "role": "5 advisors",
+      "initials": "CS",
+      "color": [
+        "#E0E7FF",
+        "#3730A3"
+      ],
+      "time": "Sep 29",
+      "unread": 0,
+      "group": true,
+      "record": "AdvisorReports.html",
+      "msgs": [
+        {
+          "from": "[Advisor 2]",
+          "text": "Reminder: Spring registration opens Nov 3. Let’s clear plan approvals by Oct 30.",
+          "time": "Sep 29"
+        },
+        {
+          "from": "[Advisor 3]",
+          "text": "I can cover drop-in hours on Friday if anyone needs it.",
+          "time": "Sep 29"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "I can cover drop-in hours on Friday if anyone needs it."
+    },
+    {
+      "id": "sys",
+      "name": "Acadmate",
+      "role": "Notifications",
+      "initials": "AI",
+      "color": [
+        "#13212E",
+        "#5EEAD4"
+      ],
+      "time": "Sep 28",
+      "unread": 0,
+      "record": "AdvisorApprovals.html",
+      "msgs": [
+        {
+          "from": "Acadmate",
+          "text": "5 course plans and requests are waiting for your approval.",
+          "time": "Sep 28"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "5 course plans and requests are waiting for your approval."
+    }
+  ],
+  "msgs": [
+    {
+      "from": "Marcus T.",
+      "text": "I’d like to drop CS 608. My work hours changed this month.",
+      "time": "8:10",
+      "showName": false
+    },
+    {
+      "from": "Marcus T.",
+      "text": "Is there a way to stay full-time if I drop it?",
+      "time": "8:15",
+      "showName": false
+    }
+  ],
+  "quick": [
+    {
+      "label": "Let’s discuss this at our next meeting."
+    },
+    {
+      "label": "Please book a time on Acadmate."
+    },
+    {
+      "label": "Approved. Thanks!"
+    }
+  ],
+  "sel": {
+    "id": "mt",
+    "name": "Marcus T.",
+    "role": "Advisee · M.S. Computer Science",
+    "initials": "MT",
+    "color": [
+      "#FEF3C7",
+      "#92400E"
+    ],
+    "time": "8:15",
+    "unread": 2,
+    "record": "AdvisorAdvisees.html",
+    "msgs": [
+      {
+        "from": "Marcus T.",
+        "text": "I’d like to drop CS 608. My work hours changed this month.",
+        "time": "8:10"
+      },
+      {
+        "from": "Marcus T.",
+        "text": "Is there a way to stay full-time if I drop it?",
+        "time": "8:15"
+      }
+    ]
+  },
+  "q": "",
+  "draft": "",
+  "newGroupLabel": "Message advising team"
+}

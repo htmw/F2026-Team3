@@ -1,0 +1,99 @@
+{
+  "terms": [
+    {
+      "label": "Fall 2026"
+    },
+    {
+      "label": "Spring 2026"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Advisees",
+      "value": "42",
+      "note": "Across 3 programs"
+    },
+    {
+      "label": "Plans approved",
+      "value": "18",
+      "note": "5 still pending"
+    },
+    {
+      "label": "Avg. response time",
+      "value": "1.4 days",
+      "note": "Down from 2.1 days"
+    },
+    {
+      "label": "Need attention",
+      "value": "6",
+      "note": "14% of advisees"
+    }
+  ],
+  "byStatus": [
+    {
+      "label": "On track",
+      "count": "30 students"
+    },
+    {
+      "label": "Needs attention",
+      "count": "6 students"
+    },
+    {
+      "label": "Graduating",
+      "count": "6 students"
+    }
+  ],
+  "weeks": [
+    {
+      "v": 6,
+      "label": "W1"
+    },
+    {
+      "v": 9,
+      "label": "W2"
+    },
+    {
+      "v": 7,
+      "label": "W3"
+    },
+    {
+      "v": 12,
+      "label": "W4"
+    },
+    {
+      "v": 14,
+      "label": "W5"
+    },
+    {
+      "v": 11,
+      "label": "W6"
+    }
+  ],
+  "risk": [
+    {
+      "name": "Marcus T.",
+      "reason": "Requested a drop that ends full-time status",
+      "action": "Review request",
+      "href": "AdvisorApprovals.html"
+    },
+    {
+      "name": "Lina H.",
+      "reason": "Spring plan is missing a capstone prerequisite",
+      "action": "Review plan",
+      "href": "AdvisorApprovals.html"
+    },
+    {
+      "name": "Daniel K.",
+      "reason": "Capstone form incomplete; due Oct 20",
+      "action": "Message",
+      "href": "AdvisorMessages.html"
+    },
+    {
+      "name": "Kwame A.",
+      "reason": "Graduation application not filed",
+      "action": "View advisee",
+      "href": "AdvisorAdvisees.html"
+    }
+  ],
+  "exportMsg": ""
+}

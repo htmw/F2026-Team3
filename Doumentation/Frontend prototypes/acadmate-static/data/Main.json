@@ -1,0 +1,176 @@
+{
+  "accent": "#0F766E",
+  "stats": [
+    {
+      "label": "On-time submission",
+      "value": "94%",
+      "pill": "Good",
+      "pillBg": "#CCFBF1",
+      "pillFg": "#115E59",
+      "note": "17 of 18 submitted on time"
+    },
+    {
+      "label": "Credits earned",
+      "value": "21 / 36",
+      "pill": "58%",
+      "pillBg": "#E0E7FF",
+      "pillFg": "#3730A3",
+      "note": "9 in progress · 6 left after this term"
+    },
+    {
+      "label": "Attendance",
+      "value": "96%",
+      "pill": "Great",
+      "pillBg": "#CCFBF1",
+      "pillFg": "#115E59",
+      "note": "1 absence this term"
+    },
+    {
+      "label": "Expected graduation",
+      "value": "May 2027",
+      "pill": "Confirmed",
+      "pillBg": "#FEF3C7",
+      "pillFg": "#92400E",
+      "note": "Pending capstone approval"
+    }
+  ],
+  "reqs": [
+    {
+      "label": "Core courses",
+      "count": "4 of 4"
+    },
+    {
+      "label": "Electives",
+      "count": "1 done · 3 in progress"
+    },
+    {
+      "label": "Foundation",
+      "count": "2 of 2"
+    },
+    {
+      "label": "Capstone",
+      "count": "0 of 1"
+    }
+  ],
+  "hours": [
+    {
+      "d": "Mon",
+      "v": "3.5h"
+    },
+    {
+      "d": "Tue",
+      "v": "4h"
+    },
+    {
+      "d": "Wed",
+      "v": "2h"
+    },
+    {
+      "d": "Thu",
+      "v": "5h"
+    },
+    {
+      "d": "Fri",
+      "v": "2.5h"
+    },
+    {
+      "d": "Sat",
+      "v": "3h"
+    },
+    {
+      "d": "Sun",
+      "v": "1.5h"
+    }
+  ],
+  "today": [
+    {
+      "time": "10:00",
+      "title": "Data Science (CS 675)",
+      "meta": "Lecture · Room 1201"
+    },
+    {
+      "time": "13:30",
+      "title": "Team project sync",
+      "meta": "Study room 3 · 45 min"
+    },
+    {
+      "time": "15:00",
+      "title": "Advising check-in",
+      "meta": "Online · Dr. [Advisor]"
+    },
+    {
+      "time": "18:10",
+      "title": "Python Programming (CS 661)",
+      "meta": "Lab · Room 318"
+    }
+  ],
+  "tasks": [
+    {
+      "title": "Project topic proposal",
+      "course": "CS 675",
+      "due": "Oct 3",
+      "status": "Due soon"
+    },
+    {
+      "title": "Week 6 tutorial",
+      "course": "CS 661",
+      "due": "Oct 5",
+      "status": "In progress"
+    },
+    {
+      "title": "Capstone pre-approval form",
+      "course": "Advising",
+      "due": "Oct 20",
+      "status": "Not started"
+    },
+    {
+      "title": "Dynamic programming set",
+      "course": "CS 608",
+      "due": "Sep 28",
+      "status": "Done"
+    }
+  ],
+  "tabs": [
+    {
+      "label": "All"
+    },
+    {
+      "label": "Open"
+    },
+    {
+      "label": "Due soon"
+    },
+    {
+      "label": "Done"
+    }
+  ],
+  "courses": [
+    {
+      "code": "CS 675",
+      "name": "Data Science",
+      "prof": "Prof. [Name]",
+      "pct": "45%",
+      "grade": "A-"
+    },
+    {
+      "code": "CS 661",
+      "name": "Python Programming",
+      "prof": "Prof. [Name]",
+      "pct": "50%",
+      "grade": "A"
+    },
+    {
+      "code": "CS 608",
+      "name": "Algorithms & Computing Theory",
+      "prof": "Prof. [Name]",
+      "pct": "40%",
+      "grade": "B+"
+    }
+  ],
+  "noTasks": false,
+  "prompts": [
+    "Which electives fit my schedule?",
+    "Am I on track to graduate?",
+    "Plan my Spring semester"
+  ]
+}

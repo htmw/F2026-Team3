@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acadmate advisees</title>
+<link rel="stylesheet" href="css/acadmate.css">
+</head>
+<body>
+<div class="app">
+<div class="app-frame">
+<nav class="sidebar" aria-label="Main">
+<div class="row-5">
+<div class="row-6">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg>
+</div>
+<span class="el-3">Acadmate</span>
+</div>
+<span class="el-22">Advisor</span>
+<div class="stack-1">
+
+<a href="AdvisorDashboard.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Dashboard</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorAdvisees.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--surface); background: var(--ink-2)">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--accent-bright)"></span>
+<span data-bind="nav[].label">Advisees</span>
+<span class="el-1" data-bind="nav[].badge">42</span>
+</a>
+
+<a href="AdvisorApprovals.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Approvals</span>
+<span class="el-1" data-bind="nav[].badge">5</span>
+</a>
+
+<a href="AdvisorMeetings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Meetings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorMessages.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Messages</span>
+<span class="el-1" data-bind="nav[].badge">3</span>
+</a>
+
+<a href="AdvisorReports.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Reports</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AdvisorSettings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Settings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+</div>
+<div class="stack-4">
+<span class="el-8">Preview other views</span>
+<a class="row-1" href="Main.html">Student view</a>
+<a class="row-1" href="AdvisorDashboard.html">Advisor view</a>
+<a class="row-1" href="AdminDashboard.html">Admin view</a>
+</div>
+</nav>
+<main class="main">
+<header class="row-7">
+<div class="stack-1">
+<h1 class="page-title">Advisees</h1>
+<span class="text-4">42 students · Computer Science graduate programs</span>
+</div>
+<div class="row-4">
+<label class="sr" for="advisee-search">Search advisees</label>
+<input class="el-34" id="advisee-search" type="search" value="" placeholder="Search by name…">
+<a class="btn-primary" href="AdvisorMessages.html">Message a group</a>
+<div class="row-18">AD</div>
+</div>
+</header>
+
+<div class="row-36">
+<div class="row-2" role="group" aria-label="Filter advisees">
+
+<button aria-pressed="true" data-repeat="tabs" data-bind="tabs[].label" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--surface)">All<span data-bind="tabs[].count" style="font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--accent-bright); color: var(--ink)">8</span></button>
+
+<button aria-pressed="false" data-repeat="tabs" data-bind="tabs[].label" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">Needs attention<span data-bind="tabs[].count" style="font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--track); color: var(--ink)">3</span></button>
+
+<button aria-pressed="false" data-repeat="tabs" data-bind="tabs[].label" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">On track<span data-bind="tabs[].count" style="font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--track); color: var(--ink)">3</span></button>
+
+<button aria-pressed="false" data-repeat="tabs" data-bind="tabs[].label" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">Graduating<span data-bind="tabs[].count" style="font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--track); color: var(--ink)">2</span></button>
+
+</div>
+<span class="text-muted-1">Showing 8 sample advisees of 42</span>
+</div>
+<div class="row-8">
+<section class="stack-24" aria-label="Advisee list">
+<div class="grid-14">
+<span>Student</span><span>Credits</span><span>GPA</span><span>Status</span><span>Next meeting</span>
+</div>
+
+<button aria-pressed="true" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--accent-wash)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--accent-tint); color: var(--accent-dark)">AO</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Amara O.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Computer Science</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">21 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.72</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-dark)">On track</span></span>
+<span class="text-3" data-bind="rows[].next">Today · 15:00</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--amber-tint); color: var(--amber-text)">DK</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Daniel K.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Computer Science</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">24 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.41</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--amber-tint); color: var(--amber-text)">Needs attention</span></span>
+<span class="text-3" data-bind="rows[].next">Oct 5 · 11:00</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--accent-tint); color: var(--accent-dark)">PS</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Priya S.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Data Science</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">27 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.88</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-dark)">On track</span></span>
+<span class="text-3" data-bind="rows[].next">Today · 13:00</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--amber-tint); color: var(--amber-text)">MT</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Marcus T.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Computer Science</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">18 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.05</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--amber-tint); color: var(--amber-text)">Needs attention</span></span>
+<span class="text-3" data-bind="rows[].next">Oct 7 · 14:00</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--amber-tint); color: var(--amber-text)">LH</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Lina H.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Information Systems</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">24 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.30</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--amber-tint); color: var(--amber-text)">Needs attention</span></span>
+<span class="text-3" data-bind="rows[].next">Not booked</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--accent-tint); color: var(--accent-dark)">JP</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Jonah P.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Computer Science</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">12 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.60</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-dark)">On track</span></span>
+<span class="text-3" data-bind="rows[].next">Today · 10:00</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--indigo-tint); color: var(--indigo-text)">SR</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Sofia R.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Computer Science</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">33 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.79</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--indigo-tint); color: var(--indigo-text)">Graduating</span></span>
+<span class="text-3" data-bind="rows[].next">Not booked</span>
+</button>
+
+<button aria-pressed="false" data-repeat="rows" style="display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1.3fr); gap: 12px; align-items: center; width: 100%; min-height: 60px; padding: 10px 12px; text-align: left; cursor: pointer; border: 0; border-top: 1px solid var(--bg); border-radius: 10px; color: var(--ink); background: var(--surface)">
+<span class="row-11">
+<span data-bind="rows[].av" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: var(--indigo-tint); color: var(--indigo-text)">KA</span>
+<span class="stack-8">
+<span class="text-2" data-bind="rows[].name">Kwame A.</span>
+<span class="text-1" data-bind="rows[].prog">M.S. Data Science</span>
+</span>
+</span>
+<span class="text-6" data-bind="rows[].credits">30 / 36</span>
+<span class="el-9" data-bind="rows[].gpa">3.52</span>
+<span><span data-bind="rows[].status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--indigo-tint); color: var(--indigo-text)">Graduating</span></span>
+<span class="text-3" data-bind="rows[].next">Not booked</span>
+</button>
+
+
+</section>
+
+<aside class="stack-61" aria-label="Advisee preview">
+<div class="row-61">
+<span data-bind="sel.av" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; background: var(--accent-tint); color: var(--accent-dark)">AO</span>
+<div class="stack-1">
+<h2 class="el-39" data-bind="sel.name">Amara O.</h2>
+<span class="text-muted-1" data-bind="sel.prog">M.S. Computer Science</span>
+</div>
+</div>
+<span data-bind="sel.status" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-dark); align-self: flex-start">On track</span>
+<div class="grid-7">
+<div class="stack-10"><span class="text-1">GPA</span><span class="text-19" data-bind="sel.gpa">3.72</span></div>
+<div class="stack-10"><span class="text-1">Credits</span><span class="text-19" data-bind="sel.credits">21 / 36</span></div>
+<div class="stack-10"><span class="text-1">Graduates</span><span class="text-19" data-bind="sel.grad">May 2027</span></div>
+</div>
+<div class="el-15"><div style="height: 100%; width: 58%; border-radius: inherit; background: var(--accent)"></div></div>
+<div class="row-62">
+<svg class="el-57" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#92400E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+<span class="text-43" data-bind="sel.flag">Spring 2027 plan waiting for your approval</span>
+</div>
+<span class="text-muted-1">Next meeting: <strong class="el-18" data-bind="sel.next">Today · 15:00</strong></span>
+<div class="row-21">
+
+<a class="btn-primary" href="AdvisorStudent.html">Open full record</a>
+
+<a class="btn-secondary" href="AdvisorMessages.html">Message</a>
+<a class="btn-secondary" href="AdvisorMeetings.html">Book meeting</a>
+</div>
+</aside>
+</div>
+
+</main>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "points": [
+    {
+      "title": "See your whole degree at once",
+      "text": "Requirements, credits and your graduation date in one place."
+    },
+    {
+      "title": "Ask the AI advisor anything",
+      "text": "Course plans and answers based on your own degree audit."
+    },
+    {
+      "title": "Your advisor stays in charge",
+      "text": "Every AI plan goes to your faculty advisor for approval."
+    }
+  ],
+  "roles": [
+    {
+      "label": "Student"
+    },
+    {
+      "label": "Advisor"
+    },
+    {
+      "label": "Admin"
+    }
+  ],
+  "dest": "Main.html",
+  "isLogin": true,
+  "isCode": false,
+  "isForgot": false,
+  "isSent": false,
+  "isSignup": false,
+  "email": "",
+  "pw": "",
+  "name": "",
+  "code": "",
+  "remember": true,
+  "hint": "",
+  "pwType": "password",
+  "pwToggleLabel": "Show password",
+  "studentReady": false,
+  "staffReady": false,
+  "notReady": true,
+  "codeReady": false,
+  "codeNotReady": true,
+  "signupReady": false,
+  "signupNotReady": true
+}

@@ -1,0 +1,75 @@
+{
+  "saveLabel": "Save changes",
+  "fields": [
+    {
+      "id": "fld-name",
+      "label": "Full name",
+      "value": "Dr. [Advisor]"
+    },
+    {
+      "id": "fld-title",
+      "label": "Title",
+      "value": "Faculty advisor, Computer Science"
+    },
+    {
+      "id": "fld-office",
+      "label": "Office",
+      "value": "[Building], Room [Room]"
+    },
+    {
+      "id": "fld-email",
+      "label": "Email",
+      "value": "[advisor]@[school].edu"
+    }
+  ],
+  "notify": [
+    {
+      "label": "New approval requests",
+      "desc": "When an advisee submits a plan, form or request."
+    },
+    {
+      "label": "Booking requests",
+      "desc": "When an advisee asks for a meeting."
+    },
+    {
+      "label": "Advisee messages",
+      "desc": "Direct messages from advisees."
+    },
+    {
+      "label": "Weekly digest",
+      "desc": "Monday morning summary of your caseload."
+    }
+  ],
+  "approvals": [
+    {
+      "label": "Run Acadmate pre-checks",
+      "desc": "Check plans against degree requirements before you review them."
+    },
+    {
+      "label": "Remind me about requests older than 3 days",
+      "desc": "Keeps response times down before registration."
+    }
+  ],
+  "lengths": [
+    {
+      "label": "15 min"
+    },
+    {
+      "label": "30 min"
+    },
+    {
+      "label": "45 min"
+    }
+  ],
+  "windows": [
+    {
+      "label": "1 week ahead"
+    },
+    {
+      "label": "2 weeks ahead"
+    },
+    {
+      "label": "4 weeks ahead"
+    }
+  ]
+}

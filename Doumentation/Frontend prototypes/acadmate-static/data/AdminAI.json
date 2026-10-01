@@ -1,0 +1,98 @@
+{
+  "saveLabel": "Save changes",
+  "features": [
+    {
+      "label": "AI advisor on for students",
+      "desc": "Turn off to hide the AI advisor everywhere."
+    },
+    {
+      "label": "Course plan suggestions",
+      "desc": "Let Acadmate propose semester plans."
+    },
+    {
+      "label": "Grade-based insights",
+      "desc": "Flag weak areas from current grades."
+    },
+    {
+      "label": "Proactive dashboard tips",
+      "desc": "Show suggestions without the student asking."
+    }
+  ],
+  "sources": [
+    {
+      "label": "Course catalog",
+      "desc": "Published courses, requirements and dates."
+    },
+    {
+      "label": "Degree audits",
+      "desc": "Each student’s completed and remaining requirements."
+    },
+    {
+      "label": "Grades",
+      "desc": "Current and past course grades."
+    },
+    {
+      "label": "Schedules",
+      "desc": "Class times and calendar events."
+    }
+  ],
+  "styles": [
+    {
+      "label": "Concise"
+    },
+    {
+      "label": "Balanced"
+    },
+    {
+      "label": "Detailed"
+    }
+  ],
+  "blocked": [
+    {
+      "label": "Visa and immigration",
+      "removeLabel": "Remove Visa and immigration"
+    },
+    {
+      "label": "Mental health",
+      "removeLabel": "Remove Mental health"
+    },
+    {
+      "label": "Financial aid",
+      "removeLabel": "Remove Financial aid"
+    },
+    {
+      "label": "Grade appeals",
+      "removeLabel": "Remove Grade appeals"
+    }
+  ],
+  "topic": "",
+  "testQ": "",
+  "hasAnswer": false,
+  "answer": "[Test answer] Acadmate would answer here in a balanced style, using only the data sources switched on.",
+  "flags": [
+    {
+      "id": "f1",
+      "q": "Can I take CS 691 without the prerequisite?",
+      "why": "Student reported the answer contradicted the catalog.",
+      "open": true,
+      "closed": false,
+      "result": "Dismissed"
+    },
+    {
+      "id": "f2",
+      "q": "Will dropping a course affect my visa?",
+      "why": "Should have been handed to a human advisor.",
+      "open": true,
+      "closed": false,
+      "result": "Dismissed"
+    },
+    {
+      "id": "f3",
+      "q": "Is CS 612 offered in Spring?",
+      "why": "Answer used last year’s schedule.",
+      "open": true,
+      "closed": false,
+      "result": "Dismissed"
+    }
+  ]
+}

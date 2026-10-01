@@ -1,0 +1,120 @@
+{
+  "msgs": [
+    {
+      "text": "Plan my Spring 2027 semester. I prefer evening classes.",
+      "isUser": true,
+      "isAi": false,
+      "plan": [],
+      "hasPlan": false,
+      "follow": "",
+      "hasFollow": false,
+      "sources": [],
+      "hasSources": false
+    },
+    {
+      "text": "Here’s a plan that finishes your degree in May 2027 with every class in the evening:",
+      "isUser": false,
+      "isAi": true,
+      "plan": [
+        {
+          "code": "CS 691",
+          "name": "Capstone Project",
+          "meta": "Mon 18:10–20:55",
+          "fulfills": "Capstone"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[AI elective]",
+          "meta": "Wed 18:10–20:55",
+          "fulfills": "Elective 5 of 5"
+        }
+      ],
+      "hasPlan": true,
+      "follow": "Before you can register, your advisor must sign your capstone pre-approval form. Spring registration opens Nov 3.",
+      "hasFollow": true,
+      "sources": [
+        "Degree audit · updated today",
+        "Course catalog 2026–27",
+        "Spring 2027 schedule [draft]"
+      ],
+      "hasSources": true
+    },
+    {
+      "text": "What happens if I take only one course in Spring?",
+      "isUser": true,
+      "isAi": false,
+      "plan": [],
+      "hasPlan": false,
+      "follow": "",
+      "hasFollow": false,
+      "sources": [],
+      "hasSources": false
+    },
+    {
+      "text": "Taking only the capstone would move your last elective to Summer 2027, so you would graduate in August instead of May. Summer electives run less often, so check what’s offered before choosing this path.",
+      "isUser": false,
+      "isAi": true,
+      "plan": [],
+      "hasPlan": false,
+      "follow": "",
+      "hasFollow": false,
+      "sources": [
+        "Degree audit · updated today",
+        "Past summer offerings [placeholder]"
+      ],
+      "hasSources": true
+    }
+  ],
+  "prompts": [
+    {
+      "text": "Compare my elective options"
+    },
+    {
+      "text": "What if I fail a course?"
+    },
+    {
+      "text": "Draft an email to my advisor"
+    }
+  ],
+  "threads": [
+    {
+      "title": "Plan my Spring 2027 semester",
+      "when": "Today"
+    },
+    {
+      "title": "Can I take CS 608 and CS 675 together?",
+      "when": "Sep 14"
+    },
+    {
+      "title": "Internship credit options",
+      "when": "Sep 2"
+    },
+    {
+      "title": "Capstone topic ideas",
+      "when": "Aug 28"
+    }
+  ],
+  "ctx": [
+    {
+      "label": "Program",
+      "value": "M.S. Computer Science"
+    },
+    {
+      "label": "Progress",
+      "value": "21 credits earned · 9 in progress"
+    },
+    {
+      "label": "Goal",
+      "value": "Graduate May 2027"
+    },
+    {
+      "label": "Preference",
+      "value": "Evening classes"
+    },
+    {
+      "label": "Data sources",
+      "value": "Degree audit, grades, course catalog"
+    }
+  ],
+  "draft": ""
+}

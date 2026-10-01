@@ -1,0 +1,102 @@
+{
+  "apps": [
+    {
+      "id": "csv",
+      "name": "CSV data import",
+      "desc": "Upload courses, enrollments and grades exported from your school’s systems.",
+      "on": true,
+      "sync": "Last import today 06:00",
+      "log": [
+        [
+          "Imported 1,284 grades",
+          "Today 06:00"
+        ],
+        [
+          "Imported 41 degree audits",
+          "Today 06:00"
+        ],
+        [
+          "Imported 2026–27 catalog",
+          "Sep 1"
+        ]
+      ],
+      "status": "Connected",
+      "btn": "Disconnect"
+    },
+    {
+      "id": "mail",
+      "name": "Email (SMTP)",
+      "desc": "Sends meeting confirmations, reminders and invites.",
+      "on": true,
+      "sync": "Healthy",
+      "log": [
+        [
+          "412 emails sent today",
+          "Live"
+        ]
+      ],
+      "status": "Connected",
+      "btn": "Disconnect"
+    },
+    {
+      "id": "gcal",
+      "name": "Google Calendar",
+      "desc": "Lets students and advisors sync Acadmate meetings.",
+      "on": false,
+      "sync": "Not connected",
+      "log": [
+        [
+          "Never connected",
+          "—"
+        ]
+      ],
+      "status": "Off",
+      "btn": "Connect"
+    },
+    {
+      "id": "outlook",
+      "name": "Outlook Calendar",
+      "desc": "Lets students and advisors sync Acadmate meetings.",
+      "on": false,
+      "sync": "Not connected",
+      "log": [
+        [
+          "Never connected",
+          "—"
+        ]
+      ],
+      "status": "Off",
+      "btn": "Connect"
+    }
+  ],
+  "keys": [
+    {
+      "name": "Reporting export · created Aug 12",
+      "mask": "acm_••••••••4821"
+    }
+  ],
+  "noKeys": false,
+  "sel": {
+    "id": "csv",
+    "name": "CSV data import",
+    "desc": "Upload courses, enrollments and grades exported from your school’s systems.",
+    "on": true,
+    "sync": "Last import today 06:00",
+    "log": [
+      {
+        "a": "Imported 1,284 grades",
+        "b": "Today 06:00"
+      },
+      {
+        "a": "Imported 41 degree audits",
+        "b": "Today 06:00"
+      },
+      {
+        "a": "Imported 2026–27 catalog",
+        "b": "Sep 1"
+      }
+    ],
+    "status": "Connected",
+    "btn": "Disconnect"
+  }
+}

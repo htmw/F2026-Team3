@@ -1,0 +1,132 @@
+{
+  "sections": [
+    {
+      "label": "Profile",
+      "href": "#set-profile"
+    },
+    {
+      "label": "Notifications",
+      "href": "#set-notify"
+    },
+    {
+      "label": "AI advisor",
+      "href": "#set-ai"
+    },
+    {
+      "label": "Sign-in",
+      "href": "#set-signin"
+    },
+    {
+      "label": "Privacy and account",
+      "href": "#set-privacy"
+    }
+  ],
+  "fields": [
+    {
+      "id": "set-fullName",
+      "label": "Full name",
+      "hint": "",
+      "value": "[Full name]",
+      "locked": false
+    },
+    {
+      "id": "set-preferred",
+      "label": "Preferred name",
+      "hint": "Used in greetings.",
+      "value": "Amara",
+      "locked": false
+    },
+    {
+      "id": "set-email",
+      "label": "School email",
+      "hint": "",
+      "value": "[name]@[school].edu",
+      "locked": false
+    },
+    {
+      "id": "set-sid",
+      "label": "Student ID",
+      "hint": "Managed by your school.",
+      "value": "[Student ID]",
+      "locked": true
+    },
+    {
+      "id": "set-program",
+      "label": "Program",
+      "hint": "Managed by your school.",
+      "value": "M.S. Computer Science",
+      "locked": true
+    }
+  ],
+  "notify": [
+    {
+      "label": "Deadline reminders",
+      "desc": "Assignments, forms and registration dates."
+    },
+    {
+      "label": "Advisor and faculty messages",
+      "desc": "Alert me when my advisor or a professor writes."
+    },
+    {
+      "label": "Acadmate suggestions",
+      "desc": "Study blocks, course ideas and plan changes."
+    },
+    {
+      "label": "Weekly summary email",
+      "desc": "Every Sunday evening: the week ahead."
+    },
+    {
+      "label": "Text message alerts",
+      "desc": "Only for deadlines due within 24 hours."
+    }
+  ],
+  "ai": [
+    {
+      "label": "Use my grades",
+      "desc": "Lets Acadmate spot weak areas and suggest support."
+    },
+    {
+      "label": "Use my schedule",
+      "desc": "Lets Acadmate find free time and avoid class clashes."
+    },
+    {
+      "label": "Suggest things on my dashboard",
+      "desc": "Show recommendations without me asking."
+    },
+    {
+      "label": "Share AI plans with my advisor automatically",
+      "desc": "Otherwise you choose what to send."
+    }
+  ],
+  "timing": [
+    {
+      "label": "1 day before"
+    },
+    {
+      "label": "2 days before"
+    },
+    {
+      "label": "1 week before"
+    }
+  ],
+  "styles": [
+    {
+      "label": "Concise"
+    },
+    {
+      "label": "Detailed"
+    }
+  ],
+  "googleStatus": "Connected",
+  "googleDesc": "Signed in as [name]@gmail.com",
+  "googleBtn": "Disconnect",
+  "pwDesc": "Used when you sign in with email.",
+  "pwBtn": "Change password",
+  "signinMsg": "",
+  "photoMsg": "Change photo",
+  "dlLabel": "Request download",
+  "clearLabel": "Clear history",
+  "delLabel": "Delete account",
+  "grad": "May 2027",
+  "saveLabel": "Save changes"
+}

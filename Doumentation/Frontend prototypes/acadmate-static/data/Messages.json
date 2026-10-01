@@ -1,0 +1,192 @@
+{
+  "convos": [
+    {
+      "id": "adv",
+      "name": "Dr. [Advisor]",
+      "role": "Faculty advisor",
+      "initials": "AD",
+      "color": [
+        "#FEF3C7",
+        "#92400E"
+      ],
+      "time": "9:42",
+      "unread": 0,
+      "msgs": [
+        {
+          "from": "Dr. [Advisor]",
+          "text": "Hi Amara, I looked at the Spring plan Acadmate put together. Capstone plus one AI elective works for May 2027.",
+          "time": "Yesterday 16:05"
+        },
+        {
+          "from": "You",
+          "mine": true,
+          "text": "Thank you! Could we go over capstone topics at our Oct 8 meeting?",
+          "time": "Yesterday 17:20"
+        },
+        {
+          "from": "Dr. [Advisor]",
+          "text": "Yes. Bring two or three ideas, and please send the capstone pre-approval form by Oct 20.",
+          "time": "9:42"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "Yes. Bring two or three ideas, and please send the capstone pre-approval form by Oct 20."
+    },
+    {
+      "id": "team",
+      "name": "CS 675 project team",
+      "role": "4 members",
+      "initials": "T4",
+      "color": [
+        "#FCE7F3",
+        "#9D174D"
+      ],
+      "time": "Yesterday",
+      "unread": 2,
+      "group": true,
+      "msgs": [
+        {
+          "from": "[Teammate 1]",
+          "text": "Proposal draft is in the shared folder. Can someone write the dataset section?",
+          "time": "Yesterday 20:14"
+        },
+        {
+          "from": "You",
+          "mine": true,
+          "text": "I’ll take the dataset section tonight.",
+          "time": "Yesterday 20:30"
+        },
+        {
+          "from": "[Teammate 2]",
+          "text": "Can we meet Thursday at 13:30 to finalize before we submit?",
+          "time": "Yesterday 21:02"
+        }
+      ],
+      "hasUnread": true,
+      "preview": "Can we meet Thursday at 13:30 to finalize before we submit?"
+    },
+    {
+      "id": "prof",
+      "name": "Prof. [Name]",
+      "role": "CS 608 · Algorithms",
+      "initials": "PN",
+      "color": [
+        "#E0E7FF",
+        "#3730A3"
+      ],
+      "time": "Sep 29",
+      "unread": 0,
+      "msgs": [
+        {
+          "from": "Prof. [Name]",
+          "text": "Office hours move to Monday 4–5 pm this week. Bring questions on Problem set 4.",
+          "time": "Sep 29"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "Office hours move to Monday 4–5 pm this week. Bring questions on Problem set 4."
+    },
+    {
+      "id": "sys",
+      "name": "Acadmate",
+      "role": "Notifications",
+      "initials": "AI",
+      "color": [
+        "#13212E",
+        "#5EEAD4"
+      ],
+      "time": "Sep 28",
+      "unread": 0,
+      "system": true,
+      "msgs": [
+        {
+          "from": "Acadmate",
+          "text": "Your Spring 2027 plan is waiting for advisor approval.",
+          "time": "Sep 28"
+        },
+        {
+          "from": "Acadmate",
+          "text": "Reminder: capstone registration opens Nov 3.",
+          "time": "Sep 28"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "Reminder: capstone registration opens Nov 3."
+    },
+    {
+      "id": "grad",
+      "name": "[Graduate office]",
+      "role": "Student services",
+      "initials": "GO",
+      "color": [
+        "#E6EBEF",
+        "#374151"
+      ],
+      "time": "Sep 20",
+      "unread": 0,
+      "msgs": [
+        {
+          "from": "[Graduate office]",
+          "text": "Students graduating in May 2027 should file a graduation application by [date].",
+          "time": "Sep 20"
+        }
+      ],
+      "hasUnread": false,
+      "preview": "Students graduating in May 2027 should file a graduation application by [date]."
+    }
+  ],
+  "sel": {
+    "id": "adv",
+    "name": "Dr. [Advisor]",
+    "role": "Faculty advisor",
+    "initials": "AD",
+    "color": [
+      "#FEF3C7",
+      "#92400E"
+    ],
+    "time": "9:42",
+    "unread": 1,
+    "msgs": [
+      {
+        "from": "Dr. [Advisor]",
+        "text": "Hi Amara, I looked at the Spring plan Acadmate put together. Capstone plus one AI elective works for May 2027.",
+        "time": "Yesterday 16:05"
+      },
+      {
+        "from": "You",
+        "mine": true,
+        "text": "Thank you! Could we go over capstone topics at our Oct 8 meeting?",
+        "time": "Yesterday 17:20"
+      },
+      {
+        "from": "Dr. [Advisor]",
+        "text": "Yes. Bring two or three ideas, and please send the capstone pre-approval form by Oct 20.",
+        "time": "9:42"
+      }
+    ],
+    "isSystem": false
+  },
+  "msgs": [
+    {
+      "from": "Dr. [Advisor]",
+      "text": "Hi Amara, I looked at the Spring plan Acadmate put together. Capstone plus one AI elective works for May 2027.",
+      "time": "Yesterday 16:05",
+      "showName": false
+    },
+    {
+      "from": "You",
+      "mine": true,
+      "text": "Thank you! Could we go over capstone topics at our Oct 8 meeting?",
+      "time": "Yesterday 17:20",
+      "showName": false
+    },
+    {
+      "from": "Dr. [Advisor]",
+      "text": "Yes. Bring two or three ideas, and please send the capstone pre-approval form by Oct 20.",
+      "time": "9:42",
+      "showName": false
+    }
+  ],
+  "canReply": true,
+  "draft": ""
+}

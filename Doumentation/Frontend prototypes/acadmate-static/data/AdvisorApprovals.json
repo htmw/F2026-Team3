@@ -1,0 +1,152 @@
+{
+  "tabs": [
+    {
+      "label": "Pending",
+      "count": 5
+    },
+    {
+      "label": "Approved",
+      "count": 0
+    },
+    {
+      "label": "Changes requested",
+      "count": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "Amara O.",
+      "type": "Course plan",
+      "item": "Spring 2027 plan · Capstone + AI elective",
+      "when": "Sep 30",
+      "ok": true,
+      "check": "Meets every remaining requirement. Graduation stays on track for May 2027.",
+      "record": "AdvisorStudent.html",
+      "lines": [
+        {
+          "a": "CS 691 Capstone Project",
+          "b": "Mon 18:10 · 3 cr"
+        },
+        {
+          "a": "CS 6xx [AI elective]",
+          "b": "Wed 18:10 · 3 cr"
+        }
+      ],
+      "checkShort": "Pre-check passed"
+    },
+    {
+      "id": 2,
+      "name": "Daniel K.",
+      "type": "Form",
+      "item": "Capstone pre-approval form",
+      "when": "Sep 29",
+      "ok": false,
+      "check": "The project summary section is empty. Approving now would leave the form incomplete.",
+      "record": "AdvisorAdvisees.html",
+      "lines": [
+        {
+          "a": "Proposed topic",
+          "b": "[Topic title]"
+        },
+        {
+          "a": "Project summary",
+          "b": "Missing"
+        }
+      ],
+      "checkShort": "Needs a look"
+    },
+    {
+      "id": 3,
+      "name": "Priya S.",
+      "type": "Course plan",
+      "item": "Spring 2027 plan · 3 electives",
+      "when": "Sep 29",
+      "ok": true,
+      "check": "Meets every remaining requirement. 9 credits keeps full-time status.",
+      "record": "AdvisorAdvisees.html",
+      "lines": [
+        {
+          "a": "CS 6xx [Elective]",
+          "b": "3 cr"
+        },
+        {
+          "a": "CS 6xx [Elective]",
+          "b": "3 cr"
+        },
+        {
+          "a": "CS 6xx [Elective]",
+          "b": "3 cr"
+        }
+      ],
+      "checkShort": "Pre-check passed"
+    },
+    {
+      "id": 4,
+      "name": "Marcus T.",
+      "type": "Request",
+      "item": "Drop CS 608 Algorithms",
+      "when": "Sep 28",
+      "ok": false,
+      "check": "Dropping leaves 6 credits, below full-time status. This may affect funding or visa requirements; check before approving.",
+      "record": "AdvisorAdvisees.html",
+      "lines": [
+        {
+          "a": "Drop",
+          "b": "CS 608 · 3 cr"
+        },
+        {
+          "a": "Credits after drop",
+          "b": "6"
+        }
+      ],
+      "checkShort": "Needs a look"
+    },
+    {
+      "id": 5,
+      "name": "Lina H.",
+      "type": "Course plan",
+      "item": "Spring 2027 plan · Capstone",
+      "when": "Sep 27",
+      "ok": false,
+      "check": "Capstone requires [prerequisite course], which is not completed or planned.",
+      "record": "AdvisorAdvisees.html",
+      "lines": [
+        {
+          "a": "CS 691 Capstone Project",
+          "b": "3 cr"
+        }
+      ],
+      "checkShort": "Needs a look"
+    }
+  ],
+  "sel": {
+    "id": 1,
+    "name": "Amara O.",
+    "type": "Course plan",
+    "item": "Spring 2027 plan · Capstone + AI elective",
+    "when": "Sep 30",
+    "ok": true,
+    "check": "Meets every remaining requirement. Graduation stays on track for May 2027.",
+    "record": "AdvisorStudent.html",
+    "lines": [
+      {
+        "a": "CS 691 Capstone Project",
+        "b": "Mon 18:10 · 3 cr"
+      },
+      {
+        "a": "CS 6xx [AI elective]",
+        "b": "Wed 18:10 · 3 cr"
+      }
+    ],
+    "status": "Pending",
+    "pending": true,
+    "decided": false,
+    "checkText": "Meets every remaining requirement. Graduation stays on track for May 2027."
+  },
+  "empty": false,
+  "comment": "",
+  "noComment": true,
+  "hasToast": false,
+  "toast": ""
+}

@@ -1,0 +1,220 @@
+{
+  "stats": [
+    {
+      "label": "Due in next 10 days",
+      "value": "3",
+      "note": "Next: proposal on Oct 3"
+    },
+    {
+      "label": "In progress",
+      "value": "2",
+      "note": "CS 675 and CS 661"
+    },
+    {
+      "label": "Awaiting grade",
+      "value": "1",
+      "note": "Lab 4 · CS 675"
+    },
+    {
+      "label": "Graded average",
+      "value": "91%",
+      "note": "Across 2 graded items"
+    }
+  ],
+  "tabs": [
+    {
+      "label": "All",
+      "count": 8
+    },
+    {
+      "label": "To do",
+      "count": 3
+    },
+    {
+      "label": "In progress",
+      "count": 2
+    },
+    {
+      "label": "Submitted",
+      "count": 1
+    },
+    {
+      "label": "Graded",
+      "count": 2
+    }
+  ],
+  "courseTabs": [
+    {
+      "label": "All courses"
+    },
+    {
+      "label": "CS 675"
+    },
+    {
+      "label": "CS 661"
+    },
+    {
+      "label": "CS 608"
+    },
+    {
+      "label": "Advising"
+    }
+  ],
+  "rows": [
+    {
+      "id": "a1",
+      "title": "Project topic proposal",
+      "course": "CS 675",
+      "due": "Oct 3",
+      "status": "In progress",
+      "score": "—",
+      "weight": "5%",
+      "type": "Team",
+      "desc": "One-page team proposal: problem statement, chosen dataset, planned methods in R and Python, and each member’s role.",
+      "steps": [
+        "Agree on the topic with the team",
+        "Write the problem statement and dataset section",
+        "Outline supervised and unsupervised models",
+        "Proofread and submit"
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Week 6 tutorial",
+      "course": "CS 661",
+      "due": "Oct 5",
+      "status": "In progress",
+      "score": "—",
+      "weight": "4%",
+      "type": "Individual",
+      "desc": "Complete this week’s tutorial exercises and upload your notebook.",
+      "steps": [
+        "Work through the exercises",
+        "Test every function",
+        "Upload the notebook"
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "Problem set 4",
+      "course": "CS 608",
+      "due": "Oct 9",
+      "status": "To do",
+      "score": "—",
+      "weight": "7%",
+      "type": "Individual",
+      "desc": "Dynamic programming and greedy algorithms. Show recurrences and prove correctness where asked.",
+      "steps": [
+        "Review lecture notes on DP",
+        "Draft recurrences for each problem",
+        "Write proofs",
+        "Check answers at office hours"
+      ]
+    },
+    {
+      "id": "a4",
+      "title": "Project 2 checkpoint",
+      "course": "CS 661",
+      "due": "Oct 16",
+      "status": "To do",
+      "score": "—",
+      "weight": "10%",
+      "type": "Individual",
+      "desc": "Submit a working first version of Project 2 with a short README.",
+      "steps": [
+        "Set up the project structure",
+        "Build the core features",
+        "Write the README"
+      ]
+    },
+    {
+      "id": "a5",
+      "title": "Capstone pre-approval form",
+      "course": "Advising",
+      "due": "Oct 20",
+      "status": "To do",
+      "score": "—",
+      "weight": "Required",
+      "type": "Form",
+      "desc": "Your advisor must sign this form before you can register for the capstone in Spring 2027.",
+      "steps": [
+        "Pick two or three capstone ideas",
+        "Discuss them at the Oct 8 meeting",
+        "Fill in and send the form"
+      ]
+    },
+    {
+      "id": "a6",
+      "title": "Lab 4: Exploratory analysis",
+      "course": "CS 675",
+      "due": "Sep 30",
+      "status": "Submitted",
+      "score": "—",
+      "weight": "5%",
+      "type": "Individual",
+      "desc": "Submitted. Waiting for a grade.",
+      "steps": [
+        "Submitted Sep 30"
+      ]
+    },
+    {
+      "id": "a7",
+      "title": "Dynamic programming set",
+      "course": "CS 608",
+      "due": "Sep 28",
+      "status": "Graded",
+      "score": "84%",
+      "weight": "7%",
+      "type": "Individual",
+      "desc": "Graded. Feedback is available on the course site.",
+      "steps": [
+        "Read the grader’s feedback",
+        "Fix mistakes before the midterm"
+      ]
+    },
+    {
+      "id": "a8",
+      "title": "Week 5 tutorial",
+      "course": "CS 661",
+      "due": "Sep 28",
+      "status": "Graded",
+      "score": "98%",
+      "weight": "4%",
+      "type": "Individual",
+      "desc": "Graded. Full marks on every exercise but one.",
+      "steps": [
+        "Review the one missed exercise"
+      ]
+    }
+  ],
+  "sel": {
+    "id": "a1",
+    "title": "Project topic proposal",
+    "course": "CS 675",
+    "due": "Oct 3",
+    "status": "In progress",
+    "score": "—",
+    "weight": "5%",
+    "type": "Team",
+    "desc": "One-page team proposal: problem statement, chosen dataset, planned methods in R and Python, and each member’s role.",
+    "steps": [
+      {
+        "text": "Agree on the topic with the team",
+        "id": "step-a1-0"
+      },
+      {
+        "text": "Write the problem statement and dataset section",
+        "id": "step-a1-1"
+      },
+      {
+        "text": "Outline supervised and unsupervised models",
+        "id": "step-a1-2"
+      },
+      {
+        "text": "Proofread and submit",
+        "id": "step-a1-3"
+      }
+    ]
+  },
+  "empty": false
+}

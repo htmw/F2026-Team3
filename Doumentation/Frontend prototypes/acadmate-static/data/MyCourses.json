@@ -1,0 +1,346 @@
+{
+  "tabs": [
+    {
+      "label": "Current",
+      "count": "3"
+    },
+    {
+      "label": "Completed",
+      "count": "7"
+    },
+    {
+      "label": "Planned",
+      "count": "2"
+    }
+  ],
+  "current": [
+    {
+      "code": "CS 675",
+      "name": "Data Science",
+      "prof": "Prof. [Name]",
+      "when": "Thu 10:00–12:45",
+      "room": "Room 1201",
+      "credits": "3 credits",
+      "pctN": 45,
+      "grade": "A-",
+      "next": "Topic proposal · Oct 3",
+      "office": "Wed 2–3 pm",
+      "chipC": [
+        "#CCFBF1",
+        "#115E59"
+      ],
+      "insight": "Your team proposal is due in 2 days and no draft has been uploaded yet. Acadmate can help your team compare topic options.",
+      "parts": [
+        {
+          "label": "Team project",
+          "weight": "40%",
+          "score": "In progress"
+        },
+        {
+          "label": "Labs",
+          "weight": "25%",
+          "score": "92%"
+        },
+        {
+          "label": "Midterm",
+          "weight": "20%",
+          "score": "Oct 22"
+        },
+        {
+          "label": "Participation",
+          "weight": "15%",
+          "score": "95%"
+        }
+      ],
+      "upcoming": [
+        {
+          "mon": "Oct",
+          "day": "3",
+          "title": "Project topic proposal",
+          "meta": "Team submission · Course site"
+        },
+        {
+          "mon": "Oct",
+          "day": "22",
+          "title": "Midterm exam",
+          "meta": "In class · Room 1201"
+        }
+      ],
+      "pct": "45%"
+    },
+    {
+      "code": "CS 661",
+      "name": "Python Programming",
+      "prof": "Prof. [Name]",
+      "when": "Thu 18:10–20:55",
+      "room": "Room 318",
+      "credits": "3 credits",
+      "pctN": 50,
+      "grade": "A",
+      "next": "Week 6 tutorial · Oct 5",
+      "office": "Thu 5–6 pm",
+      "chipC": [
+        "#E0E7FF",
+        "#3730A3"
+      ],
+      "insight": "You are ahead of pace on tutorials. Starting Project 2 this week would leave room before midterms in your other courses.",
+      "parts": [
+        {
+          "label": "Weekly tutorials",
+          "weight": "40%",
+          "score": "96%"
+        },
+        {
+          "label": "Projects",
+          "weight": "30%",
+          "score": "94%"
+        },
+        {
+          "label": "Final exam",
+          "weight": "20%",
+          "score": "Dec 10"
+        },
+        {
+          "label": "Participation",
+          "weight": "10%",
+          "score": "100%"
+        }
+      ],
+      "upcoming": [
+        {
+          "mon": "Oct",
+          "day": "5",
+          "title": "Week 6 tutorial",
+          "meta": "Individual · Course site"
+        },
+        {
+          "mon": "Oct",
+          "day": "16",
+          "title": "Project 2 checkpoint",
+          "meta": "Individual · Course site"
+        }
+      ],
+      "pct": "50%"
+    },
+    {
+      "code": "CS 608",
+      "name": "Algorithms & Computing Theory",
+      "prof": "Prof. [Name]",
+      "when": "Mon 18:10–20:55",
+      "room": "Room [Room]",
+      "credits": "3 credits",
+      "pctN": 40,
+      "grade": "B+",
+      "next": "Problem set 4 · Oct 9",
+      "office": "Mon 4–5 pm",
+      "chipC": [
+        "#FEF3C7",
+        "#92400E"
+      ],
+      "insight": "Problem sets are your lowest component this term. Two office-hour visits before the Oct 19 midterm could lift this toward an A-.",
+      "parts": [
+        {
+          "label": "Problem sets",
+          "weight": "35%",
+          "score": "86%"
+        },
+        {
+          "label": "Midterm",
+          "weight": "30%",
+          "score": "Oct 19"
+        },
+        {
+          "label": "Final exam",
+          "weight": "30%",
+          "score": "Dec 14"
+        },
+        {
+          "label": "Participation",
+          "weight": "5%",
+          "score": "100%"
+        }
+      ],
+      "upcoming": [
+        {
+          "mon": "Oct",
+          "day": "9",
+          "title": "Problem set 4",
+          "meta": "Dynamic programming · Course site"
+        },
+        {
+          "mon": "Oct",
+          "day": "19",
+          "title": "Midterm exam",
+          "meta": "In class · Room [Room]"
+        }
+      ],
+      "pct": "40%"
+    }
+  ],
+  "sel": {
+    "code": "CS 608",
+    "name": "Algorithms & Computing Theory",
+    "prof": "Prof. [Name]",
+    "when": "Mon 18:10–20:55",
+    "room": "Room [Room]",
+    "credits": "3 credits",
+    "pctN": 40,
+    "grade": "B+",
+    "next": "Problem set 4 · Oct 9",
+    "office": "Mon 4–5 pm",
+    "chipC": [
+      "#FEF3C7",
+      "#92400E"
+    ],
+    "insight": "Problem sets are your lowest component this term. Two office-hour visits before the Oct 19 midterm could lift this toward an A-.",
+    "parts": [
+      {
+        "label": "Problem sets",
+        "weight": "35%",
+        "score": "86%"
+      },
+      {
+        "label": "Midterm",
+        "weight": "30%",
+        "score": "Oct 19"
+      },
+      {
+        "label": "Final exam",
+        "weight": "30%",
+        "score": "Dec 14"
+      },
+      {
+        "label": "Participation",
+        "weight": "5%",
+        "score": "100%"
+      }
+    ],
+    "upcoming": [
+      {
+        "mon": "Oct",
+        "day": "9",
+        "title": "Problem set 4",
+        "meta": "Dynamic programming · Course site"
+      },
+      {
+        "mon": "Oct",
+        "day": "19",
+        "title": "Midterm exam",
+        "meta": "In class · Room [Room]"
+      }
+    ]
+  },
+  "week": [
+    {
+      "day": "Mon",
+      "items": [
+        {
+          "time": "18:10",
+          "code": "CS 608",
+          "room": "Room [Room]"
+        }
+      ],
+      "empty": false
+    },
+    {
+      "day": "Tue",
+      "items": [],
+      "empty": true
+    },
+    {
+      "day": "Wed",
+      "items": [
+        {
+          "time": "14:00",
+          "code": "Office hrs · CS 675",
+          "room": "Optional"
+        }
+      ],
+      "empty": false
+    },
+    {
+      "day": "Thu",
+      "items": [
+        {
+          "time": "10:00",
+          "code": "CS 675",
+          "room": "Room 1201"
+        },
+        {
+          "time": "18:10",
+          "code": "CS 661",
+          "room": "Room 318"
+        }
+      ],
+      "empty": false
+    },
+    {
+      "day": "Fri",
+      "items": [],
+      "empty": true
+    }
+  ],
+  "completed": [
+    {
+      "code": "CS 501",
+      "name": "[Foundation course]",
+      "term": "Fall 2025",
+      "grade": "A"
+    },
+    {
+      "code": "CS 502",
+      "name": "[Foundation course]",
+      "term": "Fall 2025",
+      "grade": "A-"
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[Core course]",
+      "term": "Fall 2025",
+      "grade": "A"
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[Core course]",
+      "term": "Spring 2026",
+      "grade": "B+"
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[Core course]",
+      "term": "Spring 2026",
+      "grade": "A"
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[Core course]",
+      "term": "Summer 2026",
+      "grade": "A"
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[Elective]",
+      "term": "Summer 2026",
+      "grade": "A-"
+    }
+  ],
+  "planned": [
+    {
+      "code": "CS 691",
+      "name": "Capstone Project",
+      "status": "Needs approval",
+      "fulfills": "Capstone",
+      "why": "Required to graduate. Your pre-approval form is not submitted yet."
+    },
+    {
+      "code": "CS 6xx",
+      "name": "[AI elective]",
+      "status": "Recommended",
+      "fulfills": "Elective 4 of 5",
+      "why": "Builds on Data Science and Python. Fits an open evening slot in your Spring schedule."
+    }
+  ],
+  "showCurrent": true,
+  "showCompleted": false,
+  "showPlanned": false
+}

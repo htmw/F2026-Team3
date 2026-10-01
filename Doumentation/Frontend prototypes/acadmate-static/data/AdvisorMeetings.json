@@ -1,0 +1,124 @@
+{
+  "ranges": [
+    {
+      "label": "Today"
+    },
+    {
+      "label": "Next 7 days"
+    }
+  ],
+  "meetings": [
+    {
+      "id": "m1",
+      "range": "Today",
+      "day": "Today",
+      "time": "10:00",
+      "who": "Jonah P.",
+      "topic": "Course change: swap one elective",
+      "format": "In person",
+      "record": "AdvisorAdvisees.html"
+    },
+    {
+      "id": "m2",
+      "range": "Today",
+      "day": "Today",
+      "time": "13:00",
+      "who": "Priya S.",
+      "topic": "Review Spring 2027 plan",
+      "format": "Online",
+      "record": "AdvisorAdvisees.html"
+    },
+    {
+      "id": "m3",
+      "range": "Today",
+      "day": "Today",
+      "time": "15:00",
+      "who": "Amara O.",
+      "topic": "Advising check-in: Spring plan from Acadmate",
+      "format": "Online",
+      "record": "AdvisorStudent.html"
+    },
+    {
+      "id": "m4",
+      "range": "Today",
+      "day": "Today",
+      "time": "16:30",
+      "who": "Drop-in office hours",
+      "topic": "Open to all advisees",
+      "format": "In person",
+      "record": "AdvisorAdvisees.html"
+    }
+  ],
+  "requests": [
+    {
+      "id": "q1",
+      "who": "Lina H.",
+      "when": "Tue, Oct 6 · 14:00",
+      "topic": "Capstone prerequisite question · Online",
+      "format": "Online",
+      "day": "Tue, Oct 6",
+      "time": "14:00",
+      "open": true,
+      "closed": false,
+      "result": "New time suggested"
+    },
+    {
+      "id": "q2",
+      "who": "Sofia R.",
+      "when": "Fri, Oct 9 · 10:00",
+      "topic": "Final graduation audit · In person",
+      "format": "In person",
+      "day": "Fri, Oct 9",
+      "time": "10:00",
+      "open": true,
+      "closed": false,
+      "result": "New time suggested"
+    }
+  ],
+  "ohDays": [
+    {
+      "label": "Mon"
+    },
+    {
+      "label": "Tue"
+    },
+    {
+      "label": "Wed"
+    },
+    {
+      "label": "Thu"
+    },
+    {
+      "label": "Fri"
+    }
+  ],
+  "ohTimes": [
+    {
+      "label": "12:00–13:00"
+    },
+    {
+      "label": "14:00–15:00"
+    },
+    {
+      "label": "16:30–17:30"
+    },
+    {
+      "label": "18:00–19:00"
+    }
+  ],
+  "ohSummary": "Wed · 16:30–17:30",
+  "ohSaved": "",
+  "sel": {
+    "id": "m3",
+    "range": "Today",
+    "day": "Today",
+    "time": "15:00",
+    "who": "Amara O.",
+    "topic": "Advising check-in: Spring plan from Acadmate",
+    "format": "Online",
+    "record": "AdvisorStudent.html"
+  },
+  "notes": "",
+  "joinLabel": "Copy video link",
+  "selStatus": ""
+}

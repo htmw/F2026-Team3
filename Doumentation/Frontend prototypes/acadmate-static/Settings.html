@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acadmate settings</title>
+<link rel="stylesheet" href="css/acadmate.css">
+</head>
+<body>
+<div class="app">
+<div class="app-frame">
+<nav class="sidebar" aria-label="Main">
+<div class="row-5">
+<div class="row-6">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"></path><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path></svg>
+</div>
+<span class="el-3">Acadmate</span>
+</div>
+<div class="stack-1">
+
+<a href="Main.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Dashboard</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="MyCourses.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">My courses</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="DegreePlan.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Degree plan</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="AIAdvisor.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">AI advisor</span>
+<span class="el-1" data-bind="nav[].badge">New</span>
+</a>
+
+<a href="Schedule.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Schedule</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+<a href="Assignments.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Assignments</span>
+<span class="el-1" data-bind="nav[].badge">3</span>
+</a>
+
+<a href="Messages.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink-muted); background: transparent">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--ink-line)"></span>
+<span data-bind="nav[].label">Messages</span>
+<span class="el-1" data-bind="nav[].badge">2</span>
+</a>
+
+<a href="Settings.html" data-repeat="nav" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--surface); background: var(--ink-2)">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: var(--accent-bright)"></span>
+<span data-bind="nav[].label">Settings</span>
+<span class="el-1" data-bind="nav[].badge"></span>
+</a>
+
+</div>
+<div class="stack-4">
+<span class="el-19">Need a human advisor?</span>
+<span class="text-18">Hand off your AI plan to your faculty advisor for sign-off.</span>
+<a class="el-17" href="BookMeeting.html">Book a meeting</a>
+</div>
+</nav>
+<main class="main">
+<header class="row-7">
+<div class="stack-1">
+<h1 class="page-title">Settings</h1>
+<span class="text-4">Your profile, notifications and how Acadmate uses your data</span>
+</div>
+<div class="row-4">
+<button data-bind="saveLabel" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 12px; border: 0; background: var(--accent); color: var(--surface); font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer">Save changes</button>
+<div class="row-15">AO</div>
+</div>
+</header>
+
+<div class="row-8">
+<nav class="stack-84" aria-label="Settings sections">
+
+<a href="#set-profile" data-repeat="sections" data-bind="sections[].label" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; color: var(--ink); background: var(--accent-wash)">Profile</a>
+
+<a href="#set-notify" data-repeat="sections" data-bind="sections[].label" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink); background: transparent">Notifications</a>
+
+<a href="#set-ai" data-repeat="sections" data-bind="sections[].label" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink); background: transparent">AI advisor</a>
+
+<a href="#set-signin" data-repeat="sections" data-bind="sections[].label" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink); background: transparent">Sign-in</a>
+
+<a href="#set-privacy" data-repeat="sections" data-bind="sections[].label" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--ink); background: transparent">Privacy and account</a>
+
+</nav>
+<div class="stack-85">
+
+<section class="card" id="set-profile">
+<h2 class="el-2">Profile</h2>
+<div class="row-109">
+<div class="row-110">AO</div>
+<button class="btn-secondary" data-bind="photoMsg">Change photo</button>
+</div>
+<div class="grid-4">
+
+<div class="stack-2" data-repeat="fields">
+<label class="text-7" for="set-fullName" data-bind="fields[].label">Full name</label>
+<input id="set-fullName" type="text" value="[Full name]" style="height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid var(--line); padding: 0 14px; font-size: 14px; color: var(--ink); background: var(--surface)">
+<span class="text-1" data-bind="fields[].hint"></span>
+</div>
+
+<div class="stack-2" data-repeat="fields">
+<label class="text-7" for="set-preferred" data-bind="fields[].label">Preferred name</label>
+<input id="set-preferred" type="text" value="Amara" style="height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid var(--line); padding: 0 14px; font-size: 14px; color: var(--ink); background: var(--surface)">
+<span class="text-1" data-bind="fields[].hint">Used in greetings.</span>
+</div>
+
+<div class="stack-2" data-repeat="fields">
+<label class="text-7" for="set-email" data-bind="fields[].label">School email</label>
+<input id="set-email" type="text" value="[name]@[school].edu" style="height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid var(--line); padding: 0 14px; font-size: 14px; color: var(--ink); background: var(--surface)">
+<span class="text-1" data-bind="fields[].hint"></span>
+</div>
+
+<div class="stack-2" data-repeat="fields">
+<label class="text-7" for="set-sid" data-bind="fields[].label">Student ID</label>
+<input id="set-sid" type="text" value="[Student ID]" disabled style="height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid var(--line); padding: 0 14px; font-size: 14px; color: var(--muted); background: var(--subtle)">
+<span class="text-1" data-bind="fields[].hint">Managed by your school.</span>
+</div>
+
+<div class="stack-2" data-repeat="fields">
+<label class="text-7" for="set-program" data-bind="fields[].label">Program</label>
+<input id="set-program" type="text" value="M.S. Computer Science" disabled style="height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid var(--line); padding: 0 14px; font-size: 14px; color: var(--muted); background: var(--subtle)">
+<span class="text-1" data-bind="fields[].hint">Managed by your school.</span>
+</div>
+
+<div class="stack-2">
+<label class="text-7" for="set-grad">Target graduation</label>
+<select class="el-56" id="set-grad" value="May 2027">
+<option value="Dec 2026">December 2026</option>
+<option value="May 2027">May 2027</option>
+<option value="Aug 2027">August 2027</option>
+</select>
+<span class="text-1">Acadmate plans your courses around this date.</span>
+</div>
+</div>
+</section>
+
+<section class="card-2" id="set-notify">
+<h2 class="el-20">Notifications</h2>
+
+<div class="row-3" data-repeat="notify">
+<div class="stack-3">
+<span class="text-2" data-bind="notify[].label">Deadline reminders</span>
+<span class="text-muted-2" data-bind="notify[].desc">Assignments, forms and registration dates.</span>
+</div>
+<button role="switch" aria-checked="true" aria-label="Deadline reminders" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: var(--accent)"><span style="position: absolute; top: 4px; left: 24px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="row-3" data-repeat="notify">
+<div class="stack-3">
+<span class="text-2" data-bind="notify[].label">Advisor and faculty messages</span>
+<span class="text-muted-2" data-bind="notify[].desc">Alert me when my advisor or a professor writes.</span>
+</div>
+<button role="switch" aria-checked="true" aria-label="Advisor and faculty messages" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: var(--accent)"><span style="position: absolute; top: 4px; left: 24px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="row-3" data-repeat="notify">
+<div class="stack-3">
+<span class="text-2" data-bind="notify[].label">Acadmate suggestions</span>
+<span class="text-muted-2" data-bind="notify[].desc">Study blocks, course ideas and plan changes.</span>
+</div>
+<button role="switch" aria-checked="true" aria-label="Acadmate suggestions" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: var(--accent)"><span style="position: absolute; top: 4px; left: 24px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="row-3" data-repeat="notify">
+<div class="stack-3">
+<span class="text-2" data-bind="notify[].label">Weekly summary email</span>
+<span class="text-muted-2" data-bind="notify[].desc">Every Sunday evening: the week ahead.</span>
+</div>
+<button role="switch" aria-checked="false" aria-label="Weekly summary email" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: #9AA8B5"><span style="position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="row-3" data-repeat="notify">
+<div class="stack-3">
+<span class="text-2" data-bind="notify[].label">Text message alerts</span>
+<span class="text-muted-2" data-bind="notify[].desc">Only for deadlines due within 24 hours.</span>
+</div>
+<button role="switch" aria-checked="false" aria-label="Text message alerts" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: #9AA8B5"><span style="position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="stack-86">
+<span class="text-2">Remind me about deadlines</span>
+<div class="row-2" role="group" aria-label="Reminder timing">
+
+<button aria-pressed="false" data-repeat="timing" data-bind="timing[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">1 day before</button>
+
+<button aria-pressed="true" data-repeat="timing" data-bind="timing[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--accent); background: var(--accent-wash); color: var(--ink)">2 days before</button>
+
+<button aria-pressed="false" data-repeat="timing" data-bind="timing[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">1 week before</button>
+
+</div>
+</div>
+</section>
+
+<section class="card-2" id="set-ai">
+<h2 class="el-20">AI advisor</h2>
+
+<div class="row-3" data-repeat="ai">
+<div class="stack-3">
+<span class="text-2" data-bind="ai[].label">Use my grades</span>
+<span class="text-muted-2" data-bind="ai[].desc">Lets Acadmate spot weak areas and suggest support.</span>
+</div>
+<button role="switch" aria-checked="true" aria-label="Use my grades" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: var(--accent)"><span style="position: absolute; top: 4px; left: 24px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="row-3" data-repeat="ai">
+<div class="stack-3">
+<span class="text-2" data-bind="ai[].label">Use my schedule</span>
+<span class="text-muted-2" data-bind="ai[].desc">Lets Acadmate find free time and avoid class clashes.</span>
+</div>
+<button role="switch" aria-checked="true" aria-label="Use my schedule" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: var(--accent)"><span style="position: absolute; top: 4px; left: 24px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="row-3" data-repeat="ai">
+<div class="stack-3">
+<span class="text-2" data-bind="ai[].label">Suggest things on my dashboard</span>
+<span class="text-muted-2" data-bind="ai[].desc">Show recommendations without me asking.</span>
+</div>
+<button role="switch" aria-checked="true" aria-label="Suggest things on my dashboard" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: var(--accent)"><span style="position: absolute; top: 4px; left: 24px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="row-3" data-repeat="ai">
+<div class="stack-3">
+<span class="text-2" data-bind="ai[].label">Share AI plans with my advisor automatically</span>
+<span class="text-muted-2" data-bind="ai[].desc">Otherwise you choose what to send.</span>
+</div>
+<button role="switch" aria-checked="false" aria-label="Share AI plans with my advisor automatically" style="flex-shrink: 0; position: relative; width: 52px; height: 32px; border-radius: 16px; border: 0; padding: 0; cursor: pointer; background: #9AA8B5"><span style="position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+</div>
+
+<div class="stack-87">
+<span class="text-2">Answer style</span>
+<div class="row-2" role="group" aria-label="Answer style">
+
+<button aria-pressed="true" data-repeat="styles" data-bind="styles[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--accent); background: var(--accent-wash); color: var(--ink)">Concise</button>
+
+<button aria-pressed="false" data-repeat="styles" data-bind="styles[].label" style="min-height: 44px; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">Detailed</button>
+
+</div>
+</div>
+<div class="row-111">
+<div class="row-16"><svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#13212E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg></div>
+<span class="text-52">Acadmate never registers you for or drops you from a course. It suggests plans; you and your advisor decide.</span>
+</div>
+</section>
+
+
+<section class="card-2" id="set-signin">
+<h2 class="el-20">Sign-in</h2>
+<div class="row-33">
+<div class="stack-9">
+<span class="text-2">Sign in with Google</span>
+<span class="text-muted-1" data-bind="googleDesc">Signed in as [name]@gmail.com</span>
+</div>
+<div class="row-20">
+<span data-bind="googleStatus" style="flex-shrink: 0; white-space: nowrap; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-dark)">Connected</span>
+<button data-bind="googleBtn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink)">Disconnect</button>
+</div>
+</div>
+<div class="row-33">
+<div class="stack-9">
+<span class="text-2">Password</span>
+<span class="text-muted-1" data-bind="pwDesc">Used when you sign in with email.</span>
+</div>
+<button class="btn-secondary" data-bind="pwBtn">Change password</button>
+</div>
+<span class="text-64" role="status" data-bind="signinMsg"></span>
+</section>
+
+<section class="card-2" id="set-privacy">
+<h2 class="el-20">Privacy and account</h2>
+<div class="row-33">
+<div class="stack-9"><span class="text-2">Download my data</span><span class="text-muted-1">Your profile, plans and AI conversations as one file.</span></div>
+<button class="btn-secondary" data-bind="dlLabel">Request download</button>
+</div>
+<div class="row-33">
+<div class="stack-9"><span class="text-2">Clear AI conversation history</span><span class="text-muted-1">Removes past chats. Saved degree plans stay.</span></div>
+<button class="btn-secondary" data-bind="clearLabel">Clear history</button>
+</div>
+<div class="row-33">
+<div class="stack-9"><span class="text-65">Delete account</span><span class="text-muted-1">Permanently deletes your Acadmate account. Your school records are not affected.</span></div>
+<button class="btn-secondary-2" data-bind="delLabel">Delete account</button>
+</div>
+</section>
+</div>
+</div>
+
+</main>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "saveLabel": "Save changes",
+  "colors": [
+    {
+      "label": "Teal (selected)"
+    },
+    {
+      "label": "Blue"
+    },
+    {
+      "label": "Purple"
+    },
+    {
+      "label": "Amber"
+    }
+  ],
+  "fields": [
+    {
+      "id": "fld-inst",
+      "label": "Institution name",
+      "value": "[University name]"
+    },
+    {
+      "id": "fld-domain",
+      "label": "Email domain",
+      "value": "[school].edu"
+    },
+    {
+      "id": "fld-support",
+      "label": "Support email",
+      "value": "acadmate-help@[school].edu"
+    }
+  ],
+  "termOpts": [
+    {
+      "label": "Summer 2026"
+    },
+    {
+      "label": "Fall 2026"
+    },
+    {
+      "label": "Spring 2027"
+    }
+  ],
+  "zones": [
+    {
+      "label": "Eastern"
+    },
+    {
+      "label": "Central"
+    },
+    {
+      "label": "Pacific"
+    }
+  ],
+  "security": [
+    {
+      "label": "Allow Sign in with Google",
+      "desc": "Students and staff can sign in with a Google account instead of a password."
+    },
+    {
+      "label": "Two-step sign-in for staff",
+      "desc": "Advisors and admins confirm sign-in on their phone."
+    },
+    {
+      "label": "Log IP addresses",
+      "desc": "Shown in the audit log."
+    }
+  ],
+  "timeouts": [
+    {
+      "label": "30 min"
+    },
+    {
+      "label": "2 hours"
+    },
+    {
+      "label": "8 hours"
+    }
+  ],
+  "retention": [
+    {
+      "label": "30 days"
+    },
+    {
+      "label": "1 year"
+    },
+    {
+      "label": "Until graduation"
+    }
+  ],
+  "msg": "",
+  "confirming": false,
+  "notConfirming": true
+}

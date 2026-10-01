@@ -1,0 +1,200 @@
+{
+  "stats": [
+    {
+      "label": "Credits earned",
+      "value": "21 / 36",
+      "note": "7 of 12 courses complete"
+    },
+    {
+      "label": "In progress",
+      "value": "9",
+      "note": "3 courses this Fall"
+    },
+    {
+      "label": "Left after this term",
+      "value": "6",
+      "note": "Capstone and 1 elective"
+    },
+    {
+      "label": "Expected graduation",
+      "value": "May 2027",
+      "note": "Pending capstone approval"
+    }
+  ],
+  "groups": [
+    {
+      "title": "Foundation",
+      "count": "2 of 2 done",
+      "items": [
+        {
+          "code": "CS 501",
+          "name": "[Foundation course]",
+          "status": "Completed"
+        },
+        {
+          "code": "CS 502",
+          "name": "[Foundation course]",
+          "status": "Completed"
+        }
+      ],
+      "allDone": false
+    },
+    {
+      "title": "Core",
+      "count": "4 of 4 done",
+      "items": [
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]",
+          "status": "Completed"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]",
+          "status": "Completed"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]",
+          "status": "Completed"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]",
+          "status": "Completed"
+        }
+      ],
+      "allDone": false
+    },
+    {
+      "title": "Electives",
+      "count": "1 of 5 done · 3 in progress",
+      "items": [
+        {
+          "code": "CS 6xx",
+          "name": "[Elective]",
+          "status": "Completed"
+        },
+        {
+          "code": "CS 608",
+          "name": "Algorithms & Computing Theory",
+          "status": "In progress"
+        },
+        {
+          "code": "CS 661",
+          "name": "Python Programming",
+          "status": "In progress"
+        },
+        {
+          "code": "CS 675",
+          "name": "Data Science",
+          "status": "In progress"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[AI elective]",
+          "status": "Planned"
+        }
+      ],
+      "allDone": false
+    },
+    {
+      "title": "Capstone",
+      "count": "0 of 1 done",
+      "items": [
+        {
+          "code": "CS 691",
+          "name": "Capstone Project",
+          "status": "Needs approval"
+        }
+      ],
+      "allDone": false
+    }
+  ],
+  "terms": [
+    {
+      "name": "Fall 2025",
+      "tag": "Done",
+      "credits": "9 credits",
+      "courses": [
+        {
+          "code": "CS 501",
+          "name": "[Foundation course]"
+        },
+        {
+          "code": "CS 502",
+          "name": "[Foundation course]"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]"
+        }
+      ]
+    },
+    {
+      "name": "Spring 2026",
+      "tag": "Done",
+      "credits": "6 credits",
+      "courses": [
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]"
+        }
+      ]
+    },
+    {
+      "name": "Summer 2026",
+      "tag": "Done",
+      "credits": "6 credits",
+      "courses": [
+        {
+          "code": "CS 6xx",
+          "name": "[Core course]"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[Elective]"
+        }
+      ]
+    },
+    {
+      "name": "Fall 2026",
+      "tag": "Current",
+      "credits": "9 credits",
+      "courses": [
+        {
+          "code": "CS 608",
+          "name": "Algorithms & Computing Theory"
+        },
+        {
+          "code": "CS 661",
+          "name": "Python Programming"
+        },
+        {
+          "code": "CS 675",
+          "name": "Data Science"
+        }
+      ]
+    },
+    {
+      "name": "Spring 2027",
+      "tag": "Planned",
+      "credits": "6 credits",
+      "courses": [
+        {
+          "code": "CS 691",
+          "name": "Capstone Project"
+        },
+        {
+          "code": "CS 6xx",
+          "name": "[AI elective]"
+        }
+      ]
+    }
+  ],
+  "remainingOn": "false"
+}
