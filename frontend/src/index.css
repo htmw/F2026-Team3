@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+
+  --color-navy: #13212E;
+  --color-navy-raised: #1E3344;
+  --color-navy-line: #3B556A;
+  --color-ink: #0E1A24;
+  --color-frost: #E6EDF2;
+  --color-fog: #CFDBE4;
+  --color-mist: #B8C6D1;
+  --color-haze: #9FB3C2;
+
+  --color-canvas: #EEF1F4;
+  --color-surface: #FFFFFF;
+  --color-surface-sunk: #F5F7F9;
+  --color-line: #D3DAE1;
+  --color-line-soft: #E6EBEF;
+  --color-line-strong: #C4CDD5;
+  --color-muted: #52606D;
+  --color-slate: #374151;
+
+  --color-accent: var(--accent, #0F766E);
+  --color-teal: #14B8A6;
+  --color-teal-bright: #5EEAD4;
+  --color-teal-soft: #CCFBF1;
+  --color-teal-ink: #115E59;
+
+  --color-sun: #FBBF24;
+  --color-amber: #D97706;
+  --color-amber-soft: #FEF3C7;
+  --color-amber-ink: #92400E;
+  --color-amber-deep: #78350F;
+  --color-warn: #B45309;
+
+  --color-indigo-soft: #E0E7FF;
+  --color-indigo-ink: #3730A3;
+  --color-violet: #6366F1;
+  --color-pink-soft: #FCE7F3;
+  --color-pink-ink: #9D174D;
+
+  --radius-card: 20px;
+  --radius-tile: 18px;
+}
+
+@layer base {
+  :root { --accent: #0F766E; }
+  html { background: var(--color-canvas); color: var(--color-navy); }
+  body { margin: 0; font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  a { color: var(--color-accent); }
+  a:hover { color: var(--color-teal-ink); }
+  button, input, select, textarea { font-family: inherit; }
+  :focus-visible { outline: 3px solid var(--color-teal); outline-offset: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
