@@ -3,3 +3,4 @@ Doumentation/Sprint Planning/AI_Academic_Advisement_Sprint0.mp4
 backend/venv/
 __pycache__/
 *.pyc
+backend/.env
