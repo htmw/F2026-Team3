@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends 
 from fastapi.responses import JSONResponse
+from sqlalchemy.orm import Session
 
+from database import get_db
 from schemas.students import AcademicProfileResponse
 from services.students import get_student_profile
 
@@ -15,8 +17,8 @@ router = APIRouter(
     "/{student_id}/academic-profile",
     response_model=AcademicProfileResponse
 )
-def get_academic_profile(student_id: int):
-    profile = get_student_profile(student_id)
+def get_academic_profile(student_id: int, db: Session = Depends(get_db)):
+    profile = get_student_profile(student_id, db)
 
     if profile is None:
         return JSONResponse(
