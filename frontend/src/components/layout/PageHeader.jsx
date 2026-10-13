@@ -1,6 +1,14 @@
+import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon.jsx'
+import Avatar from '../ui/Avatar.jsx'
+import SearchInput from '../ui/SearchInput.jsx'
+import { useAuth } from '../../auth/AuthContext.jsx'
+import { HOME } from '../../config/nav.js'
 
+// `search` is { label, placeholder, value?, onChange? }; it's controlled when `value` is passed.
 export default function PageHeader({ title, subtitle, initials, search, actions }) {
+  const { user, badges } = useAuth()
+  const unread = badges.messages ?? 0
   return (
     <header className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-col gap-1">
@@ -9,23 +17,15 @@ export default function PageHeader({ title, subtitle, initials, search, actions 
       </div>
       <div className="flex flex-wrap items-center gap-3">
         {actions}
-        {search && (
-          <>
-            <label htmlFor="page-search" className="sr-only">{search.label}</label>
-            <input id="page-search" type="search" placeholder={search.placeholder}
-              className="box-border h-11 w-[280px] max-w-full rounded-xl border border-line bg-surface px-4 text-sm text-navy" />
-          </>
-        )}
+        {search && <SearchInput {...search} />}
         {initials && (
           <>
-            <button type="button" aria-label="Notifications, 3 new"
+            <Link to={`${HOME[user?.role] ?? ''}/messages`} aria-label={`Messages, ${unread} unread`}
               className="relative flex size-11 cursor-pointer items-center justify-center rounded-xl border border-line bg-surface">
-              <Icon name="bell" color="#13212E" />
-              <span className="absolute right-2.5 top-[9px] size-2 rounded-full bg-amber" />
-            </button>
-            <div className="flex size-11 items-center justify-center rounded-full bg-teal-soft text-[15px] font-extrabold text-teal-ink">
-              {initials}
-            </div>
+              <Icon name="bell" color="var(--color-navy)" />
+              {unread > 0 && <span className="absolute right-2.5 top-[9px] size-2 rounded-full bg-amber" />}
+            </Link>
+            <Avatar initials={initials} tone="teal" />
           </>
         )}
       </div>
