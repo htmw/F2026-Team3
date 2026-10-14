@@ -45,7 +45,7 @@ class Enrollment(Base):
     student_id = Column(Integer, ForeignKey("students.student_id"), nullable=False)  # Foreign key to Student
     course_id = Column(Integer, ForeignKey("courses.course_id"), nullable=False)  # Foreign key to Course
     term = Column(String(50), nullable=False)  # e.g., 'Fall 2026', 'Spring 2026'
-    status = Column(Enum("in_progress", "completed", "failed","withdrawn", name="enrollment_status"), nullable=False)  # e.g., 'inprogress', 'completed', 'failed', 'withdrawn'
+    status = Column(Enum("in_progress", "completed", "failed","withdrawn", name="enrollment_status"), nullable=False)  # e.g., 'in_progress', 'completed', 'failed', 'withdrawn'
     grade = Column(String(5), nullable=True)  # e.g., 'A', 'B+', 'C-', etc. (nullable for in-progress courses)
     grade_points = Column(Numeric, nullable=True)  # e.g., 4.0, 3.5, etc. (nullable for in-progress courses)
 
@@ -69,6 +69,5 @@ class ProgramRequirement(Base):
     program_id = Column(Integer, ForeignKey("programs.program_id"), nullable=False)  # Foreign key to Program
     group_name = Column(String(100), nullable=False)  # Name of the requirement group (e.g., "Core Courses", "Electives")
     required_credits = Column(Numeric, nullable=False)  # Total credits required for this group
-    course_ids = Column(ARRAY(Integer), nullable=True)  # List of course IDs that satisfy this requirement
-    eligible_courses_ids = Column(ARRAY(Integer), nullable=False)  # List of eligible course IDs for this requirement
+    eligible_course_ids = Column(ARRAY(Integer), nullable=False)  # List of eligible course IDs for this requirement
 

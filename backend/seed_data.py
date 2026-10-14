@@ -149,7 +149,7 @@ try:
         program_id=1,
         group_name="Core",
         required_credits=9,
-        eligible_courses_ids=[11, 12, 13]
+        eligible_course_ids=[11, 12, 13]
     )
 
     db.add(requirement)
