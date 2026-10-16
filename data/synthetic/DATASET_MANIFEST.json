@@ -1,0 +1,347 @@
+{
+  "dataset": "AcadMate Sprint 1 fixed academic dataset",
+  "created_date": "2026-10-14",
+  "record_counts": {
+    "users": 105,
+    "programs": 1,
+    "students": 100,
+    "advisors": 4,
+    "advisor_student_assignments": 100,
+    "courses": 30,
+    "enrollments": 800,
+    "program_requirements": 3
+  },
+  "scenario_counts": {
+    "high_performing": 20,
+    "average_performing": 25,
+    "low_performing": 15,
+    "declining": 10,
+    "improving": 10,
+    "failed_and_repeated": 10,
+    "withdrawals": 5,
+    "new_without_completed": 5
+  },
+  "grade_scale": {
+    "A": "4.0",
+    "A-": "3.7",
+    "B+": "3.3",
+    "B": "3.0",
+    "B-": "2.7",
+    "C+": "2.3",
+    "C": "2.0",
+    "C-": "1.7",
+    "D": "1.0",
+    "F": "0.0"
+  },
+  "terms": [
+    "Fall 2025",
+    "Spring 2026",
+    "Summer 2026",
+    "Fall 2026",
+    "Spring 2027"
+  ],
+  "snapshot_term": "Spring 2027",
+  "provisional_only": true,
+  "preserved_seed_records": {
+    "users": [
+      {
+        "user_id": 1,
+        "name": "Santos Shel",
+        "email": "santos.shel@pac.edu",
+        "password_hash": "demo_hash_student",
+        "role": "student",
+        "is_active": true
+      },
+      {
+        "user_id": 2,
+        "name": "Dr. Sarah Smith",
+        "email": "sarah.smith@pac.edu",
+        "password_hash": "demo_hash_advisor",
+        "role": "advisor",
+        "is_active": true
+      }
+    ],
+    "programs": [
+      {
+        "program_id": 1,
+        "program_name": "MS Computer Science",
+        "total_required_credits": "30"
+      }
+    ],
+    "students": [
+      {
+        "student_id": 101,
+        "user_id": 1,
+        "name": "Santos Shel",
+        "email": "santos.shel@pac.edu",
+        "program_id": 1
+      }
+    ],
+    "advisors": [
+      {
+        "advisor_id": 201,
+        "user_id": 2
+      }
+    ],
+    "courses": [
+      {
+        "course_id": 11,
+        "course_code": "CS501",
+        "course_name": "Programming Foundations with Java",
+        "credits": "3"
+      },
+      {
+        "course_id": 12,
+        "course_code": "CS510",
+        "course_name": "Data Structures and Algorithms",
+        "credits": "3"
+      },
+      {
+        "course_id": 13,
+        "course_code": "CS620",
+        "course_name": "Database Management Systems",
+        "credits": "3"
+      }
+    ],
+    "enrollments": [
+      {
+        "enrollment_id": 301,
+        "student_id": 101,
+        "course_id": 11,
+        "term": "Fall 2026",
+        "status": "completed",
+        "grade": "A",
+        "grade_points": "4"
+      },
+      {
+        "enrollment_id": 302,
+        "student_id": 101,
+        "course_id": 12,
+        "term": "Fall 2026",
+        "status": "completed",
+        "grade": "B",
+        "grade_points": "3"
+      },
+      {
+        "enrollment_id": 303,
+        "student_id": 101,
+        "course_id": 13,
+        "term": "Spring 2027",
+        "status": "in_progress",
+        "grade": null,
+        "grade_points": null
+      }
+    ],
+    "advisor_student_assignments": [
+      {
+        "student_id": 101,
+        "advisor_id": 201,
+        "updated_at": "2026-10-13T17:46:30.595292-04:00"
+      }
+    ],
+    "program_requirements": [
+      {
+        "requirement_id": 401,
+        "program_id": 1,
+        "group_name": "Core",
+        "required_credits": "9",
+        "eligible_course_ids": [
+          11,
+          12,
+          13
+        ]
+      }
+    ]
+  },
+  "backend_sha256_at_creation": {
+    "models.py": "2203ededd38a0c55cc575c64c3f412a650cf66d15e0cef30494b7859d541a185",
+    "seed_data.py": "1c977ac93745ec6815c705e9cae90a60f5749a111a077b7a42d696cc8e153b35",
+    "main.py": "699f8a365651d6b8442ab23a6c1e3800d9d4bec1ff269e4aa9451214ee2e9d55",
+    "database.py": "879ae9fdc9f40ab0e2faca3ad64014ab459116e46fa901c73e8bebd24f705972"
+  },
+  "csv_sha256": {
+    "advisors.csv": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea",
+    "advisor_student_assignments.csv": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610",
+    "courses.csv": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb",
+    "enrollments.csv": "01e134162b39e52571b66c6a7421c8ad0ec53a5f2fe4915891659033cefdbed8",
+    "programs.csv": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150",
+    "program_requirements.csv": "84ed10877c421dbe5f8f5fe140168c1dd56dc99b9a5f8f462450ef73fba18d8c",
+    "students.csv": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7",
+    "student_scenarios.csv": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58",
+    "users.csv": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318"
+  },
+  "live_database_counts_before": {
+    "users": 2,
+    "programs": 1,
+    "students": 1,
+    "advisors": 1,
+    "courses": 3,
+    "enrollments": 3,
+    "advisor_student_assignments": 1,
+    "program_requirements": 1
+  },
+  "live_database_digests_before": {
+    "users": "edbd0a241556f7bc2acc6fb8bf361a18911affe7e16217b2eec4f652b986f0fd",
+    "programs": "0035a39e37a6883c100575c36fdc19e109377ee3e05f062834d08dd33133a56a",
+    "students": "5e41b9ae44c2719e0aa4e5b80704b8bcbf111a1943297e4c5466f519a2b16375",
+    "advisors": "b5471fb7a5df3c5c7b418672f6556bdb1f446eb01febb11e19a823a15cb1f5d2",
+    "courses": "034a8c1ce3dce3b46bcfbd545b17c46fe9a50f284e6845db43001a45297553c8",
+    "enrollments": "5b1efea3f2c413bf58f3d65f8b947ca422c5269e45f766306a55d06658ec2a46",
+    "advisor_student_assignments": "f8ddaae796f7e210780049efff5c222f47c0ee67e70eef3d4c51274f8e5b9ee9",
+    "program_requirements": "ff98b739327d34a1e0926c28a0d7fd352970d14d5dadedb0fab6382942e790c6"
+  },
+  "live_conflict_check": "READ ONLY: new primary and unique keys conflict-free at authoring; recheck at import",
+  "branch_status": "BLOCKED: ZIP checkout has no Git metadata; no repository initialized, committed or pushed",
+  "original_preserved_seed_records": {
+    "users": [
+      {
+        "user_id": 1,
+        "name": "Santos Shel",
+        "email": "santos.shel@pac.edu",
+        "password_hash": "demo_hash_student",
+        "role": "student",
+        "is_active": true
+      },
+      {
+        "user_id": 2,
+        "name": "Dr. Sarah Smith",
+        "email": "sarah.smith@pac.edu",
+        "password_hash": "demo_hash_advisor",
+        "role": "advisor",
+        "is_active": true
+      }
+    ],
+    "programs": [
+      {
+        "program_id": 1,
+        "program_name": "MS Computer Science",
+        "total_required_credits": "30"
+      }
+    ],
+    "students": [
+      {
+        "student_id": 101,
+        "user_id": 1,
+        "name": "Santos Shel",
+        "email": "santos.shel@pac.edu",
+        "program_id": 1
+      }
+    ],
+    "advisors": [
+      {
+        "advisor_id": 201,
+        "user_id": 2
+      }
+    ],
+    "courses": [
+      {
+        "course_id": 11,
+        "course_code": "CS501",
+        "course_name": "Programming Foundations with Java",
+        "credits": "3"
+      },
+      {
+        "course_id": 12,
+        "course_code": "CS510",
+        "course_name": "Data Structures and Algorithms",
+        "credits": "3"
+      },
+      {
+        "course_id": 13,
+        "course_code": "CS620",
+        "course_name": "Database Management Systems",
+        "credits": "3"
+      }
+    ],
+    "enrollments": [
+      {
+        "enrollment_id": 301,
+        "student_id": 101,
+        "course_id": 11,
+        "term": "Fall 2026",
+        "status": "completed",
+        "grade": "A",
+        "grade_points": "4"
+      },
+      {
+        "enrollment_id": 302,
+        "student_id": 101,
+        "course_id": 12,
+        "term": "Fall 2026",
+        "status": "completed",
+        "grade": "B",
+        "grade_points": "3"
+      },
+      {
+        "enrollment_id": 303,
+        "student_id": 101,
+        "course_id": 13,
+        "term": "Spring 2027",
+        "status": "inprogress",
+        "grade": null,
+        "grade_points": null
+      }
+    ],
+    "advisor_student_assignments": [
+      {
+        "student_id": 101,
+        "advisor_id": 201,
+        "updated_at": "2026-10-13T17:46:30.595292-04:00"
+      }
+    ],
+    "program_requirements": [
+      {
+        "requirement_id": 401,
+        "program_id": 1,
+        "group_name": "Core",
+        "required_credits": "9",
+        "course_ids": null,
+        "eligible_courses_ids": [
+          11,
+          12,
+          13
+        ]
+      }
+    ]
+  },
+  "original_csv_sha256": {
+    "advisor_student_assignments.csv": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610",
+    "advisors.csv": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea",
+    "courses.csv": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb",
+    "enrollments.csv": "d6a49701a486a43a379bb35376e782dc2a441ba8af01936798a144debf8756fe",
+    "program_requirements.csv": "ef6c34a9947e1409dc90c955c7930581c2b4e74c63faeb70cf07cf960691cdf5",
+    "programs.csv": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150",
+    "student_scenarios.csv": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58",
+    "students.csv": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7",
+    "users.csv": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318"
+  },
+  "schema_reference": {
+    "repository": "htmw/F2026-Team3",
+    "branch": "feature/backend-integration",
+    "reviewed_date": "2026-10-14",
+    "models.py": {
+      "path": "schema_reference/models.py",
+      "sha256": "af9c163fe77e146a4453ad40e2f8fb69cbca8398599e8d4b820f803c08f80d24",
+      "git_blob_sha": "55baede2fb80a489dd192fed7fe218679ae88945",
+      "url": "https://github.com/htmw/F2026-Team3/blob/feature/backend-integration/backend/models.py"
+    },
+    "seed_data.py": {
+      "path": "schema_reference/seed_data.py",
+      "sha256": "78529dfe212d6bcde7cb4860bf4c836823089b375f5adbb1a231ec904f503bdc",
+      "git_blob_sha": "8e01bedef06fa6ba589f6e088a349d798f86fc52",
+      "url": "https://github.com/htmw/F2026-Team3/blob/feature/backend-integration/backend/seed_data.py"
+    }
+  },
+  "schema_transition": {
+    "date": "2026-10-14",
+    "changed_csv_files": [
+      "enrollments.csv",
+      "program_requirements.csv"
+    ],
+    "status_rows_renamed": 179,
+    "requirement_rows_renamed": 3,
+    "removed_column": "course_ids (all values NULL)",
+    "local_backend_modified": false,
+    "imported": false
+  }
+}

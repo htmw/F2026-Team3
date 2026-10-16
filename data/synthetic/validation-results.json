@@ -1,0 +1,146 @@
+{
+  "review_date": "2026-10-14",
+  "status": "PASSED",
+  "ready_for_team_review": true,
+  "repository": "https://github.com/htmw/F2026-Team3",
+  "branch": "feature/synthetic-academic-dataset",
+  "head": "5f19acc5e2dd4c26cd44d76036f3d0329bf92ece",
+  "latest_fetched_integration": "5f19acc5e2dd4c26cd44d76036f3d0329bf92ece",
+  "backend_matches_latest_integration": true,
+  "source_directory": "C:\\Users\\nhesv\\Projects\\AcadMate\\data\\synthetic",
+  "destination_directory": "C:\\Users\\nhesv\\Documents\\AcadMate-Team\\data\\synthetic",
+  "missing_source_files_copied": [],
+  "csv_sha256": {
+    "advisors.csv": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea",
+    "advisor_student_assignments.csv": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610",
+    "courses.csv": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb",
+    "enrollments.csv": "01e134162b39e52571b66c6a7421c8ad0ec53a5f2fe4915891659033cefdbed8",
+    "programs.csv": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150",
+    "program_requirements.csv": "84ed10877c421dbe5f8f5fe140168c1dd56dc99b9a5f8f462450ef73fba18d8c",
+    "students.csv": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7",
+    "student_scenarios.csv": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58",
+    "users.csv": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318"
+  },
+  "all_nine_csvs_byte_identical": true,
+  "source_directory_unchanged": true,
+  "backend_files_unchanged": true,
+  "dataset_validation": {
+    "passed": true,
+    "counts": {
+      "users": 105,
+      "programs": 1,
+      "students": 100,
+      "advisors": 4,
+      "advisor_student_assignments": 100,
+      "courses": 30,
+      "enrollments": 800,
+      "program_requirements": 3
+    },
+    "checks": {
+      "Record counts": "PASS",
+      "Primary keys": "PASS",
+      "Foreign keys": "PASS",
+      "Unique emails and fields": "PASS",
+      "Enrollment statuses": "PASS",
+      "Grade-point combinations": "PASS",
+      "Course credits": "PASS",
+      "Enrollment chronology": "PASS",
+      "Repeated courses": "PASS",
+      "Advisor assignments": "PASS",
+      "Program requirement totals": "PASS",
+      "Eligible course references": "PASS",
+      "Seed preservation": "PASS",
+      "SQLAlchemy compatibility": "PASS",
+      "Scenario coverage": "PASS",
+      "Fixed-file integrity": "PASS"
+    },
+    "coverage": {
+      "scenario_counts": {
+        "average_performing": 25,
+        "high_performing": 20,
+        "low_performing": 15,
+        "declining": 10,
+        "improving": 10,
+        "failed_and_repeated": 10,
+        "withdrawals": 5,
+        "new_without_completed": 5
+      },
+      "students_without_gpa": 5,
+      "students_with_27_completed_credits": 15,
+      "completed_credit_distribution": {
+        "21": 1,
+        "27": 15,
+        "24": 5,
+        "18": 69,
+        "6": 5,
+        "0": 5
+      },
+      "status_counts": {
+        "completed": 606,
+        "in_progress": 179,
+        "failed": 10,
+        "withdrawn": 5
+      },
+      "repeated_student_course_pairs": 10,
+      "students_with_multiple_completed_attempts_of_one_course": 5
+    },
+    "errors": []
+  },
+  "unit_tests": {
+    "run": 31,
+    "passed": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "database_module_imported": false,
+  "postgresql_accessed": false,
+  "neon_accessed": false,
+  "env_files_changed": false,
+  "regenerated": false,
+  "committed": false,
+  "pushed": false,
+  "pr_created": false,
+  "documentation_changes": {
+    "README.md": {
+      "before_sha256": "834964efb04bd58cec336852822274288e2545463aeb63b6d30c716050ae1392",
+      "after_sha256": "0b4e4fac6e6ace257a0fc2ee1592894cb378477f0083bc74d6cfd942fb0692ea"
+    },
+    "INTEGRATION_GUIDE.md": {
+      "before_sha256": null,
+      "after_sha256": "bc51419ee75bfb89c7856b5c83aa16dcef422b1217cdf8ac8ff205383b1ef63d"
+    },
+    ".gitattributes": {
+      "before_sha256": null,
+      "after_sha256": "e97309a99b7abec32f56fa745df2768b0d7d07db493f594053d7dac59ec5b27c"
+    },
+    "DATA_DICTIONARY.md": {
+      "before_sha256": "70805dad75b0212b5e9ae5a6e64a0ad9f227cb0c4de2b7afa78fe7e0d7b0dcf5",
+      "after_sha256": "3c8e27f7fb53717d77cd42a0f6f2d6f8f2c6fe91a903fbdfa53520eb6b12d7b4"
+    }
+  },
+  "newline_integrity_attributes": [
+    "data/synthetic/advisors.csv: text: unset",
+    "data/synthetic/advisor_student_assignments.csv: text: unset",
+    "data/synthetic/courses.csv: text: unset",
+    "data/synthetic/enrollments.csv: text: unset",
+    "data/synthetic/programs.csv: text: unset",
+    "data/synthetic/program_requirements.csv: text: unset",
+    "data/synthetic/students.csv: text: unset",
+    "data/synthetic/student_scenarios.csv: text: unset",
+    "data/synthetic/users.csv: text: unset",
+    "data/synthetic/schema_reference/models.py: text: unset",
+    "data/synthetic/schema_reference/seed_data.py: text: unset"
+  ],
+  "remaining_policy_approval": [
+    "grade mapping and pass threshold",
+    "failed-attempt GPA denominator",
+    "repeated-grade GPA treatment",
+    "repeated-course earned credits",
+    "completed-null-grade handling",
+    "Core/Electives/Capstone allocation",
+    "timestamp-only import exception (operational metadata)"
+  ],
+  "shared_import": "PENDING APPROVAL; target schema/migration/seed conflicts not inspected",
+  "environment": "Existing source-workspace venv used; new clone has no venv and requirements omit SQLAlchemy/PG drivers"
+}

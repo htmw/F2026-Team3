@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-16",
+  "branch": "feature/synthetic-academic-dataset",
+  "pre_commit_head": "5f19acc5e2dd4c26cd44d76036f3d0329bf92ece",
+  "validation": {
+    "passed": true,
+    "counts": {
+      "users": 105,
+      "programs": 1,
+      "students": 100,
+      "advisors": 4,
+      "advisor_student_assignments": 100,
+      "courses": 30,
+      "enrollments": 800,
+      "program_requirements": 3
+    },
+    "checks": {
+      "Record counts": "PASS",
+      "Primary keys": "PASS",
+      "Foreign keys": "PASS",
+      "Unique emails and fields": "PASS",
+      "Enrollment statuses": "PASS",
+      "Grade-point combinations": "PASS",
+      "Course credits": "PASS",
+      "Enrollment chronology": "PASS",
+      "Repeated courses": "PASS",
+      "Advisor assignments": "PASS",
+      "Program requirement totals": "PASS",
+      "Eligible course references": "PASS",
+      "Seed preservation": "PASS",
+      "SQLAlchemy compatibility": "PASS",
+      "Scenario coverage": "PASS",
+      "Fixed-file integrity": "PASS"
+    },
+    "coverage": {
+      "scenario_counts": {
+        "average_performing": 25,
+        "high_performing": 20,
+        "low_performing": 15,
+        "declining": 10,
+        "improving": 10,
+        "failed_and_repeated": 10,
+        "withdrawals": 5,
+        "new_without_completed": 5
+      },
+      "students_without_gpa": 5,
+      "students_with_27_completed_credits": 15,
+      "completed_credit_distribution": {
+        "21": 1,
+        "27": 15,
+        "24": 5,
+        "18": 69,
+        "6": 5,
+        "0": 5
+      },
+      "status_counts": {
+        "completed": 606,
+        "in_progress": 179,
+        "failed": 10,
+        "withdrawn": 5
+      },
+      "repeated_student_course_pairs": 10,
+      "students_with_multiple_completed_attempts_of_one_course": 5
+    },
+    "errors": []
+  },
+  "tests": {
+    "run": 31,
+    "passed": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "environment": {
+    "python": "3.13.14",
+    "sqlalchemy": "2.1.1",
+    "venv": ".venv (ignored)",
+    "security_settings_changed": false
+  },
+  "csvs_unchanged": true,
+  "csv_sha256": {
+    "advisors.csv": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea",
+    "advisor_student_assignments.csv": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610",
+    "courses.csv": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb",
+    "enrollments.csv": "01e134162b39e52571b66c6a7421c8ad0ec53a5f2fe4915891659033cefdbed8",
+    "programs.csv": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150",
+    "program_requirements.csv": "84ed10877c421dbe5f8f5fe140168c1dd56dc99b9a5f8f462450ef73fba18d8c",
+    "students.csv": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7",
+    "student_scenarios.csv": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58",
+    "users.csv": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318"
+  },
+  "backend_unchanged": true,
+  "database_accessed": false,
+  "db_diagnostic_excluded": "backend/test_db.py requires a PostgreSQL connection",
+  "remaining": [
+    "Academic-policy review",
+    "Target schema/transactional import review; no database import performed"
+  ]
+}

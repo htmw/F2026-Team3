@@ -1,0 +1,3 @@
+# Preserve fixed CSV bytes and exact reviewed Git blob identities on every platform.
+*.csv -text
+schema_reference/*.py -text

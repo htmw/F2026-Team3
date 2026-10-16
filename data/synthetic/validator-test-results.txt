@@ -1,0 +1,38 @@
+Publication verification — October 16, 2026
+Python 3.13.14; SQLAlchemy 2.1.1; clone-local .venv
+test_actual_checkout_models_are_verified (publication_tests.ValidatorTests.test_actual_checkout_models_are_verified) ... ok
+test_actual_checkout_seed_is_verified (publication_tests.ValidatorTests.test_actual_checkout_seed_is_verified) ... ok
+test_canonical_target_model (publication_tests.ValidatorTests.test_canonical_target_model) ... ok
+test_declining_scenario_has_real_trend (publication_tests.ValidatorTests.test_declining_scenario_has_real_trend) ... ok
+test_duplicate_course_code (publication_tests.ValidatorTests.test_duplicate_course_code) ... ok
+test_duplicate_email (publication_tests.ValidatorTests.test_duplicate_email) ... ok
+test_duplicate_primary_key (publication_tests.ValidatorTests.test_duplicate_primary_key) ... ok
+test_extra_calculated_column_rejected (publication_tests.ValidatorTests.test_extra_calculated_column_rejected) ... ok
+test_grade_point_mismatch (publication_tests.ValidatorTests.test_grade_point_mismatch) ... ok
+test_inconsistent_scenario_counts (publication_tests.ValidatorTests.test_inconsistent_scenario_counts) ... ok
+test_inprogress_grade_rejected (publication_tests.ValidatorTests.test_inprogress_grade_rejected) ... ok
+test_invalid_course_credits (publication_tests.ValidatorTests.test_invalid_course_credits) ... ok
+test_legacy_requirement_header_rejected (publication_tests.ValidatorTests.test_legacy_requirement_header_rejected) ... ok
+test_malformed_array (publication_tests.ValidatorTests.test_malformed_array) ... ok
+test_missing_assignment (publication_tests.ValidatorTests.test_missing_assignment) ... ok
+test_modified_seed (publication_tests.ValidatorTests.test_modified_seed) ... ok
+test_new_student_no_completed_courses (publication_tests.ValidatorTests.test_new_student_no_completed_courses) ... ok
+test_original_seed_audit_rejects_unapproved_change (publication_tests.ValidatorTests.test_original_seed_audit_rejects_unapproved_change) ... ok
+test_preserved_dynamic_assignment_timestamp (publication_tests.ValidatorTests.test_preserved_dynamic_assignment_timestamp) ... ok
+test_reference_source_checksum_rejected (publication_tests.ValidatorTests.test_reference_source_checksum_rejected) ... ok
+test_removed_course_ids_column_rejected (publication_tests.ValidatorTests.test_removed_course_ids_column_rejected) ... ok
+test_requirement_total (publication_tests.ValidatorTests.test_requirement_total) ... ok
+test_same_term_repeat_rejected (publication_tests.ValidatorTests.test_same_term_repeat_rejected) ... ok
+test_semantically_identical_file_edit_detected (publication_tests.ValidatorTests.test_semantically_identical_file_edit_detected) ... ok
+test_unknown_eligible_course (publication_tests.ValidatorTests.test_unknown_eligible_course) ... ok
+test_unknown_term (publication_tests.ValidatorTests.test_unknown_term) ... ok
+test_unresolved_foreign_key (publication_tests.ValidatorTests.test_unresolved_foreign_key) ... ok
+test_valid_dataset_and_no_writes (publication_tests.ValidatorTests.test_valid_dataset_and_no_writes) ... ok
+test_workload_convention (publication_tests.ValidatorTests.test_workload_convention) ... ok
+test_wrong_record_count (publication_tests.ValidatorTests.test_wrong_record_count) ... ok
+test_wrong_status_spelling (publication_tests.ValidatorTests.test_wrong_status_spelling) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 1.031s
+
+OK

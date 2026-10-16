@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-14",
+  "source_directory": "C:\\Users\\nhesv\\Projects\\AcadMate\\data\\synthetic",
+  "destination_directory": "C:\\Users\\nhesv\\Documents\\AcadMate-Team\\data\\synthetic",
+  "branch": "feature/synthetic-academic-dataset",
+  "head": "5f19acc5e2dd4c26cd44d76036f3d0329bf92ece",
+  "backend_integration_is_ancestor": true,
+  "csv_byte_identical": true,
+  "csv_hashes": {
+    "advisor_student_assignments.csv": {
+      "source_sha256": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610",
+      "destination_sha256": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610"
+    },
+    "advisors.csv": {
+      "source_sha256": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea",
+      "destination_sha256": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea"
+    },
+    "courses.csv": {
+      "source_sha256": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb",
+      "destination_sha256": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb"
+    },
+    "enrollments.csv": {
+      "source_sha256": "01e134162b39e52571b66c6a7421c8ad0ec53a5f2fe4915891659033cefdbed8",
+      "destination_sha256": "01e134162b39e52571b66c6a7421c8ad0ec53a5f2fe4915891659033cefdbed8"
+    },
+    "program_requirements.csv": {
+      "source_sha256": "84ed10877c421dbe5f8f5fe140168c1dd56dc99b9a5f8f462450ef73fba18d8c",
+      "destination_sha256": "84ed10877c421dbe5f8f5fe140168c1dd56dc99b9a5f8f462450ef73fba18d8c"
+    },
+    "programs.csv": {
+      "source_sha256": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150",
+      "destination_sha256": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150"
+    },
+    "student_scenarios.csv": {
+      "source_sha256": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58",
+      "destination_sha256": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58"
+    },
+    "students.csv": {
+      "source_sha256": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7",
+      "destination_sha256": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7"
+    },
+    "users.csv": {
+      "source_sha256": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318",
+      "destination_sha256": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318"
+    }
+  },
+  "record_counts": {
+    "advisor_student_assignments.csv": 100,
+    "advisors.csv": 4,
+    "courses.csv": 30,
+    "enrollments.csv": 800,
+    "program_requirements.csv": 3,
+    "programs.csv": 1,
+    "student_scenarios.csv": 100,
+    "students.csv": 100,
+    "users.csv": 105
+  },
+  "manifest_byte_identical": true,
+  "schema_reference_byte_identical": true,
+  "validator": {
+    "check_groups_passed": 16,
+    "errors": 0,
+    "actual_checkout_models_and_seed_verified": true
+  },
+  "validator_tests": {
+    "run": 31,
+    "passed": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "validation_interpreter": "C:/Users/nhesv/Projects/AcadMate/backend/venv/Scripts/python.exe",
+  "tracked_files_changed": [],
+  "postgresql_accessed": false,
+  "regenerated": false,
+  "committed": false,
+  "pushed": false,
+  "merged": false,
+  "transferred_files": [
+    "COMPATIBILITY_REVIEW.json",
+    "DATASET_MANIFEST.json",
+    "DATA_DICTIONARY.md",
+    "README.md",
+    "VALIDATION_REPORT.md",
+    "advisor_student_assignments.csv",
+    "advisors.csv",
+    "compatibility-test-results.txt",
+    "courses.csv",
+    "enrollments.csv",
+    "program_requirements.csv",
+    "programs.csv",
+    "schema_reference/README.md",
+    "schema_reference/models.py",
+    "schema_reference/seed_data.py",
+    "student_scenarios.csv",
+    "students.csv",
+    "test_validate_dataset.py",
+    "users.csv",
+    "validate_dataset.py",
+    "validation-results.json",
+    "validator-test-results.txt"
+  ],
+  "initial_copied_validator_result": "Failed four old-workspace backend-creation-hash gates; copied validator ported to actual checkout model/seed checks",
+  "remaining_issues": [
+    "No virtual environment in the new clone; reused existing interpreter",
+    "backend/requirements.txt lacks SQLAlchemy and PostgreSQL drivers; dependency review required before independent backend setup",
+    "No PostgreSQL migration/import readiness claim; no database inspected or modified",
+    "Academic grading/retake policies remain provisional",
+    "Review Git end-of-line settings before a future commit/checkout to preserve CSV checksum bytes"
+  ]
+}
