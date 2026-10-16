@@ -1,0 +1,287 @@
+{
+  "review_date": "2026-10-14",
+  "status": "PASSED",
+  "ready_for_team_review": true,
+  "repository": "https://github.com/htmw/F2026-Team3",
+  "branch": "feature/synthetic-academic-dataset",
+  "head": "5f19acc5e2dd4c26cd44d76036f3d0329bf92ece",
+  "latest_fetched_integration": "5f19acc5e2dd4c26cd44d76036f3d0329bf92ece",
+  "backend_matches_latest_integration": true,
+  "source_directory": "C:\\Users\\nhesv\\Projects\\AcadMate\\data\\synthetic",
+  "destination_directory": "C:\\Users\\nhesv\\Documents\\AcadMate-Team\\data\\synthetic",
+  "missing_source_files_copied": [],
+  "csv_sha256": {
+    "advisors.csv": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea",
+    "advisor_student_assignments.csv": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610",
+    "courses.csv": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb",
+    "enrollments.csv": "01e134162b39e52571b66c6a7421c8ad0ec53a5f2fe4915891659033cefdbed8",
+    "programs.csv": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150",
+    "program_requirements.csv": "84ed10877c421dbe5f8f5fe140168c1dd56dc99b9a5f8f462450ef73fba18d8c",
+    "students.csv": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7",
+    "student_scenarios.csv": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58",
+    "users.csv": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318"
+  },
+  "all_nine_csvs_byte_identical": true,
+  "source_directory_unchanged": true,
+  "backend_files_unchanged": true,
+  "dataset_validation": {
+    "passed": true,
+    "counts": {
+      "users": 105,
+      "programs": 1,
+      "students": 100,
+      "advisors": 4,
+      "advisor_student_assignments": 100,
+      "courses": 30,
+      "enrollments": 800,
+      "program_requirements": 3
+    },
+    "checks": {
+      "Record counts": "PASS",
+      "Primary keys": "PASS",
+      "Foreign keys": "PASS",
+      "Unique emails and fields": "PASS",
+      "Enrollment statuses": "PASS",
+      "Grade-point combinations": "PASS",
+      "Course credits": "PASS",
+      "Enrollment chronology": "PASS",
+      "Repeated courses": "PASS",
+      "Advisor assignments": "PASS",
+      "Program requirement totals": "PASS",
+      "Eligible course references": "PASS",
+      "Seed preservation": "PASS",
+      "SQLAlchemy compatibility": "PASS",
+      "Scenario coverage": "PASS",
+      "Fixed-file integrity": "PASS"
+    },
+    "coverage": {
+      "scenario_counts": {
+        "average_performing": 25,
+        "high_performing": 20,
+        "low_performing": 15,
+        "declining": 10,
+        "improving": 10,
+        "failed_and_repeated": 10,
+        "withdrawals": 5,
+        "new_without_completed": 5
+      },
+      "students_without_gpa": 5,
+      "students_with_27_completed_credits": 15,
+      "completed_credit_distribution": {
+        "21": 1,
+        "27": 15,
+        "24": 5,
+        "18": 69,
+        "6": 5,
+        "0": 5
+      },
+      "status_counts": {
+        "completed": 606,
+        "in_progress": 179,
+        "failed": 10,
+        "withdrawn": 5
+      },
+      "repeated_student_course_pairs": 10,
+      "students_with_multiple_completed_attempts_of_one_course": 5
+    },
+    "errors": []
+  },
+  "unit_tests": {
+    "run": 31,
+    "passed": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "database_module_imported": false,
+  "postgresql_accessed": false,
+  "neon_accessed": false,
+  "env_files_changed": false,
+  "regenerated": false,
+  "committed": false,
+  "pushed": false,
+  "pr_created": false,
+  "documentation_changes": {
+    "README.md": {
+      "before_sha256": "834964efb04bd58cec336852822274288e2545463aeb63b6d30c716050ae1392",
+      "after_sha256": "0b4e4fac6e6ace257a0fc2ee1592894cb378477f0083bc74d6cfd942fb0692ea"
+    },
+    "INTEGRATION_GUIDE.md": {
+      "before_sha256": null,
+      "after_sha256": "bc51419ee75bfb89c7856b5c83aa16dcef422b1217cdf8ac8ff205383b1ef63d"
+    },
+    ".gitattributes": {
+      "before_sha256": null,
+      "after_sha256": "e97309a99b7abec32f56fa745df2768b0d7d07db493f594053d7dac59ec5b27c"
+    },
+    "DATA_DICTIONARY.md": {
+      "before_sha256": "70805dad75b0212b5e9ae5a6e64a0ad9f227cb0c4de2b7afa78fe7e0d7b0dcf5",
+      "after_sha256": "3c8e27f7fb53717d77cd42a0f6f2d6f8f2c6fe91a903fbdfa53520eb6b12d7b4"
+    }
+  },
+  "newline_integrity_attributes": [
+    "data/synthetic/advisors.csv: text: unset",
+    "data/synthetic/advisor_student_assignments.csv: text: unset",
+    "data/synthetic/courses.csv: text: unset",
+    "data/synthetic/enrollments.csv: text: unset",
+    "data/synthetic/programs.csv: text: unset",
+    "data/synthetic/program_requirements.csv: text: unset",
+    "data/synthetic/students.csv: text: unset",
+    "data/synthetic/student_scenarios.csv: text: unset",
+    "data/synthetic/users.csv: text: unset",
+    "data/synthetic/schema_reference/models.py: text: unset",
+    "data/synthetic/schema_reference/seed_data.py: text: unset"
+  ],
+  "remaining_policy_approval": [
+    "grade mapping and pass threshold",
+    "failed-attempt GPA denominator",
+    "repeated-grade GPA treatment",
+    "repeated-course earned credits",
+    "completed-null-grade handling",
+    "Core/Electives/Capstone allocation",
+    "timestamp-only import exception (operational metadata)"
+  ],
+  "shared_import": "PENDING APPROVAL; target schema/migration/seed conflicts not inspected",
+  "environment": "Existing source-workspace venv used; new clone has no venv and requirements omit SQLAlchemy/PG drivers",
+  "git_candidate_file_inspection": [
+    {
+      "path": "data/synthetic/.gitattributes",
+      "size": 125,
+      "sha256": "e97309a99b7abec32f56fa745df2768b0d7d07db493f594053d7dac59ec5b27c"
+    },
+    {
+      "path": "data/synthetic/COMPATIBILITY_REVIEW.json",
+      "size": 12421,
+      "sha256": "8081da88d2628c2cb4dcabce8727c9f68a3cdd26a70e75a8ecda794617bf562b"
+    },
+    {
+      "path": "data/synthetic/DATASET_MANIFEST.json",
+      "size": 10648,
+      "sha256": "d3c0e049765358dc20240401565016dcc8cf738a7a54937211f795cf439d44c1"
+    },
+    {
+      "path": "data/synthetic/DATA_DICTIONARY.md",
+      "size": 6803,
+      "sha256": "c0131130a1a9d849c342b332606c9cff2f3272a2d29aecaddd98de69771e734e"
+    },
+    {
+      "path": "data/synthetic/INTEGRATION_GUIDE.md",
+      "size": 6523,
+      "sha256": "bc51419ee75bfb89c7856b5c83aa16dcef422b1217cdf8ac8ff205383b1ef63d"
+    },
+    {
+      "path": "data/synthetic/PREPARATION_REVIEW.json",
+      "note": "Self-describing receipt; excluded from self-referential hashing."
+    },
+    {
+      "path": "data/synthetic/README.md",
+      "size": 8418,
+      "sha256": "0b4e4fac6e6ace257a0fc2ee1592894cb378477f0083bc74d6cfd942fb0692ea"
+    },
+    {
+      "path": "data/synthetic/TRANSFER_REPORT.md",
+      "size": 4788,
+      "sha256": "9095cef891d9be6b78486e9ec678174adfceb12e3ce2c00ad622b7aa6c122f7f"
+    },
+    {
+      "path": "data/synthetic/TRANSFER_VERIFICATION.json",
+      "size": 4611,
+      "sha256": "58d8254d27e8a25dc1d15b5c4f4d856ccf901f5a4127fcec658ef577c8619fcd"
+    },
+    {
+      "path": "data/synthetic/VALIDATION_REPORT.md",
+      "size": 8900,
+      "sha256": "40c0977d398041a8cbd9b1efaa974246756a818e265eb1d2008598b6d46840c1"
+    },
+    {
+      "path": "data/synthetic/advisor_student_assignments.csv",
+      "size": 3788,
+      "sha256": "01c7aa86b2afe48ba918cd37814d157686649cc452636b06b20b6fe49c644610"
+    },
+    {
+      "path": "data/synthetic/advisors.csv",
+      "size": 61,
+      "sha256": "0dda300cb87c5401cf7d0ad011f073f156be2838b6c60d082a8496692e0ca6ea"
+    },
+    {
+      "path": "data/synthetic/compatibility-test-results.txt",
+      "size": 3521,
+      "sha256": "5687a3c74103c971f4f118a940068f77322ea90aadd2b75c0a4ac2ed01a3e295"
+    },
+    {
+      "path": "data/synthetic/courses.csv",
+      "size": 1126,
+      "sha256": "d4df22bb067bdaf75da21c7d30bb16e1e7e07638f51c527381eb9d7e7f1497fb"
+    },
+    {
+      "path": "data/synthetic/enrollments.csv",
+      "size": 34918,
+      "sha256": "01e134162b39e52571b66c6a7421c8ad0ec53a5f2fe4915891659033cefdbed8"
+    },
+    {
+      "path": "data/synthetic/program_requirements.csv",
+      "size": 308,
+      "sha256": "84ed10877c421dbe5f8f5fe140168c1dd56dc99b9a5f8f462450ef73fba18d8c"
+    },
+    {
+      "path": "data/synthetic/programs.csv",
+      "size": 72,
+      "sha256": "7c09491b63cd2a4fc959792c7be2d9245a77574900d193a942c5785f6310a150"
+    },
+    {
+      "path": "data/synthetic/schema_reference/README.md",
+      "size": 757,
+      "sha256": "8317687ab9abd42326edea6fb418b9a4021fdd37151dfd321b49feb4f1c1b366"
+    },
+    {
+      "path": "data/synthetic/schema_reference/models.py",
+      "size": 3710,
+      "sha256": "af9c163fe77e146a4453ad40e2f8fb69cbca8398599e8d4b820f803c08f80d24"
+    },
+    {
+      "path": "data/synthetic/schema_reference/seed_data.py",
+      "size": 3145,
+      "sha256": "78529dfe212d6bcde7cb4860bf4c836823089b375f5adbb1a231ec904f503bdc"
+    },
+    {
+      "path": "data/synthetic/student_scenarios.csv",
+      "size": 2208,
+      "sha256": "24be890af67acdcfc2663cd79139bccd414d233a6319fd81ef3c35c3e440cd58"
+    },
+    {
+      "path": "data/synthetic/students.csv",
+      "size": 5572,
+      "sha256": "e5913b0847c2b0d79d286268d8fb8ff665b17c73c7e93b14e46dc2664a516fd7"
+    },
+    {
+      "path": "data/synthetic/test_validate_dataset.py",
+      "size": 10984,
+      "sha256": "18d7343f70128792540d05c58ec31a092eedc37169b7138d82bb414b14d4883f"
+    },
+    {
+      "path": "data/synthetic/users.csv",
+      "size": 9784,
+      "sha256": "1911a1ddebf4c71d2beab7693bec6614f0b248a1d4bb6af134ed898dc10f1318"
+    },
+    {
+      "path": "data/synthetic/validate_dataset.py",
+      "size": 27307,
+      "sha256": "bbeafdc9bba257c350e8b3623e75f669e6b0797db6d78e5ab4d3794a16d184f7"
+    },
+    {
+      "path": "data/synthetic/validation-results.json",
+      "size": 5640,
+      "sha256": "dfc4bcb48fd3c937f599d80514ff4a715d38ab63d765508ee2b7f947bef17d56"
+    },
+    {
+      "path": "data/synthetic/validator-test-results.txt",
+      "size": 3548,
+      "sha256": "45abb3f22ec551978179653ce83ae8d92978ab7059568599d6b38089f6466769"
+    }
+  ],
+  "forbidden_file_candidates": [],
+  "secret_pattern_hits": [],
+  "git_status_short": "?? data/",
+  "git_diff_check_passed": true,
+  "csv_and_backend_hashes_rechecked_after_documentation": true
+}

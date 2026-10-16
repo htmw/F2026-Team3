@@ -1,0 +1,38 @@
+Canonical fixed-dataset validation: PASS, all 16 check groups.
+
+test_canonical_target_model (canonical_fixed_tests.ValidatorTests.test_canonical_target_model) ... ok
+test_declining_scenario_has_real_trend (canonical_fixed_tests.ValidatorTests.test_declining_scenario_has_real_trend) ... ok
+test_duplicate_course_code (canonical_fixed_tests.ValidatorTests.test_duplicate_course_code) ... ok
+test_duplicate_email (canonical_fixed_tests.ValidatorTests.test_duplicate_email) ... ok
+test_duplicate_primary_key (canonical_fixed_tests.ValidatorTests.test_duplicate_primary_key) ... ok
+test_extra_calculated_column_rejected (canonical_fixed_tests.ValidatorTests.test_extra_calculated_column_rejected) ... ok
+test_grade_point_mismatch (canonical_fixed_tests.ValidatorTests.test_grade_point_mismatch) ... ok
+test_inconsistent_scenario_counts (canonical_fixed_tests.ValidatorTests.test_inconsistent_scenario_counts) ... ok
+test_inprogress_grade_rejected (canonical_fixed_tests.ValidatorTests.test_inprogress_grade_rejected) ... ok
+test_invalid_course_credits (canonical_fixed_tests.ValidatorTests.test_invalid_course_credits) ... ok
+test_legacy_requirement_header_rejected (canonical_fixed_tests.ValidatorTests.test_legacy_requirement_header_rejected) ... ok
+test_malformed_array (canonical_fixed_tests.ValidatorTests.test_malformed_array) ... ok
+test_missing_assignment (canonical_fixed_tests.ValidatorTests.test_missing_assignment) ... ok
+test_modified_seed (canonical_fixed_tests.ValidatorTests.test_modified_seed) ... ok
+test_new_student_no_completed_courses (canonical_fixed_tests.ValidatorTests.test_new_student_no_completed_courses) ... ok
+test_original_seed_audit_rejects_unapproved_change (canonical_fixed_tests.ValidatorTests.test_original_seed_audit_rejects_unapproved_change) ... ok
+test_preserved_dynamic_assignment_timestamp (canonical_fixed_tests.ValidatorTests.test_preserved_dynamic_assignment_timestamp) ... ok
+test_reference_source_checksum_rejected (canonical_fixed_tests.ValidatorTests.test_reference_source_checksum_rejected) ... ok
+test_removed_course_ids_column_rejected (canonical_fixed_tests.ValidatorTests.test_removed_course_ids_column_rejected) ... ok
+test_requirement_total (canonical_fixed_tests.ValidatorTests.test_requirement_total) ... ok
+test_same_term_repeat_rejected (canonical_fixed_tests.ValidatorTests.test_same_term_repeat_rejected) ... ok
+test_semantically_identical_file_edit_detected (canonical_fixed_tests.ValidatorTests.test_semantically_identical_file_edit_detected) ... ok
+test_unknown_eligible_course (canonical_fixed_tests.ValidatorTests.test_unknown_eligible_course) ... ok
+test_unknown_term (canonical_fixed_tests.ValidatorTests.test_unknown_term) ... ok
+test_unresolved_foreign_key (canonical_fixed_tests.ValidatorTests.test_unresolved_foreign_key) ... ok
+test_valid_dataset_and_no_writes (canonical_fixed_tests.ValidatorTests.test_valid_dataset_and_no_writes) ... ok
+test_workload_convention (canonical_fixed_tests.ValidatorTests.test_workload_convention) ... ok
+test_wrong_record_count (canonical_fixed_tests.ValidatorTests.test_wrong_record_count) ... ok
+test_wrong_status_spelling (canonical_fixed_tests.ValidatorTests.test_wrong_status_spelling) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.622s
+
+OK
+
+Local backend suite executed earlier in the same review: 31 run, 28 passed, 3 academic-policy skips; 0 failures/errors. This does not test the remote integration backend application.
