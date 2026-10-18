@@ -63,7 +63,7 @@ export default function AiMessage({ message, time, onRate, onReport }) {
           message.kind === 'handoff' ? 'bg-amber-soft text-amber-deep' : 'bg-surface-sunk text-navy'}`}>
           {message.text}
         </div>
-        {message.plan?.length > 0 && <PlanBlock plan={message.plan} />}
+        {message.plan?.length > 0 && <PlanBlock plan={message.plan} term={message.planTerm} />}
         {message.follow && <div className="rounded-2xl bg-surface-sunk px-4 py-3 text-[13px] leading-normal text-slate">{message.follow}</div>}
         {onRate && message.actions?.length > 0 && (
           <div className="flex flex-wrap gap-2">
@@ -81,17 +81,17 @@ export default function AiMessage({ message, time, onRate, onReport }) {
           )}
           {time && <span>{time}</span>}
           {onRate && (
-            <span className="ml-auto flex items-center gap-1">
+            <span className="ml-auto flex items-center gap-3">
               <button type="button" aria-label="Helpful" aria-pressed={message.rating === 1} onClick={() => rate(true)}
-                className={`flex size-8 cursor-pointer items-center justify-center rounded-lg border-0 ${message.rating === 1 ? 'bg-teal-soft text-teal-ink' : 'bg-transparent text-muted hover:bg-surface-sunk'}`}>
+                className={`hit-44 flex size-8 cursor-pointer items-center justify-center rounded-lg border-0 ${message.rating === 1 ? 'bg-teal-soft text-teal-ink' : 'bg-transparent text-muted hover:bg-surface-sunk'}`}>
                 <Icon name="thumbUp" size={15} />
               </button>
               <button type="button" aria-label="Not helpful" aria-pressed={message.rating === -1} onClick={() => rate(false)}
-                className={`flex size-8 cursor-pointer items-center justify-center rounded-lg border-0 ${message.rating === -1 ? 'bg-pink-soft text-pink-ink' : 'bg-transparent text-muted hover:bg-surface-sunk'}`}>
+                className={`hit-44 flex size-8 cursor-pointer items-center justify-center rounded-lg border-0 ${message.rating === -1 ? 'bg-pink-soft text-pink-ink' : 'bg-transparent text-muted hover:bg-surface-sunk'}`}>
                 <Icon name="thumbDown" size={15} />
               </button>
               <button type="button" onClick={() => setReporting(true)}
-                className="flex min-h-8 cursor-pointer items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-xs font-semibold text-muted hover:bg-surface-sunk">
+                className="hit-44 flex min-h-8 cursor-pointer items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-xs font-semibold text-muted hover:bg-surface-sunk">
                 <Icon name="flag" size={14} />Report
               </button>
             </span>

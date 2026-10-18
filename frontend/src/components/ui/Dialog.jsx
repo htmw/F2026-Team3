@@ -21,7 +21,7 @@ export default function Dialog({ open, onClose, title, children, actions }) {
           <div className="flex items-start justify-between gap-3">
             <h2 id={titleId} className="m-0 text-lg font-bold">{title}</h2>
             <button type="button" aria-label="Close" onClick={onClose}
-              className="-m-1.5 flex size-9 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface-sunk">
+              className="hit-44 -m-1.5 flex size-9 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface-sunk">
               <Icon name="x" size={18} />
             </button>
           </div>

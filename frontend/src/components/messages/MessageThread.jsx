@@ -11,8 +11,9 @@ import { useApi } from '../../lib/useApi.js'
 
 // One conversation: header, messages and reply box. Render with `key={conversation.id}` so its state resets per thread.
 // Loading the messages marks the conversation read on the server; `onRead(id)` fires once they arrive.
-// `onSent(id, message)` fires after a reply is saved. `headerAction` and `aboveComposer(send)` are role-specific slots.
-export default function MessageThread({ conversation, onRead, onSent, headerAction, aboveComposer }) {
+// `onSent(id, message)` fires after a reply is saved. `headerAction`, `aboveComposer(send)` and `readOnlyAction`
+// (shown next to the read-only note of system conversations) are role-specific slots.
+export default function MessageThread({ conversation, onRead, onSent, headerAction, aboveComposer, readOnlyAction }) {
   const thread = useApi(`/conversations/${conversation.id}/messages`)
   const [messages, setMessages] = useState([])
   const [draft, setDraft] = useState('')
@@ -98,7 +99,12 @@ export default function MessageThread({ conversation, onRead, onSent, headerActi
               placeholder={`Message ${conversation.name}…`} />
           </>
         ) : (
-          <Notice tone="indigo">Acadmate notifications are read-only.</Notice>
+          <Notice tone="indigo">
+            <div className="flex flex-wrap items-center gap-3">
+              <span>Automated notifications can't be replied to.</span>
+              {readOnlyAction}
+            </div>
+          </Notice>
         )}
       </div>
     </Card>

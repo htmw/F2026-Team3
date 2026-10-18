@@ -1,7 +1,9 @@
 // Two-pane list/detail layout. Stacks below the lg breakpoint. Selection stays in the screen's own state.
-export default function MasterDetail({ list, detail }) {
+// `wideList` gives the list the larger share (tables with several columns).
+export default function MasterDetail({ list, detail, wideList = false }) {
+  const columns = wideList ? 'lg:grid-cols-[minmax(0,3fr)_minmax(320px,2fr)]' : 'lg:grid-cols-[minmax(320px,2fr)_3fr]'
   return (
-    <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(320px,2fr)_3fr]">
+    <div className={`grid grid-cols-1 items-start gap-4 ${columns}`}>
       <div className="min-w-0">{list}</div>
       <div className="min-w-0">{detail}</div>
     </div>

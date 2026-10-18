@@ -14,7 +14,7 @@ const POINTS = [
   { title: 'Your advisor stays in charge', text: 'Every AI plan goes to your faculty advisor for approval.' },
 ]
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
-const LINK_BTN = 'min-h-8 cursor-pointer border-0 bg-transparent p-0 font-bold text-accent'
+const LINK_BTN = 'hit-44 min-h-8 cursor-pointer border-0 bg-transparent p-0 font-bold text-accent'
 // Messages for ?error= codes the API's Google callback redirects back with.
 const REDIRECT_ERRORS = {
   google_state: 'Google sign-in was interrupted. Try again.',
@@ -49,7 +49,7 @@ export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
   const [params, setParams] = useSearchParams()
-  const { user, loading, setUser } = useAuth()
+  const { user, loading, setUser, config } = useAuth()
   const resetToken = location.pathname === '/reset-password' ? params.get('token') : null
 
   const [step, setStep] = useState(resetToken ? 'reset' : 'login')
@@ -59,16 +59,12 @@ export default function Login() {
   const [hint, setHint] = useState(REDIRECT_ERRORS[params.get('error')] ?? '')
   const [pending, setPending] = useState(false)
   const [challenge, setChallenge] = useState(null)
-  const [googleEnabled, setGoogleEnabled] = useState(false)
   const [linkInfo, setLinkInfo] = useState(null)
 
+  const googleEnabled = Boolean(config.googleEnabled)
   const validEmail = EMAIL_RE.test(form.email)
   const filled = validEmail && form.pw.length > 0
   const signupOk = form.name.trim() && validEmail && form.pw.length >= 8
-
-  useEffect(() => {
-    api('/auth/config').then((cfg) => setGoogleEnabled(cfg.googleEnabled)).catch(() => {})
-  }, [])
 
   // Resume a two-step sign-in that started with Google (the API redirects back with ?mfa=).
   useEffect(() => {
@@ -180,7 +176,7 @@ export default function Login() {
             {POINTS.map((point) => (
               <div key={point.title} className="flex items-start gap-3.5">
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-[10px] bg-navy-raised">
-                  <Icon name="check" size={16} color="#5EEAD4" strokeWidth={2.8} />
+                  <Icon name="check" size={16} color="var(--color-teal-bright)" strokeWidth={2.8} />
                 </span>
                 <div className="flex flex-col gap-[3px]">
                   <span className="text-base font-bold text-white">{point.title}</span>
@@ -199,7 +195,7 @@ export default function Login() {
               <>
                 <Heading title="Welcome back" text="Sign in to continue to Acadmate." />
                 <Button variant="google" size="lg" onClick={signInWithGoogle}>
-                  <Icon name="user" color="#13212E" /> Sign in with Google
+                  <Icon name="user" color="var(--color-navy)" /> Sign in with Google
                 </Button>
                 <Divider>or use your email</Divider>
                 <Field id="login-email" label="Email">
@@ -213,7 +209,7 @@ export default function Login() {
                       onChange={set('pw')} placeholder="Your password" className={`${INPUT} min-w-0 flex-1`} />
                     <button type="button" onClick={() => setShowPw((value) => !value)} aria-label={showPw ? 'Hide password' : 'Show password'}
                       className="flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-line bg-surface">
-                      <Icon name="eye" color="#13212E" />
+                      <Icon name="eye" color="var(--color-navy)" />
                     </button>
                   </div>
                 </Field>
@@ -277,7 +273,7 @@ export default function Login() {
             {step === 'sent' && (
               <div role="status" className="flex flex-col gap-[18px]">
                 <div className="flex size-[52px] items-center justify-center rounded-full bg-teal-soft">
-                  <Icon name="mail" size={24} color="#115E59" strokeWidth={2.4} />
+                  <Icon name="mail" size={24} color="var(--color-teal-ink)" strokeWidth={2.4} />
                 </div>
                 <h2 className="m-0 font-display text-[28px] font-bold">Check your email</h2>
                 <span className="text-sm leading-normal text-muted">
@@ -291,7 +287,7 @@ export default function Login() {
               <>
                 <Heading title="Create your account" text="Students can sign up here. Advisors and admins are invited by an administrator." />
                 <Button variant="google" size="lg" onClick={signInWithGoogle}>
-                  <Icon name="user" color="#13212E" /> Sign up with Google
+                  <Icon name="user" color="var(--color-navy)" /> Sign up with Google
                 </Button>
                 <Divider>or</Divider>
                 <Field id="su-name" label="Full name">
@@ -332,7 +328,7 @@ export default function Login() {
             {step === 'resetDone' && (
               <div role="status" className="flex flex-col gap-[18px]">
                 <div className="flex size-[52px] items-center justify-center rounded-full bg-teal-soft">
-                  <Icon name="check" size={24} color="#115E59" strokeWidth={2.6} />
+                  <Icon name="check" size={24} color="var(--color-teal-ink)" strokeWidth={2.6} />
                 </div>
                 <h2 className="m-0 font-display text-[28px] font-bold">Password saved</h2>
                 <span className="text-sm leading-normal text-muted">Sign in with your new password to continue.</span>

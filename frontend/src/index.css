@@ -45,6 +45,21 @@
   --radius-tile: 18px;
 }
 
+/* Grows an element's tap target to at least 44x44 px without changing how it looks (rule 4),
+   for compact icon buttons and small buttons drawn smaller in the design. */
+@utility hit-44 {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}
+
 @layer base {
   :root { --accent: #0F766E; }
   html { background: var(--color-canvas); color: var(--color-navy); }

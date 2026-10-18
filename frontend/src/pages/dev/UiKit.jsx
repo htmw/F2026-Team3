@@ -16,17 +16,36 @@ import SearchInput from '../../components/ui/SearchInput.jsx'
 import { Field, Select, TextInput, Textarea } from '../../components/ui/Field.jsx'
 import { Empty, ErrorState, Loading } from '../../components/ui/Status.jsx'
 import { useToast } from '../../components/ui/Toast.jsx'
+import StatTile from '../../components/ui/StatTile.jsx'
+import ExportButton from '../../components/ui/ExportButton.jsx'
+import ConfirmInline from '../../components/ui/ConfirmInline.jsx'
+import { useSaveState } from '../../lib/useSaveState.js'
+import { ACCENTS, applyAccent } from '../../lib/theme.js'
 
 // Dev-only visual reference for the shared components (registered only when import.meta.env.DEV).
 // Fixture data is allowed here because this page never ships to production.
 const ICONS = ['cap', 'bell', 'sparkle', 'send', 'check', 'user', 'eye', 'mail', 'alert', 'info', 'calendar', 'clock', 'search',
   'settings', 'download', 'upload', 'trash', 'chat', 'plus', 'x', 'chevronLeft', 'chevronRight', 'chevronDown', 'edit', 'users',
-  'book', 'filter', 'lock', 'refresh', 'undo', 'external']
+  'book', 'filter', 'lock', 'refresh', 'undo', 'external', 'flag', 'thumbUp', 'thumbDown', 'pin']
 const PEOPLE = [
   { id: 1, name: 'Sample Student One', status: 'On track' },
   { id: 2, name: 'Sample Student Two', status: 'Needs attention' },
   { id: 3, name: 'Sample Student Three', status: 'Graduating' },
 ]
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// Save changes → Saving… → Saved (2 s), driven by a fake request.
+function SaveDemo() {
+  const [dirty, setDirty] = useState(true)
+  const { label, saving, run } = useSaveState()
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button onClick={() => run(() => wait(800)).then(() => setDirty(false))} disabled={saving || !dirty} aria-live="polite">{label}</Button>
+      <Button variant="secondary" onClick={() => setDirty(true)}>Make a change</Button>
+    </div>
+  )
+}
 
 function Section({ title, children }) {
   return (
@@ -51,7 +70,7 @@ export default function UiKit() {
       <div className="mx-auto flex max-w-[1100px] flex-col gap-5">
         <PageHeader title="UI kit" subtitle="Dev-only reference for frontend/src/components"
           search={{ label: 'Search', placeholder: 'Controlled search…', value: query, onChange: setQuery }}
-          actions={<Button variant="secondary"><Icon name="download" size={18} />Export CSV</Button>} />
+          actions={<ExportButton href="#" />} />
 
         <Section title="Buttons">
           <div className="flex flex-wrap gap-2">
@@ -60,6 +79,31 @@ export default function UiKit() {
             ))}
           </div>
           <div className="flex flex-wrap gap-2 rounded-xl bg-navy p-4"><Button variant="ghostDark">ghostDark</Button></div>
+        </Section>
+
+        <Section title="Accent (Admin → Settings → Branding)">
+          <div role="group" aria-label="Accent colour" className="flex flex-wrap gap-2">
+            {ACCENTS.map((accent) => (
+              <Button key={accent.value} variant="secondary" onClick={() => applyAccent(accent.value)}>
+                <span aria-hidden="true" className="size-4 rounded-full" style={{ background: accent.value }} />{accent.label}
+              </Button>
+            ))}
+          </div>
+          <span className="text-[13px] text-muted">Links, primary buttons, progress bars and charts follow the accent.</span>
+        </Section>
+
+        <section aria-label="Stat tiles" className="flex flex-wrap gap-4">
+          <StatTile label="Credits completed" value="78 / 120" pill={{ tone: 'teal', text: 'On track' }} pct={65} note="42 credits to go" />
+          <StatTile label="Major requirements" value="9 / 14" pct={64} warn note="1 at risk this term" />
+          <StatTile label="Open items" value="5" note="2 due this week" />
+        </section>
+
+        <Section title="Save, export, confirm">
+          <SaveDemo />
+          <div><ExportButton href="#" /></div>
+          <ConfirmInline label="Reset demo data" confirmLabel="Yes, reset" busyLabel="Resetting…"
+            warning="Are you sure? This replaces all demo records. Real accounts are not affected."
+            onConfirm={async () => { await wait(800); toast.show({ message: 'Demo data reset' }) }} />
         </Section>
 
         <Section title="Pills, chips, avatars">

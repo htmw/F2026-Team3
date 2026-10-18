@@ -1,13 +1,14 @@
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
 import Card, { CardHeader } from '../../components/ui/Card.jsx'
 import Pill, { Chip } from '../../components/ui/Pill.jsx'
 import ProgressBar from '../../components/ui/ProgressBar.jsx'
+import StatTile from '../../components/ui/StatTile.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Icon from '../../components/ui/Icon.jsx'
 import Notice from '../../components/ui/Notice.jsx'
 import Dialog from '../../components/ui/Dialog.jsx'
-import Switch from '../../components/ui/Switch.jsx'
 import { Field, Select, Textarea } from '../../components/ui/Field.jsx'
 import { Empty, ErrorState, Loading } from '../../components/ui/Status.jsx'
 import { useToast } from '../../components/ui/Toast.jsx'
@@ -16,20 +17,11 @@ import { api, errorText } from '../../lib/api.js'
 import { useApi } from '../../lib/useApi.js'
 import { COURSE_STATUS_TONE, courseStatusLabel } from '../../lib/status.js'
 
-const TERM_TAG_TONE = { Done: 'gray', Current: 'teal', Planned: 'indigo' }
+const TERM_TAG_TONE = { Done: 'teal', Current: 'navy', Planned: 'amber' }
 const TERM_BORDER = { Done: 'border-2 border-transparent', Current: 'border-2 border-accent', Planned: 'border-2 border-dashed border-line-strong' }
 const SENDABLE = ['Needs approval', 'Recommended']
+const WHAT_IF = 'What if I change my plan?'
 
-function StatTile({ stat }) {
-  return (
-    <div className="box-border flex min-w-0 flex-[1_1_200px] flex-col gap-2.5 rounded-[var(--radius-tile)] bg-surface p-5">
-      <span className="text-sm font-semibold text-muted">{stat.label}</span>
-      <span className="font-display text-[28px] font-bold tracking-[-0.02em]">{stat.value}</span>
-      <ProgressBar value={stat.pct ?? 0} color={stat.warn ? 'var(--color-amber)' : undefined} label={stat.label} />
-      <span className="text-[13px] text-muted">{stat.note}</span>
-    </div>
-  )
-}
 
 function CourseRow({ code, name, meta, status, action }) {
   return (
@@ -45,19 +37,21 @@ function CourseRow({ code, name, meta, status, action }) {
   )
 }
 
-function RequirementGroups({ groups }) {
+function RequirementGroups({ groups, subtitle }) {
   const [onlyRemaining, setOnlyRemaining] = useState(false)
-  const visible = groups
-    .filter((group) => !onlyRemaining || !group.allDone)
-    .map((group) => ({ ...group, shown: onlyRemaining ? group.items.filter((item) => item.status !== 'Completed') : group.items }))
+  const visible = groups.map((group) => ({
+    ...group,
+    shown: onlyRemaining ? group.items.filter((item) => item.status !== 'Completed') : group.items,
+  }))
 
   return (
     <Card className="gap-5">
-      <CardHeader title="Requirements" action={(
-        <label className="flex cursor-pointer items-center gap-2.5 text-[13px] font-semibold">
-          Only show remaining
-          <Switch checked={onlyRemaining} onChange={setOnlyRemaining} />
-        </label>
+      <CardHeader title="Requirements" subtitle={subtitle} action={(
+        <button type="button" aria-pressed={onlyRemaining} onClick={() => setOnlyRemaining((on) => !on)}
+          className={`hit-44 min-h-10 cursor-pointer rounded-xl px-3.5 text-[13px] font-semibold ${onlyRemaining
+            ? 'border-0 bg-navy text-white' : 'border border-line bg-surface text-navy hover:bg-surface-sunk'}`}>
+          Show only remaining
+        </button>
       )} />
       {visible.map((group) => {
         const done = Math.min(group.items.filter((item) => item.status === 'Completed').length, group.required)
@@ -69,17 +63,19 @@ function RequirementGroups({ groups }) {
               <h3 className="m-0 text-[15px] font-bold">{group.title}</h3>
               <span className="text-[13px] text-muted">{group.count}</span>
             </div>
-            <ProgressBar value={pct(done)} secondary={pct(inProgress)} height="h-2.5" label={`${group.title}: ${group.count}`} />
+            <ProgressBar value={pct(done)} secondary={pct(inProgress)} secondaryColor="var(--color-teal-bright)" height="h-2.5"
+              label={`${group.title}: ${group.count}`} />
             <div className="mt-1 flex flex-col">
               {group.shown.map((item) => (
-                <CourseRow key={item.enrollmentId} code={item.code} name={item.name} meta={item.term} status={item.status} />
+                <CourseRow key={item.code} code={item.code} name={item.name} meta={item.meta} status={item.status} />
               ))}
-              {group.shown.length === 0 && <Empty>No courses here yet — add one to your plan.</Empty>}
+              {group.shown.length === 0 && (
+                <Empty>{group.allDone ? 'Every course in this group is complete.' : 'No courses here yet — add one to your plan.'}</Empty>
+              )}
             </div>
           </section>
         )
       })}
-      {visible.length === 0 && <Empty>Every requirement is complete.</Empty>}
     </Card>
   )
 }
@@ -103,7 +99,7 @@ function TermCard({ term, termId, removing, sending, error, onRemove, onAdd, onS
               action={canRemove && (
                 <button type="button" aria-label={`Remove ${course.code} from plan`} disabled={removing === course.enrollmentId}
                   onClick={() => onRemove(course)}
-                  className="-mr-1.5 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface-sunk disabled:opacity-40">
+                  className="hit-44 -mr-1.5 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface-sunk disabled:opacity-40">
                   <Icon name="x" size={16} />
                 </button>
               )} />
@@ -132,7 +128,7 @@ function PrecheckResult({ result, onDismiss }) {
       <CardHeader title={`${term} plan sent`} subtitle="Sent to your advisor. They'll see this pre-check with your plan."
         action={(
           <button type="button" aria-label="Dismiss" onClick={onDismiss}
-            className="flex size-9 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface-sunk">
+            className="hit-44 flex size-9 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface-sunk">
             <Icon name="x" size={18} />
           </button>
         )} />
@@ -235,6 +231,7 @@ function AddCourseDialog({ open, onClose, available, futureTerms, initialTermId,
 export default function StudentDegreePlan() {
   const { user, refreshBadges } = useAuth()
   const toast = useToast()
+  const navigate = useNavigate()
   const audit = useApi('/students/me/degree-audit')
   const plan = useApi('/students/me/plan')
   const [adding, setAdding] = useState(null) // null = closed, otherwise { termId }
@@ -256,9 +253,11 @@ export default function StudentDegreePlan() {
   }
   if (!audit.data || !plan.data) return <Loading label="Loading your degree plan…" />
 
-  const { stats, groups, graduation } = audit.data
-  const { terms, available, futureTerms } = plan.data
+  const { stats, groups, subtitle, requirementsSubtitle } = audit.data
+  const { terms, available, futureTerms, notice } = plan.data
   const termIdOf = (name) => futureTerms.find((term) => term.name === name)?.id
+  // "Send plan to advisor" sends the first planned term that still has unsent rows (same as its card's button).
+  const nextToSend = terms.find((term) => term.tag === 'Planned' && term.courses.some((course) => SENDABLE.includes(course.planStatus)))
 
   const remove = async (course) => {
     setRemoving(course.enrollmentId)
@@ -296,19 +295,37 @@ export default function StudentDegreePlan() {
 
   return (
     <>
-      <PageHeader title="Degree plan" subtitle={`Expected graduation · ${graduation.label}`} initials={user?.initials}
-        actions={futureTerms.length > 0 && (
-          <Button onClick={() => setAdding({ termId: futureTerms[0].id })}><Icon name="plus" size={18} />Add course</Button>
+      <PageHeader title="Degree plan" subtitle={subtitle} initials={user?.initials}
+        actions={(
+          <>
+            <Button variant="secondary" onClick={() => navigate('/student/ai-advisor', { state: { question: WHAT_IF } })}>
+              Run a what-if scenario
+            </Button>
+            {futureTerms.length > 0 && (
+              <Button variant="secondary" onClick={() => setAdding({ termId: futureTerms[0].id })}><Icon name="plus" size={18} />Add course</Button>
+            )}
+            <Button disabled={!nextToSend || sending != null}
+              onClick={() => nextToSend && send(termIdOf(nextToSend.name), nextToSend.name)}>
+              {sending != null ? 'Sending…' : 'Send plan to advisor'}
+            </Button>
+          </>
         )} />
 
-      <section aria-label="Degree progress" className="flex flex-wrap gap-4">
-        {stats.map((stat) => <StatTile key={stat.label} stat={stat} />)}
+      <section aria-label="Degree summary" className="flex flex-wrap gap-4">
+        {stats.map((stat) => (
+          <StatTile key={stat.label} label={stat.label} value={stat.value} pct={stat.pct ?? 0} warn={stat.warn} color={stat.color}
+            note={stat.note} basis="200px" />
+        ))}
       </section>
 
       {result && <PrecheckResult result={result} onDismiss={() => setResult(null)} />}
 
-      <section aria-label="Term plan" className="flex flex-col gap-3">
-        <h2 className="m-0 text-lg font-bold">Term by term</h2>
+      <RequirementGroups groups={groups} subtitle={requirementsSubtitle} />
+
+      <Card className="gap-4">
+        <CardHeader title="Semester roadmap" action={(
+          <Link to="/student/ai-advisor" className="text-[13px] font-semibold">Ask Acadmate to adjust this plan</Link>
+        )} />
         <div className="flex gap-4 overflow-x-auto pb-2">
           {terms.map((term) => {
             const termId = term.tag === 'Planned' ? termIdOf(term.name) : undefined
@@ -320,9 +337,8 @@ export default function StudentDegreePlan() {
           })}
           {terms.length === 0 && <Empty>No courses on your record yet.</Empty>}
         </div>
-      </section>
-
-      <RequirementGroups groups={groups} />
+        {notice && <Notice tone="amber">{notice}</Notice>}
+      </Card>
 
       <AddCourseDialog open={adding != null} onClose={() => setAdding(null)} available={available} futureTerms={futureTerms}
         initialTermId={adding?.termId ?? null} onAdded={added} />

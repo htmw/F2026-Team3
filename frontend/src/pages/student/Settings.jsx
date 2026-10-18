@@ -7,7 +7,8 @@ import Card, { CardHeader } from '../../components/ui/Card.jsx'
 import Icon from '../../components/ui/Icon.jsx'
 import Notice from '../../components/ui/Notice.jsx'
 import Pill from '../../components/ui/Pill.jsx'
-import { Field, TextInput } from '../../components/ui/Field.jsx'
+import ConfirmInline from '../../components/ui/ConfirmInline.jsx'
+import { Field, Select, TextInput } from '../../components/ui/Field.jsx'
 import { SwitchRow } from '../../components/ui/Switch.jsx'
 import SegmentedTabs from '../../components/ui/Tabs.jsx'
 import { ErrorState, Loading } from '../../components/ui/Status.jsx'
@@ -15,6 +16,7 @@ import { useToast } from '../../components/ui/Toast.jsx'
 import { useAuth } from '../../auth/AuthContext.jsx'
 import { api, errorText } from '../../lib/api.js'
 import { useApi } from '../../lib/useApi.js'
+import { useSaveState } from '../../lib/useSaveState.js'
 
 const SECTIONS = [
   { id: 'set-profile', label: 'Profile' },
@@ -44,15 +46,39 @@ const SCHOOL_MANAGED = 'Managed by your school.'
 
 const SECTION = 'scroll-mt-6 gap-3'
 
+// Highlights the section nearest the top of the viewport.
+function useActiveSection() {
+  const [active, setActive] = useState(SECTIONS[0].id)
+  useEffect(() => {
+    const visible = new Set()
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => (entry.isIntersecting ? visible.add(entry.target.id) : visible.delete(entry.target.id)))
+      const first = SECTIONS.find((section) => visible.has(section.id))
+      if (first) setActive(first.id)
+    }, { rootMargin: '0px 0px -60% 0px' })
+    SECTIONS.forEach((section) => {
+      const element = document.getElementById(section.id)
+      if (element) observer.observe(element)
+    })
+    return () => observer.disconnect()
+  }, [])
+  return active
+}
+
 function SectionNav() {
+  const active = useActiveSection()
   return (
     <nav aria-label="Settings sections" className="flex flex-wrap gap-1.5 lg:sticky lg:top-6 lg:flex-col lg:self-start">
-      {SECTIONS.map((section) => (
-        <a key={section.id} href={`#${section.id}`}
-          className="flex min-h-10 items-center rounded-xl bg-surface px-3.5 text-sm font-medium text-navy no-underline hover:bg-surface-sunk lg:min-h-11 lg:bg-transparent">
-          {section.label}
-        </a>
-      ))}
+      {SECTIONS.map((section) => {
+        const current = section.id === active
+        return (
+          <a key={section.id} href={`#${section.id}`} aria-current={current ? 'true' : undefined}
+            className={`flex min-h-11 items-center rounded-xl px-3.5 text-sm text-navy no-underline hover:bg-surface-sunk lg:min-h-11 ${
+              current ? 'bg-teal-soft font-bold' : 'bg-surface font-medium lg:bg-transparent'}`}>
+            {section.label}
+          </a>
+        )
+      })}
     </nav>
   )
 }
@@ -70,7 +96,7 @@ function ActionRow({ title, description, children }) {
   )
 }
 
-function ProfileSection({ profile, form, setField, nameError }) {
+function ProfileSection({ profile, form, setField, nameError, prefs, setPrefs, graduationOptions }) {
   const managed = [
     ['studentNumber', 'Student ID'],
     ['program', 'Program'],
@@ -102,6 +128,18 @@ function ProfileSection({ profile, form, setField, nameError }) {
             <TextInput id={`set-${key}`} value={profile[key]} disabled className="bg-surface-sunk text-muted" />
           </Field>
         ))}
+        {profile.role === 'student' && graduationOptions.length > 0 && (
+          <Field id="set-targetGraduation" label="Target graduation" hint="Acadmate plans your courses around this date.">
+            <Select id="set-targetGraduation" value={prefs.targetGraduation ?? ''}
+              onChange={(e) => setPrefs((p) => ({ ...p, targetGraduation: e.target.value || null }))}>
+              {!prefs.targetGraduation && <option value="">Choose a date</option>}
+              {prefs.targetGraduation && !graduationOptions.includes(prefs.targetGraduation) && (
+                <option value={prefs.targetGraduation}>{prefs.targetGraduation}</option>
+              )}
+              {graduationOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+            </Select>
+          </Field>
+        )}
       </div>
     </Card>
   )
@@ -144,7 +182,7 @@ function AiSection({ prefs, setPrefs }) {
         <SegmentedTabs label="Answer style" options={['Concise', 'Detailed']} value={prefs.aiStyle}
           onChange={(aiStyle) => setPrefs((p) => ({ ...p, aiStyle }))} />
       </div>
-      <Notice tone="indigo" icon="sparkle">
+      <Notice tone="teal" icon="shield">
         Acadmate never registers you for or drops you from a course. It suggests plans; you and your advisor decide.
       </Notice>
     </Card>
@@ -221,24 +259,6 @@ function SignInSection({ profile, google, onGoogleChanged }) {
   )
 }
 
-// Two-click confirm: the first click arms the action, the second runs it.
-function ConfirmAction({ label, confirmLabel, busyLabel, warning, onConfirm, busy, children, disabled }) {
-  const [armed, setArmed] = useState(false)
-  if (!armed) return <Button variant="secondary" size="sm" onClick={() => setArmed(true)}>{label}</Button>
-  return (
-    <div className="flex w-full flex-col gap-2.5">
-      <Notice tone="pink">{warning}</Notice>
-      {children}
-      <div className="flex flex-wrap gap-2">
-        <Button variant="danger" size="sm" onClick={async () => { if (await onConfirm()) setArmed(false) }} disabled={busy || disabled}>
-          {busy ? busyLabel : confirmLabel}
-        </Button>
-        <Button variant="secondary" size="sm" onClick={() => setArmed(false)} disabled={busy}>Cancel</Button>
-      </div>
-    </div>
-  )
-}
-
 function PrivacySection({ profile, retention }) {
   const toast = useToast()
   const navigate = useNavigate()
@@ -247,7 +267,7 @@ function PrivacySection({ profile, retention }) {
   const [password, setPassword] = useState('')
   const [deleteError, setDeleteError] = useState(null)
 
-  // Each action resolves to true when it succeeded, so ConfirmAction can disarm itself.
+  // Each action resolves to true when it succeeded, so ConfirmInline can disarm itself.
   const run = async (key, action) => {
     setBusy(key)
     try {
@@ -308,15 +328,15 @@ function PrivacySection({ profile, retention }) {
         </ActionRow>
         <ActionRow title="Clear AI conversation history"
           description={`Removes past chats. Saved degree plans stay. Your school keeps AI advisor conversations for ${retention.toLowerCase()}.`}>
-          <ConfirmAction label="Clear history" confirmLabel="Yes, clear history" busyLabel="Clearing…" busy={busy === 'history'}
+          <ConfirmInline triggerVariant="secondary" label="Clear history" confirmLabel="Yes, clear history" busyLabel="Clearing…" busy={busy === 'history'}
             warning="Delete every AI advisor conversation? This can’t be undone." onConfirm={clearHistory} />
         </ActionRow>
         <ActionRow title="Reset calendar link" description="Makes a new private feed link for Google Calendar or Outlook.">
-          <ConfirmAction label="Reset link" confirmLabel="Yes, reset link" busyLabel="Resetting…" busy={busy === 'calendar'}
+          <ConfirmInline triggerVariant="secondary" label="Reset link" confirmLabel="Yes, reset link" busyLabel="Resetting…" busy={busy === 'calendar'}
             warning="Calendar apps subscribed to the old link will stop updating. You’ll need to subscribe again from Schedule." onConfirm={rotateCalendar} />
         </ActionRow>
         <ActionRow title="Delete account" description="Permanently deletes your Acadmate account. Your school records are not affected.">
-          <ConfirmAction label="Delete account" confirmLabel="Delete my account" busyLabel="Deleting…" busy={busy === 'delete'}
+          <ConfirmInline triggerVariant="secondary" label="Delete account" confirmLabel="Delete my account" busyLabel="Deleting…" busy={busy === 'delete'}
             disabled={profile.hasPassword && !password}
             warning="This permanently deletes your Acadmate account, plans, messages and AI conversations. It can’t be undone."
             onConfirm={deleteAccount}>
@@ -327,7 +347,7 @@ function PrivacySection({ profile, retention }) {
               </Field>
             )}
             {deleteError && <Notice tone="pink" role="alert">{deleteError}</Notice>}
-          </ConfirmAction>
+          </ConfirmInline>
         </ActionRow>
       </div>
     </Card>
@@ -335,24 +355,20 @@ function PrivacySection({ profile, retention }) {
 }
 
 const profileForm = (profile) => ({ fullName: profile.fullName, preferredName: profile.preferredName ?? '', email: profile.email })
+// graduationOptions comes with the preferences but isn't one; keep it out of the draft.
+const prefsForm = ({ graduationOptions, ...prefs }) => prefs
 
 // Profile, notification and AI preferences share one draft and one Save; Sign-in and Privacy act immediately.
 function SettingsForm({ me, retention, reloadMe }) {
   const { refresh } = useAuth()
-  const [baseline, setBaseline] = useState(() => ({ profile: profileForm(me.profile), prefs: me.preferences }))
+  const graduationOptions = me.preferences.graduationOptions ?? []
+  const [baseline, setBaseline] = useState(() => ({ profile: profileForm(me.profile), prefs: prefsForm(me.preferences) }))
   const [draft, setDraft] = useState(baseline)
-  const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(false)
+  const { label: saveLabel, saving, run } = useSaveState()
   const [saveError, setSaveError] = useState(null)
   const [nameError, setNameError] = useState(null)
 
-  useEffect(() => {
-    if (!saved) return undefined
-    const timer = setTimeout(() => setSaved(false), 2500)
-    return () => clearTimeout(timer)
-  }, [saved])
-
-  const edited = () => { setSaved(false); setSaveError(null) }
+  const edited = () => setSaveError(null)
   const setField = (key, value) => {
     edited()
     if (key === 'fullName') setNameError(null)
@@ -372,9 +388,8 @@ function SettingsForm({ me, retention, reloadMe }) {
       document.getElementById('set-fullName')?.focus()
       return
     }
-    setSaving(true)
     setSaveError(null)
-    try {
+    await run(async () => {
       if (Object.keys(profileChanges).length) {
         const body = { ...profileChanges }
         if ('preferredName' in body) body.preferredName = body.preferredName || null
@@ -387,32 +402,30 @@ function SettingsForm({ me, retention, reloadMe }) {
       }
       if (prefsDirty) {
         const { preferences } = await api('/users/me/preferences', { method: 'PATCH', body: draft.prefs })
-        setBaseline((b) => ({ ...b, prefs: preferences }))
-        setDraft((d) => ({ ...d, prefs: preferences }))
+        const next = prefsForm(preferences)
+        setBaseline((b) => ({ ...b, prefs: next }))
+        setDraft((d) => ({ ...d, prefs: next }))
+        // Target graduation also changes the read-only Expected graduation field.
+        if (next.targetGraduation !== baseline.prefs.targetGraduation) reloadMe()
       }
-      setSaved(true)
-    } catch (err) {
-      setSaveError(errorText(err))
-    } finally {
-      setSaving(false)
-    }
+    }).catch((err) => setSaveError(errorText(err)))
   }
 
   const discard = () => { setDraft(baseline); setNameError(null); setSaveError(null) }
 
   return (
     <>
-      <ProfileSection profile={me.profile} form={draft.profile} setField={setField} nameError={nameError} />
+      <ProfileSection profile={me.profile} form={draft.profile} setField={setField} nameError={nameError}
+        prefs={draft.prefs} setPrefs={setPrefs} graduationOptions={graduationOptions} />
       <NotificationsSection prefs={draft.prefs} setPrefs={setPrefs} />
       <AiSection prefs={draft.prefs} setPrefs={setPrefs} />
 
       <div className="sticky bottom-4 z-10 flex flex-col gap-2.5 rounded-[var(--radius-card)] border border-line bg-surface px-5 py-3.5 shadow-sm">
         {saveError && <Notice tone="pink" role="alert">{saveError}</Notice>}
         <div className="flex flex-wrap items-center gap-3">
-          <Button onClick={save} disabled={saving || !dirty}>{saving ? 'Saving…' : 'Save changes'}</Button>
+          <Button onClick={save} disabled={saving || !dirty} aria-live="polite">{saveLabel}</Button>
           {dirty && !saving && <Button variant="secondary" onClick={discard}>Discard</Button>}
-          <span role="status" className="text-sm font-semibold text-teal-ink">{saved ? 'Saved' : ''}</span>
-          {dirty && !saved && <span className="text-[13px] text-muted">You have unsaved changes.</span>}
+          {dirty && !saving && <span className="text-[13px] text-muted">You have unsaved changes.</span>}
         </div>
       </div>
 

@@ -61,7 +61,7 @@ export default function Sidebar({ role }) {
       )}
 
       <button type="button" onClick={signOut}
-        className={`-mt-4 min-h-10 cursor-pointer rounded-[10px] border border-navy-line bg-transparent px-3 text-left text-[13px] font-semibold text-fog hover:bg-navy-raised hover:text-white`}>
+        className={`hit-44 -mt-4 min-h-10 cursor-pointer rounded-[10px] border border-navy-line bg-transparent px-3 text-left text-[13px] font-semibold text-fog hover:bg-navy-raised hover:text-white`}>
         Sign out
       </button>
     </nav>

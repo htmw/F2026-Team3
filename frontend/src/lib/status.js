@@ -7,6 +7,7 @@ export const COURSE_STATUS_TONE = {
   Recommended: 'teal',
   'Needs approval': 'amber',
   'Pending approval': 'indigo',
+  'Changes requested': 'pink',
 }
 
 // Maps a /students/me/plan course ({ status, planStatus }) to the label the degree audit uses.
@@ -32,3 +33,16 @@ export const DEADLINE_TONE = { 'Due soon': 'amber', 'In progress': 'teal', 'Not 
 
 // Pill tones for an assignment's submission status.
 export const ASSIGNMENT_STATUS_TONE = { 'To do': 'gray', 'In progress': 'indigo', Submitted: 'amber', Graded: 'teal' }
+
+// Admin users (spec 31): role and account status pills, and the avatar tint per role.
+export const ROLE_TONE = { Student: 'teal', Advisor: 'amber', Admin: 'indigo' }
+export const USER_STATUS_TONE = { Active: 'teal', Invited: 'indigo', Deactivated: 'gray' }
+
+// Admin advisors (spec 32): caseload status pills.
+export const CAPACITY_TONE = { 'Over capacity': 'pink', 'Near capacity': 'amber', 'Has room': 'teal' }
+
+// Admin catalog (spec 33): the requirement type a course counts toward.
+export const COURSE_TYPE_TONE = { Foundation: 'gray', Core: 'indigo', Elective: 'teal', Capstone: 'amber' }
+
+// Admin integrations (spec 35): connection status pills.
+export const INTEGRATION_TONE = { Connected: 'teal', Off: 'gray', Error: 'pink', Degraded: 'amber' }

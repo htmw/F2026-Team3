@@ -4,6 +4,7 @@ import PageHeader from '../../components/layout/PageHeader.jsx'
 import Card, { CardHeader } from '../../components/ui/Card.jsx'
 import Pill, { Chip } from '../../components/ui/Pill.jsx'
 import ProgressBar from '../../components/ui/ProgressBar.jsx'
+import StatTile from '../../components/ui/StatTile.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Icon from '../../components/ui/Icon.jsx'
 import Notice from '../../components/ui/Notice.jsx'
@@ -57,14 +58,14 @@ function GpaCard({ gpa }) {
           <polyline points={line} fill="none" style={{ stroke: accent }} strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />
           {points.map(([x, pointY], index) => index < last
             ? <circle key={index} cx={x} cy={pointY} r="4.5" style={{ fill: accent }} />
-            : <circle key={index} cx={x} cy={pointY} r="5.5" fill="#FFFFFF" style={{ stroke: AMBER }} strokeWidth="3" />)}
+            : <circle key={index} cx={x} cy={pointY} r="5.5" style={{ fill: 'var(--color-surface)', stroke: AMBER }} strokeWidth="3" />)}
           {points.map(([x, pointY], index) => (
             <text key={`v${index}`} x={x} y={pointY - 10} fontSize="11" fontWeight="700" style={{ fill: 'var(--color-navy)' }} textAnchor="middle">
               {trend[index].gpa.toFixed(2)}
             </text>
           ))}
           {points.map(([x], index) => (
-            <text key={`t${index}`} x={x} y="90" fontSize="11" style={{ fill: 'var(--color-muted)' }} textAnchor="middle">{shortTerm(trend[index].term)}</text>
+            <text key={`t${index}`} x={x} y="90" fontSize="11" style={{ fill: 'var(--color-muted)' }} textAnchor="middle">{shortTerm(trend[index])}</text>
           ))}
         </svg>
       ) : (
@@ -74,22 +75,9 @@ function GpaCard({ gpa }) {
   )
 }
 
-// 'Spring 2026' -> 'Spr 26' to fit the chart axis.
-const shortTerm = (term) => term.replace(/^(\w{3})\w*\s20(\d\d)$/, '$1 $2')
+// 'Spring 2026' -> 'Spr 26' to fit the chart axis; the current term reads 'Now'.
+const shortTerm = (point) => (point.current ? 'Now' : point.term.replace(/^(\w{3})\w*\s20(\d\d)$/, '$1 $2'))
 
-function StatCard({ stat }) {
-  return (
-    <div className="box-border flex min-w-0 flex-[1_1_170px] flex-col gap-2.5 rounded-[var(--radius-tile)] bg-surface p-5">
-      <div className="flex flex-wrap items-center justify-between gap-1.5">
-        <span className="text-sm font-semibold text-muted">{stat.label}</span>
-        <Pill tone={stat.tone}>{stat.pill}</Pill>
-      </div>
-      <span className="font-display text-[28px] font-bold tracking-[-0.02em]">{stat.value}</span>
-      <ProgressBar value={stat.pct} color={stat.warn ? AMBER : undefined} label={stat.label} />
-      <span className="text-[13px] text-muted">{stat.note}</span>
-    </div>
-  )
-}
 
 function AskAcadmate({ recommendation }) {
   const [question, setQuestion] = useState('')
@@ -258,7 +246,10 @@ export default function StudentDashboard() {
 
       <section aria-label="Academic summary" className="flex flex-wrap gap-4">
         <GpaCard gpa={data.gpa} />
-        {data.stats.map((stat) => <StatCard key={stat.key} stat={stat} />)}
+        {data.stats.map((stat) => (
+          <StatTile key={stat.key} label={stat.label} value={stat.value} pill={{ tone: stat.tone, text: stat.pill }}
+            pct={stat.pct} warn={stat.warn} note={stat.note} />
+        ))}
       </section>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-3">

@@ -97,7 +97,13 @@ export default function StudentMessages() {
           <ConversationList conversations={conversations} selectedId={selected?.id} onSelect={setSelectedId} />
         )}
         detail={selected
-          ? <MessageThread key={selected.id} conversation={selected} onRead={markRead} onSent={replied} />
+          ? <MessageThread key={selected.id} conversation={selected} onRead={markRead} onSent={replied}
+              headerAction={selected.bookable && (
+                <Button variant="secondary" size="sm" to={`/student/book-meeting?with=${selected.otherUserId}`}>
+                  <Icon name="calendar" size={16} />Schedule meeting
+                </Button>
+              )}
+              readOnlyAction={<Button variant="secondary" size="sm" to="/student/ai-advisor">Ask Acadmate</Button>} />
           : <Card><DetailEmpty>Select a conversation to read it.</DetailEmpty></Card>} />
       {dialog}
     </>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
 import Card, { CardHeader } from '../../components/ui/Card.jsx'
 import Avatar from '../../components/ui/Avatar.jsx'
@@ -12,18 +13,12 @@ import { useToast } from '../../components/ui/Toast.jsx'
 import { useAuth } from '../../auth/AuthContext.jsx'
 import { api, errorText } from '../../lib/api.js'
 import { useApi } from '../../lib/useApi.js'
-import { addDays, clockTime, mondayOf, shortDay } from '../../lib/dates.js'
+import { addDays, clockTime, shortDay } from '../../lib/dates.js'
 
 const OTHER = 'Something else'
 const STATUS = { requested: ['amber', 'Requested'], confirmed: ['teal', 'Confirmed'], proposed: ['indigo', 'New time proposed'] }
-
-// This week's Monday, or next week's once the weekend starts (nothing left to book this week).
-function defaultWeek() {
-  const now = new Date()
-  const today = now.toLocaleDateString('en-CA') // YYYY-MM-DD, viewer's time zone
-  const ahead = { 6: 2, 0: 1 }[now.getDay()] ?? 0
-  return mondayOf(addDays(today, ahead))
-}
+const ZONE_NAMES = { 'America/New_York': 'Eastern Time', 'America/Chicago': 'Central Time', 'America/Denver': 'Mountain Time',
+  'America/Los_Angeles': 'Pacific Time' }
 
 function Step({ n, title, action, children }) {
   return (
@@ -131,17 +126,21 @@ function SummaryRow({ label, children, pending = false }) {
   )
 }
 
-function UpcomingMeetings({ meetings, onChanged }) {
+function UpcomingMeetings({ meetings, onChanged, onReschedule }) {
   const toast = useToast()
   const [busyId, setBusyId] = useState(null)
+  const [confirmId, setConfirmId] = useState(null) // meeting whose Cancel was clicked once
   const { data, error, reload } = meetings
 
+  // Reschedule = cancel, then pick a new time with the same person in the form.
   const act = async (meeting, action) => {
     setBusyId(meeting.id)
     try {
-      await api(`/meetings/${meeting.id}/${action}`, { method: 'POST' })
-      toast.show({ message: action === 'cancel' ? 'Meeting cancelled' : 'New time accepted' })
+      await api(`/meetings/${meeting.id}/${action === 'reschedule' ? 'cancel' : action}`, { method: 'POST' })
+      toast.show({ message: { cancel: 'Meeting cancelled', accept: 'New time accepted', reschedule: 'Meeting cancelled. Pick a new time.' }[action] })
+      setConfirmId(null)
       onChanged(meeting)
+      if (action === 'reschedule') onReschedule(meeting.staffId)
     } catch (err) {
       toast.show({ message: errorText(err) })
     } finally {
@@ -185,10 +184,20 @@ function UpcomingMeetings({ meetings, onChanged }) {
                   <Pill tone={tone}>{label}</Pill>
                 </div>
                 <div className="flex flex-wrap justify-end gap-2">
-                  {m.status === 'proposed' && (
-                    <Button size="sm" disabled={busy} onClick={() => act(m, 'accept')}><Icon name="check" size={16} />Accept new time</Button>
+                  {confirmId === m.id ? (
+                    <>
+                      <Button variant="secondary" size="sm" disabled={busy} onClick={() => setConfirmId(null)}>Keep it</Button>
+                      <Button variant="danger" size="sm" disabled={busy} onClick={() => act(m, 'cancel')}>Confirm cancel</Button>
+                    </>
+                  ) : (
+                    <>
+                      {m.status === 'proposed' && (
+                        <Button size="sm" disabled={busy} onClick={() => act(m, 'accept')}><Icon name="check" size={16} />Accept new time</Button>
+                      )}
+                      <Button variant="secondary" size="sm" disabled={busy} onClick={() => act(m, 'reschedule')}>Reschedule</Button>
+                      <Button variant="danger" size="sm" disabled={busy} onClick={() => setConfirmId(m.id)}>Cancel</Button>
+                    </>
                   )}
-                  <Button variant="danger" size="sm" disabled={busy} onClick={() => act(m, 'cancel')}>Cancel</Button>
                 </div>
               </div>
             )
@@ -200,34 +209,50 @@ function UpcomingMeetings({ meetings, onChanged }) {
 }
 
 function BookedConfirmation({ booked, onAnother }) {
+  const confirmed = booked.status === 'confirmed'
   return (
-    <Card as="section" className="gap-4" aria-live="polite">
+    <Card as="section" className="gap-4" role="status" aria-live="polite">
       <div className="flex items-center gap-3">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-teal-soft">
           <Icon name="check" size={22} color="var(--color-teal-ink)" strokeWidth={2.4} />
         </span>
         <div className="flex flex-col gap-1">
-          <h2 className="m-0 text-lg font-bold">Request sent</h2>
-          <div><Pill tone="amber">Waiting for confirmation</Pill></div>
+          <h2 className="m-0 text-lg font-bold">{confirmed ? 'Meeting booked' : 'Request sent'}</h2>
+          {!confirmed && <div><Pill tone="amber">Waiting for confirmation</Pill></div>}
         </div>
       </div>
       <p className="m-0 text-sm leading-relaxed">{booked.summary}</p>
-      <p className="m-0 text-sm text-muted">We posted a copy to your Messages. You'll get another message there when it's confirmed.</p>
+      {!confirmed && (
+        <p className="m-0 text-sm text-muted">We posted a copy to your Messages. You'll get another message there when it's confirmed.</p>
+      )}
       <div className="flex flex-wrap gap-2">
-        <Button to="/student/messages"><Icon name="chat" size={18} />Open Messages</Button>
+        {confirmed
+          ? <Button to="/student/schedule"><Icon name="calendar" size={18} />View in schedule</Button>
+          : <Button to="/student/messages"><Icon name="chat" size={18} />Open Messages</Button>}
         <Button variant="secondary" onClick={onAnother}>Book another</Button>
       </div>
     </Card>
   )
 }
 
+// ?with={staffId}&topic=… from links elsewhere (Messages' "Schedule meeting"); unknown values are ignored.
+function initialChoice(params, staff, topics) {
+  const withId = Number(params.get('with'))
+  const topic = params.get('topic')
+  return {
+    personId: staff.some((s) => s.id === withId) ? withId : staff[0].id,
+    topic: topics.includes(topic) ? topic : topics[0],
+  }
+}
+
 function BookingForm({ data }) {
   const { refreshBadges } = useAuth()
-  const { staff, topics, formats } = data
-  const [firstWeek] = useState(defaultWeek) // fixed for the visit; the earliest week the student can page back to
+  const { staff, topics, formats, firstWeek } = data // firstWeek comes from the server's date, not the browser's
+  const [params] = useSearchParams()
+  const [initial] = useState(() => initialChoice(params, staff, topics))
 
-  const [personId, setPersonId] = useState(staff[0].id)
-  const [topic, setTopic] = useState(topics[0])
+  const [personId, setPersonId] = useState(initial.personId)
+  const [topic, setTopic] = useState(initial.topic)
   const [otherTopic, setOtherTopic] = useState('')
   const [format, setFormat] = useState(formats[0])
   const [week, setWeek] = useState(firstWeek)
@@ -247,7 +272,7 @@ function BookingForm({ data }) {
   const avail = availability.data?.staffId === personId && availability.data.week === week ? availability.data : null
   const selectedDay = avail && (avail.days.find((d) => d.date === day && d.open > 0) ?? avail.days.find((d) => d.open > 0))
   const pickedSlot = selectedDay?.slots.find((s) => s.startsAt === slot && !s.taken) ?? null
-  const lastWeek = addDays(firstWeek, 7 * (person.bookingWindowWeeks ?? 4))
+  const lastWeek = addDays(firstWeek, 7 * ((person.bookingWindowWeeks ?? 2) - 1)) // the window includes firstWeek
   const topicText = topic === OTHER ? otherTopic.trim() : topic
 
   const pickPerson = (id) => { setPersonId(id); setWeek(firstWeek); setDay(null); setSlot(null); setSubmitError(null) }
@@ -299,12 +324,12 @@ function BookingForm({ data }) {
               <OptionPills options={topics} value={topic} onChange={setTopic} label="Meeting topic" />
               {topic === OTHER && (
                 <Field id="bk-topic" label="Topic">
-                  <TextInput id="bk-topic" maxLength={200} value={otherTopic} onChange={(e) => setOtherTopic(e.target.value)}
+                  <TextInput id="bk-topic" maxLength={80} value={otherTopic} onChange={(e) => setOtherTopic(e.target.value)}
                     placeholder="What would you like to talk about?" />
                 </Field>
               )}
               <Field id="bk-note" label="Anything they should know beforehand? (optional)">
-                <Textarea id="bk-note" rows={3} maxLength={2000} value={note} onChange={(e) => setNote(e.target.value)}
+                <Textarea id="bk-note" rows={3} maxLength={500} value={note} onChange={(e) => setNote(e.target.value)}
                   placeholder="For example: I'd like to compare two capstone ideas." />
               </Field>
               <label htmlFor="bk-attach" className="flex cursor-pointer items-center gap-2.5 text-sm font-semibold">
@@ -341,7 +366,7 @@ function BookingForm({ data }) {
                 </div>
               )}
               <span className="text-xs text-muted">
-                Times shown in the school's local time. Struck-through times are taken.
+                Times shown in {ZONE_NAMES[avail?.timeZone] ?? "the school's local time"}. Greyed-out times are taken or clash with your classes.
                 {person.meetingLength ? ` Meetings are ${person.meetingLength} minutes.` : ''}
               </span>
             </Step>
@@ -369,7 +394,8 @@ function BookingForm({ data }) {
             <span className="text-xs text-muted">You'll get a confirmation in Messages.</span>
           </Card>
         )}
-        <UpcomingMeetings meetings={meetings} onChanged={meetingChanged} />
+        <UpcomingMeetings meetings={meetings} onChanged={meetingChanged}
+          onReschedule={(staffId) => { setBooked(null); if (staff.some((s) => s.id === staffId)) pickPerson(staffId) }} />
       </aside>
     </div>
   )

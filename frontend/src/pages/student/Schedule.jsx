@@ -146,7 +146,7 @@ function DetailLine({ icon, children }) {
   )
 }
 
-function EventDetail({ item, onEdit, onDelete, deleting }) {
+function EventDetail({ item, onEdit, onDelete, onRemind, deleting }) {
   if (!item) return <Card><DetailEmpty>Select an event to see details.</DetailEmpty></Card>
   return (
     <Card className="gap-3">
@@ -159,10 +159,14 @@ function EventDetail({ item, onEdit, onDelete, deleting }) {
       <DetailLine icon="clock">{shortDay(item.date, { weekday: true })} · {item.start}–{item.end}</DetailLine>
       {item.location && <DetailLine icon="pin">{item.location}</DetailLine>}
       {item.note && <p className="m-0 text-sm leading-relaxed text-muted">{item.note}</p>}
+      {item.reminderMinutes != null && <DetailLine icon="bell">Reminder · {item.reminderMinutes} min before</DetailLine>}
 
       {item.editable && (
         <div className="flex flex-wrap gap-2 pt-1">
           <Button variant="secondary" size="sm" onClick={() => onEdit(item)}><Icon name="edit" size={16} />Edit</Button>
+          {item.reminderMinutes == null && (
+            <Button variant="secondary" size="sm" onClick={() => onRemind(item)}><Icon name="bell" size={16} />Set reminder</Button>
+          )}
           <Button variant="danger" size="sm" onClick={() => onDelete(item)} disabled={deleting}>
             <Icon name="trash" size={16} />{deleting ? 'Deleting…' : 'Delete'}
           </Button>
@@ -173,12 +177,22 @@ function EventDetail({ item, onEdit, onDelete, deleting }) {
   )
 }
 
-function StudySuggestion({ suggestion, onAdd }) {
+// Acadmate's study-block suggestion; after the block is saved it shows what was added (`added`).
+function StudySuggestion({ suggestion, added, onAdd }) {
   return (
-    <Card className="gap-3">
-      <CardHeader title="Free time before a deadline" />
-      <p className="m-0 text-sm leading-relaxed">{suggestion.text}</p>
-      <div><Button size="sm" onClick={onAdd}><Icon name="plus" size={16} />Add study block</Button></div>
+    <Card dark className="gap-3">
+      <div className="flex items-center gap-2.5">
+        <div className="flex size-9 items-center justify-center rounded-[10px] bg-teal">
+          <Icon name="sparkle" color="var(--color-navy)" strokeWidth={2.2} />
+        </div>
+        <h2 className="m-0 text-base font-bold text-white">Acadmate suggestion</h2>
+      </div>
+      <p className="m-0 text-sm leading-relaxed text-frost">{added ?? suggestion.text}</p>
+      <div>
+        {added
+          ? <Button size="sm" disabled className="bg-navy-raised! text-teal-bright!"><Icon name="check" size={16} />Added to your week</Button>
+          : <Button variant="sun" size="sm" onClick={onAdd}><Icon name="plus" size={16} />Add study block</Button>}
+      </div>
     </Card>
   )
 }
@@ -186,7 +200,7 @@ function StudySuggestion({ suggestion, onAdd }) {
 function UpcomingDeadlines({ deadlines }) {
   return (
     <Card className="gap-1">
-      <CardHeader title="Upcoming deadlines" action={<Link to="/student/assignments" className="text-[13px] font-semibold">View all</Link>} />
+      <CardHeader title="Coming deadlines" action={<Link to="/student/assignments" className="text-[13px] font-semibold">View all</Link>} />
       <div className="mt-2 flex flex-col">
         {deadlines.slice(0, 5).map((d) => (
           <div key={d.id} className="flex items-center gap-3 border-t border-canvas py-3">
@@ -347,6 +361,7 @@ export default function StudentSchedule() {
   const [selectedId, setSelectedId] = useState(null)
   const [editing, setEditing] = useState(null)
   const [deleting, setDeleting] = useState(false)
+  const [added, setAdded] = useState(null) // { week, text } after adding the suggested study block
   // Toast actions can fire after the week changed; always reload whatever week is showing then.
   const reloadRef = useRef(reload)
   reloadRef.current = reload
@@ -373,10 +388,23 @@ export default function StudentSchedule() {
   }
 
   const saved = (event, isEdit) => {
+    if (editing?.fromSuggestion) {
+      setAdded({ week: mondayOf(event.date), text: `Added a study block on ${shortDay(event.date, { weekday: true })} ${event.start}–${event.end}. It's on your week now.` })
+    }
     setEditing(null)
     setSelectedId(event.id)
     toast.show({ message: isEdit ? 'Event updated' : `Added "${event.title}"` })
     showWeekOf(event.date)
+  }
+
+  const remind = async (item) => {
+    try {
+      await api(`/students/me/events/${item.id}`, { method: 'PATCH', body: { reminderMinutes: 30 } })
+      toast.show({ message: 'Reminder set for 30 minutes before' })
+      reloadRef.current()
+    } catch (err) {
+      toast.show({ message: errorText(err) })
+    }
   }
 
   const remove = async (item) => {
@@ -407,6 +435,7 @@ export default function StudentSchedule() {
 
   const defaultDate = data.today >= data.from && data.today <= data.to ? data.today : data.from
   const { suggestion } = data
+  const addedHere = added?.week === shownFrom ? added : null
 
   return (
     <>
@@ -416,7 +445,7 @@ export default function StudentSchedule() {
           <>
             <div className="flex items-center gap-1.5">
               <Button variant="secondary" size="sm" aria-label="Previous week" onClick={() => go(-1)}><Icon name="chevronLeft" size={16} /></Button>
-              <Button variant="secondary" size="sm" onClick={() => setWeekFrom(null)} disabled={weekFrom === null}>This week</Button>
+              <Button variant="secondary" size="sm" onClick={() => setWeekFrom(null)} disabled={weekFrom === null}>Today</Button>
               <Button variant="secondary" size="sm" aria-label="Next week" onClick={() => go(1)}><Icon name="chevronRight" size={16} /></Button>
             </div>
             <Button onClick={() => setEditing({ mode: 'add', initial: { date: defaultDate } })}><Icon name="plus" size={18} />Add event</Button>
@@ -426,10 +455,11 @@ export default function StudentSchedule() {
       <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
         <WeekGrid data={data} selectedId={selected?.id} onSelect={setSelectedId} loading={loading} />
         <div className="flex min-w-0 flex-col gap-4">
-          <EventDetail item={selected} deleting={deleting} onDelete={remove} onEdit={(item) => setEditing({ mode: 'edit', item })} />
-          {suggestion && (
-            <StudySuggestion suggestion={suggestion} onAdd={() => setEditing({
-              mode: 'add', initial: { type: 'Study', title: suggestion.title, date: suggestion.date, start: suggestion.start, end: suggestion.end },
+          <EventDetail item={selected} deleting={deleting} onDelete={remove} onRemind={remind} onEdit={(item) => setEditing({ mode: 'edit', item })} />
+          {(addedHere || suggestion) && (
+            <StudySuggestion suggestion={suggestion} added={addedHere?.text} onAdd={() => setEditing({
+              mode: 'add', fromSuggestion: true,
+              initial: { type: 'Study', title: suggestion.title, date: suggestion.date, start: suggestion.start, end: suggestion.end },
             })} />
           )}
           <UpcomingDeadlines deadlines={data.deadlines} />

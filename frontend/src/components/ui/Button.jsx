@@ -11,7 +11,7 @@ const VARIANTS = {
   ghostDark: 'bg-transparent text-frost border border-navy-line font-semibold hover:bg-navy-raised hover:text-frost',
   danger: 'bg-pink-soft text-pink-ink border-0 hover:brightness-95 hover:text-pink-ink',
 }
-const SIZES = { lg: 'min-h-[52px] text-[15px] w-full', md: 'min-h-11 px-4 text-sm', sm: 'min-h-10 px-3.5 text-[13px]' }
+const SIZES = { lg: 'min-h-[52px] text-[15px] w-full', md: 'min-h-11 px-4 text-sm', sm: 'hit-44 min-h-10 px-3.5 text-[13px]' }
 
 // `to` renders a router Link; `href` renders a plain <a> (e.g. CSV downloads via apiUrl()).
 export default function Button({ to, href, variant = 'primary', size = 'md', className = '', children, ...rest }) {

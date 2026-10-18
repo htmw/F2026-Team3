@@ -20,7 +20,7 @@ export default function PageHeader({ title, subtitle, initials, search, actions 
         {search && <SearchInput {...search} />}
         {initials && (
           <>
-            <Link to={`${HOME[user?.role] ?? ''}/messages`} aria-label={`Messages, ${unread} unread`}
+            <Link to={`${HOME[user?.role] ?? ''}/messages`} aria-label={`Notifications, ${unread} new`}
               className="relative flex size-11 cursor-pointer items-center justify-center rounded-xl border border-line bg-surface">
               <Icon name="bell" color="var(--color-navy)" />
               {unread > 0 && <span className="absolute right-2.5 top-[9px] size-2 rounded-full bg-amber" />}

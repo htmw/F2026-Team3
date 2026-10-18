@@ -4,6 +4,7 @@ export const PILL_TONES = {
   amber: 'bg-amber-soft text-amber-ink',
   gray: 'bg-line-soft text-slate',
   pink: 'bg-pink-soft text-pink-ink',
+  navy: 'bg-navy text-white',
 }
 
 export default function Pill({ tone = 'teal', className = '', children }) {

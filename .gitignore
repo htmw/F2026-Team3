@@ -9,3 +9,10 @@ Doumentation/Sprint Planning/AI_Academic_Advisement_Sprint0.mp4
 # Claude Code local files
 .claude/
 .claude/settings.local.json
+
+# Python
+backend/venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/

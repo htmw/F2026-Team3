@@ -14,6 +14,7 @@ import { useToast } from '../../components/ui/Toast.jsx'
 import { useAuth } from '../../auth/AuthContext.jsx'
 import { api } from '../../lib/api.js'
 import { useApi } from '../../lib/useApi.js'
+import { useSaveState } from '../../lib/useSaveState.js'
 
 const FEATURES = [
   ['advisor', 'AI advisor', 'Students can ask Acadmate questions. Turning this off shows them a "book a meeting" banner instead.'],
@@ -116,7 +117,7 @@ export default function AdminAiSettings() {
   const toast = useToast()
   const { data, error, reload, setData } = useApi('/admin/ai/settings')
   const [form, setForm] = useState(null)
-  const [saving, setSaving] = useState(false)
+  const { label: saveLabel, saving, run } = useSaveState()
   const [saveError, setSaveError] = useState(null)
 
   if (error) {
@@ -124,6 +125,8 @@ export default function AdminAiSettings() {
       <>
         <PageHeader title="AI settings" />
         <ErrorState message={error.message} onRetry={reload} />
+        {/* Flags have their own endpoint, so review stays possible when settings fail to load. */}
+        <FlaggedAnswers />
       </>
     )
   }
@@ -133,27 +136,22 @@ export default function AdminAiSettings() {
   const set = (patch) => setForm({ ...current, ...patch })
   const dirty = form != null && JSON.stringify(form) !== JSON.stringify(pick(data))
 
-  const save = async () => {
-    setSaving(true)
+  const save = () => {
     setSaveError(null)
     // The engine is only sent when it changed, so a server without a key can still save other settings.
     const { engine, ...rest } = current
-    try {
+    run(async () => {
       const saved = await api('/admin/ai/settings', { method: 'PATCH', body: engine === data.engine ? rest : current })
       setData(saved)
       setForm(null)
       toast.show({ message: 'AI settings saved' })
-    } catch (err) {
-      setSaveError(err.message)
-    } finally {
-      setSaving(false)
-    }
+    }).catch((err) => setSaveError(err.message))
   }
 
   return (
     <>
       <PageHeader title="AI settings" subtitle="Control what the AI advisor can do and which student data it may use." initials={user?.initials}
-        actions={<Button onClick={save} disabled={saving || !dirty}>{saving ? 'Saving…' : 'Save changes'}</Button>} />
+        actions={<Button onClick={save} disabled={saving || !dirty} aria-live="polite">{saveLabel}</Button>} />
       {saveError && <Notice tone="pink">{saveError}</Notice>}
       {dirty && <Notice tone="indigo">You have unsaved changes. The test box already uses them.</Notice>}
 

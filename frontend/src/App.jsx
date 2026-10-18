@@ -15,6 +15,12 @@ import StudentSettings from './pages/student/Settings.jsx'
 import StudentBookMeeting from './pages/student/BookMeeting.jsx'
 import AdminOverview from './pages/admin/Overview.jsx'
 import AdminAiSettings from './pages/admin/AiSettings.jsx'
+import AdminUsers from './pages/admin/Users.jsx'
+import AdminAdvisors from './pages/admin/Advisors.jsx'
+import AdminAuditLog from './pages/admin/AuditLog.jsx'
+import AdminCatalog from './pages/admin/Catalog.jsx'
+import AdminIntegrations from './pages/admin/Integrations.jsx'
+import AdminSettings from './pages/admin/Settings.jsx'
 
 const todo = (title) => <Placeholder title={title} />
 // Dev-only component showcase; the dynamic import is dropped from production builds.
@@ -52,13 +58,13 @@ export default function App() {
 
       <Route path="/admin" element={<AppShell role="admin" />}>
         <Route index element={<AdminOverview />} />
-        <Route path="users" element={todo('Users')} />
-        <Route path="advisors" element={todo('Advisors')} />
-        <Route path="catalog" element={todo('Courses & catalog')} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="advisors" element={<AdminAdvisors />} />
+        <Route path="catalog" element={<AdminCatalog />} />
         <Route path="ai" element={<AdminAiSettings />} />
-        <Route path="integrations" element={todo('Integrations')} />
-        <Route path="audit" element={todo('Audit log')} />
-        <Route path="settings" element={todo('Settings')} />
+        <Route path="integrations" element={<AdminIntegrations />} />
+        <Route path="audit" element={<AdminAuditLog />} />
+        <Route path="settings" element={<AdminSettings />} />
       </Route>
 
       {UiKit && <Route path="/dev/ui" element={<Suspense fallback={null}><UiKit /></Suspense>} />}

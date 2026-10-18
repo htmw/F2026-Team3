@@ -30,7 +30,7 @@ export function ToastProvider({ children }) {
             <span>{toast.message}</span>
             {toast.actionLabel && (
               <button type="button" onClick={() => { dismiss(); toast.onAction?.() }}
-                className="ml-auto min-h-9 cursor-pointer rounded-lg border-0 bg-transparent px-2 text-sm font-bold text-sun hover:bg-navy-raised">
+                className="hit-44 ml-auto min-h-9 cursor-pointer rounded-lg border-0 bg-transparent px-2 text-sm font-bold text-sun hover:bg-navy-raised">
                 {toast.actionLabel}
               </button>
             )}

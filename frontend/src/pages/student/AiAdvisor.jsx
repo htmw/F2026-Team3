@@ -12,7 +12,7 @@ import { Empty, ErrorState, Loading } from '../../components/ui/Status.jsx'
 import { useToast } from '../../components/ui/Toast.jsx'
 import { useAuth } from '../../auth/AuthContext.jsx'
 import { api } from '../../lib/api.js'
-import { clockTime, relativeDate } from '../../lib/dates.js'
+import { clockTime, relativeDate, shortDay } from '../../lib/dates.js'
 import { useApi } from '../../lib/useApi.js'
 
 const PENDING_ID = 'pending'
@@ -32,7 +32,7 @@ function ThreadList({ threads, activeId, onSelect, onDelete }) {
               <span className="text-xs text-muted">{relativeDate(thread.updatedAt)}</span>
             </button>
             <button type="button" aria-label={`Delete conversation "${thread.title}"`} onClick={() => onDelete(thread)}
-              className="mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface">
+              className="hit-44 mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-muted hover:bg-surface">
               <Icon name="x" size={15} />
             </button>
           </div>
@@ -70,7 +70,15 @@ function ContextPanel({ context }) {
         <p className="m-0 text-sm leading-relaxed text-fog">
           {context.advisor ? `${context.advisor.name} can review your plan and sign off on it.` : 'Your advisor can review your plan and sign off on it.'}
         </p>
-        <div><Button to="/student/book-meeting" variant="sun" size="sm">Book a meeting</Button></div>
+        {context.nextMeeting && (
+          <span className="text-[13px] text-fog">
+            Next meeting · <strong className="text-white">{shortDay(context.nextMeeting.date, { weekday: true })} · {context.nextMeeting.time}</strong>
+          </span>
+        )}
+        <div className="flex flex-wrap items-center gap-3">
+          <Button to="/student/book-meeting" variant="sun" size="sm">Book a meeting</Button>
+          <Link to="/student/messages" className="text-[13px] font-semibold text-teal-bright">Message advisor</Link>
+        </div>
       </Card>
     </div>
   )

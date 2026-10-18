@@ -1,10 +1,12 @@
 import Card from '../components/ui/Card.jsx'
 import PageHeader from '../components/layout/PageHeader.jsx'
+import { useAuth } from '../auth/AuthContext.jsx'
 
 export default function Placeholder({ title }) {
+  const { user } = useAuth()
   return (
     <>
-      <PageHeader title={title} />
+      <PageHeader title={title} initials={user?.initials} />
       <Card className="gap-2">
         <h2 className="m-0 text-lg font-bold">This screen isn't built yet</h2>
         <p className="m-0 max-w-[60ch] text-sm leading-relaxed text-muted">

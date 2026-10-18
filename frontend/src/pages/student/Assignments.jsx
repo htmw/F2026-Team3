@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
 import MasterDetail, { DetailEmpty, ListRow } from '../../components/layout/MasterDetail.jsx'
 import Card from '../../components/ui/Card.jsx'
 import Pill, { Chip } from '../../components/ui/Pill.jsx'
+import StatTile from '../../components/ui/StatTile.jsx'
 import Button from '../../components/ui/Button.jsx'
+import Icon from '../../components/ui/Icon.jsx'
 import Notice from '../../components/ui/Notice.jsx'
 import Dialog from '../../components/ui/Dialog.jsx'
 import SegmentedTabs from '../../components/ui/Tabs.jsx'
@@ -24,28 +27,19 @@ const FORM_FIELDS = [
 const isClosed = (row) => row.status === 'Submitted' || row.status === 'Graded'
 const NOT_GRADED = '—'
 
-function StatTile({ stat }) {
-  return (
-    <div className="box-border flex min-w-0 flex-[1_1_170px] flex-col gap-2 rounded-[var(--radius-tile)] bg-surface p-5">
-      <span className="text-sm font-semibold text-muted">{stat.label}</span>
-      <span className="font-display text-[28px] font-bold tracking-[-0.02em]">{stat.value}</span>
-      <span className="text-[13px] text-muted">{stat.note}</span>
-    </div>
-  )
-}
 
 function Score({ score }) {
   if (score === NOT_GRADED) return <span className="text-muted" aria-label="Not graded yet">—</span>
   return <span className="font-bold">{score}</span>
 }
 
-const ROW_GRID = 'grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 sm:grid-cols-[minmax(0,1fr)_88px_96px_44px]'
+const ROW_GRID = 'grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 @xl:grid-cols-[minmax(0,1fr)_88px_56px_96px_44px]'
 
 function AssignmentList({ rows, selectedId, onSelect }) {
   return (
-    <Card className="gap-1">
-      <div aria-hidden="true" className={`${ROW_GRID} hidden px-3.5 pb-1 text-xs font-bold uppercase tracking-[0.06em] text-muted sm:grid`}>
-        <span>Assignment</span><span>Course</span><span>Status</span><span className="text-right">Score</span>
+    <Card className="@container gap-1">
+      <div aria-hidden="true" className={`${ROW_GRID} hidden px-3.5 pb-1 text-xs font-bold uppercase tracking-[0.06em] text-muted @xl:grid`}>
+        <span>Assignment</span><span>Course</span><span>Due</span><span>Status</span><span className="text-right">Score</span>
       </div>
       {rows.map((row) => {
         const flag = !isClosed(row) && (row.deadline === 'Overdue' || row.deadline === 'Due soon')
@@ -55,13 +49,14 @@ function AssignmentList({ rows, selectedId, onSelect }) {
               <div className="flex min-w-0 flex-col gap-[3px]">
                 <span className="truncate text-sm font-semibold">{row.title}</span>
                 <span className="flex flex-wrap items-center gap-1.5 text-xs text-muted">
-                  Due {row.due}
+                  <span className="@xl:hidden">Due {row.due} · {row.course}</span>
                   {flag && <Pill tone={DEADLINE_TONE[row.deadline]} className="px-2 py-0.5 text-[11px]">{row.deadline}</Pill>}
                 </span>
               </div>
-              <span className="hidden sm:block"><Chip tone="indigo">{row.course}</Chip></span>
-              <span className="justify-self-end sm:justify-self-start"><Pill tone={ASSIGNMENT_STATUS_TONE[row.status] ?? 'gray'}>{row.status}</Pill></span>
-              <span className="hidden text-right text-sm sm:block"><Score score={row.score} /></span>
+              <span className="hidden @xl:block"><Chip tone="indigo">{row.course}</Chip></span>
+              <span className="hidden text-[13px] @xl:block">{row.due}</span>
+              <span className="justify-self-end @xl:justify-self-start"><Pill tone={ASSIGNMENT_STATUS_TONE[row.status] ?? 'gray'}>{row.status}</Pill></span>
+              <span className="hidden text-right text-sm @xl:block"><Score score={row.score} /></span>
             </div>
           </ListRow>
         )
@@ -116,19 +111,32 @@ function FormDialog({ row, open, onClose, onSubmitted }) {
   )
 }
 
-function AssignmentDetail({ row, busy, notice, onToggleStep, onStart, onSubmit }) {
+function Fact({ label, children }) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <dt className="text-xs font-semibold text-muted">{label}</dt>
+      <dd className="m-0 text-sm font-bold">{children}</dd>
+    </div>
+  )
+}
+
+function AssignmentDetail({ row, busy, notice, onToggleStep, onStart, onSubmit, onAsk }) {
   const closed = isClosed(row)
   const doneCount = row.steps.filter((step) => step.done).length
   return (
     <Card className="gap-4">
       <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           <Chip tone="indigo">{row.course}</Chip>
-          <h2 className="m-0 text-lg font-bold">{row.title}</h2>
-        </div>
-        <span className="text-[13px] text-muted">Due {row.due} · {row.type} · Weight <strong className="text-navy">{row.weight}</strong></span>
-        <div className="flex flex-wrap items-center gap-3 text-[13px] text-muted">
           <Pill tone={ASSIGNMENT_STATUS_TONE[row.status] ?? 'gray'}>{row.status}</Pill>
+        </div>
+        <h2 className="m-0 text-lg font-bold">{row.title}</h2>
+        <dl className="m-0 grid grid-cols-3 gap-3">
+          <Fact label="Due">{row.due}</Fact>
+          <Fact label="Weight">{row.weight}</Fact>
+          <Fact label="Type">{row.type}</Fact>
+        </dl>
+        <div className="flex flex-wrap items-center gap-3 text-[13px] text-muted">
           {!closed && row.deadline !== 'In progress' && row.deadline !== 'Not started' && (
             <Pill tone={DEADLINE_TONE[row.deadline]}>{row.deadline}</Pill>
           )}
@@ -136,12 +144,14 @@ function AssignmentDetail({ row, busy, notice, onToggleStep, onStart, onSubmit }
         </div>
       </div>
 
-      {row.desc && <p className="m-0 text-sm leading-relaxed">{row.desc}</p>}
+      {row.desc && <p className="m-0 whitespace-pre-line text-sm leading-relaxed">{row.desc}</p>}
 
       {row.steps.length > 0 && (
         <div className="flex flex-col gap-2 border-t border-canvas pt-4">
           <div className="flex items-baseline justify-between gap-3">
-            <h3 className="m-0 text-[15px] font-bold">Steps</h3>
+            <h3 className="m-0 flex items-center gap-2 text-[15px] font-bold">
+              <Icon name="sparkle" size={16} color="var(--color-accent)" />Acadmate step plan
+            </h3>
             <span className="text-[13px] text-muted">{doneCount} of {row.steps.length} done</span>
           </div>
           {row.steps.map((step, i) => {
@@ -167,6 +177,12 @@ function AssignmentDetail({ row, busy, notice, onToggleStep, onStart, onSubmit }
         <Button size="sm" onClick={onSubmit} disabled={closed || busy}>
           {closed ? 'Submitted' : row.type === 'Form' ? 'Fill in form' : busy ? 'Saving…' : 'Mark as submitted'}
         </Button>
+        {row.submissionUrl && (
+          <Button href={row.submissionUrl} target="_blank" rel="noreferrer" variant="secondary" size="sm">
+            Open submission page<Icon name="external" size={14} />
+          </Button>
+        )}
+        <Button variant="secondary" size="sm" onClick={onAsk}><Icon name="sparkle" size={14} />Ask Acadmate</Button>
       </div>
     </Card>
   )
@@ -175,7 +191,9 @@ function AssignmentDetail({ row, busy, notice, onToggleStep, onStart, onSubmit }
 export default function StudentAssignments() {
   const { user, refreshBadges } = useAuth()
   const toast = useToast()
+  const navigate = useNavigate()
   const { data, error, reload, setData } = useApi('/students/me/assignments')
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('All')
   const [course, setCourse] = useState('All')
   const [selectedId, setSelectedId] = useState(null)
@@ -193,9 +211,10 @@ export default function StudentAssignments() {
   }
   if (!data) return <Loading label="Loading your assignments…" />
 
-  const visible = data.rows.filter((row) => (status === 'All' || row.status === status) && (course === 'All' || row.course === course))
+  const query = search.trim().toLowerCase()
+  const visible = data.rows.filter((row) => (status === 'All' || row.status === status) && (course === 'All' || row.course === course)
+    && (!query || `${row.title} ${row.course}`.toLowerCase().includes(query)))
   const selected = visible.find((row) => row.id === selectedId) ?? visible[0]
-  const openCount = data.rows.filter((row) => !isClosed(row)).length
 
   const updateRow = (id, change) => setData((current) => current && {
     ...current, rows: current.rows.map((row) => (row.id === id ? change(row) : row)),
@@ -261,15 +280,16 @@ export default function StudentAssignments() {
     afterSubmit(row)
   }
 
-  const clearFilters = () => { setStatus('All'); setCourse('All') }
+  const clearFilters = () => { setStatus('All'); setCourse('All'); setSearch('') }
 
   return (
     <>
-      <PageHeader title="Assignments" initials={user?.initials}
-        subtitle={`${openCount} open item${openCount === 1 ? '' : 's'}`} />
+      <PageHeader title="Assignments" initials={user?.initials} subtitle={data.subtitle}
+        search={{ label: 'Search assignments', placeholder: 'Search assignments…', value: search, onChange: setSearch }}
+        actions={<Button to="/student/schedule" variant="secondary">Plan my week</Button>} />
 
       <section aria-label="Assignment summary" className="flex flex-wrap gap-4">
-        {data.stats.map((stat) => <StatTile key={stat.label} stat={stat} />)}
+        {data.stats.map((stat) => <StatTile key={stat.label} label={stat.label} value={stat.value} note={stat.note} />)}
       </section>
 
       <div className="flex flex-col gap-2.5">
@@ -284,10 +304,10 @@ export default function StudentAssignments() {
       {data.rows.length === 0 ? (
         <Card><Empty>No assignments this term.</Empty></Card>
       ) : (
-        <MasterDetail
+        <MasterDetail wideList
           list={visible.length === 0 ? (
             <Card className="items-start gap-2">
-              <Empty>Nothing matches these filters.</Empty>
+              <Empty>No assignments match these filters.</Empty>
               <Button variant="secondary" size="sm" onClick={clearFilters}>Clear filters</Button>
             </Card>
           ) : (
@@ -296,7 +316,8 @@ export default function StudentAssignments() {
           detail={selected ? (
             <AssignmentDetail row={selected} busy={busyId === selected.id}
               notice={notice?.id === selected.id ? notice : null}
-              onToggleStep={(i) => toggleStep(selected, i)} onStart={() => start(selected)} onSubmit={() => submit(selected)} />
+              onToggleStep={(i) => toggleStep(selected, i)} onStart={() => start(selected)} onSubmit={() => submit(selected)}
+              onAsk={() => navigate('/student/ai-advisor', { state: { question: `Help me plan ${selected.title}` } })} />
           ) : <Card><DetailEmpty /></Card>} />
       )}
 
