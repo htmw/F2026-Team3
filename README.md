@@ -1,4 +1,4 @@
-# F2026-Team3
+# F2026-Team3 AcadMate
 
 Acadmate: academic advising for students, faculty advisors and administrators.
 
