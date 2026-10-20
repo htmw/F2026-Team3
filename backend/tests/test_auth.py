@@ -1,3 +1,4 @@
+# name : chintu
 """Spec 02 Phase A acceptance: login, sessions, logout, signup, password reset / invite, badges, config."""
 import logging
 import re
