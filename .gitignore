@@ -16,3 +16,6 @@ backend/venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+# Claude Code project notes (kept local)
+CLAUDE.md
