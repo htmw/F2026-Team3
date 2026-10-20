@@ -6,7 +6,7 @@ export default function Logo({ size = 'md' }) {
   return (
     <div className="flex items-center gap-2.5">
       <div className={`${box} flex items-center justify-center bg-teal`}>
-        <Icon name="cap" size={size === 'lg' ? 24 : 22} color="#13212E" strokeWidth={2.2} />
+        <Icon name="cap" size={size === 'lg' ? 24 : 22} color="var(--color-navy)" strokeWidth={2.2} />
       </div>
       <span className={`font-display font-bold tracking-[-0.02em] text-white ${text}`}>Acadmate</span>
     </div>

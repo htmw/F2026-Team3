@@ -13,11 +13,17 @@ import '@fontsource/space-grotesk/700.css'
 import './index.css'
 
 import App from './App.jsx'
+import { AuthProvider } from './auth/AuthContext.jsx'
+import { ToastProvider } from './components/ui/Toast.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )
