@@ -3,12 +3,13 @@ Shared by students, advisors (spec 25) and admins. Other features post notices w
 from datetime import date, datetime, timedelta
 
 from sqlalchemy import and_, func, or_
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.errors import ApiError, forbidden, not_found
 from core.time import iso_z, local_zone, now, short_date, today
 from models import (Advisor, AdvisorStudentAssignment, Conversation, ConversationParticipant, Course, CourseSection,
-                    Enrollment, Message, Student, User)
+                    Enrollment, Message, Program, Student, User)
 from services.auth import user_payload
 from services.catalog import current_term
 
@@ -75,6 +76,7 @@ class _Viewer:
         self.instructors: dict[int, str] = {}  # instructor user id -> "CS 608 · Algorithms & Computing Theory"
         self.classmates: set[int] = set()      # user ids of students in the same current sections
         self.advisees: set[int] = set()        # user ids of an advisor's assigned students
+        self.advisee_students: dict[int, tuple[int, str | None]] = {}  # advisee user id -> (student id, program)
 
         student = _student_of(db, user)
         if student is not None:
@@ -94,18 +96,22 @@ class _Viewer:
         elif user.role == "advisor":
             advisor = db.query(Advisor).filter(Advisor.user_id == user.user_id).one_or_none()
             if advisor is not None:
-                self.advisees = {user_id for user_id, in (
-                    db.query(Student.user_id).join(AdvisorStudentAssignment, AdvisorStudentAssignment.student_id == Student.student_id)
+                self.advisee_students = {user_id: (student_id, program) for user_id, student_id, program in (
+                    db.query(Student.user_id, Student.student_id, Program.program_name)
+                    .join(AdvisorStudentAssignment, AdvisorStudentAssignment.student_id == Student.student_id)
+                    .outerjoin(Program, Program.program_id == Student.program_id)
                     .filter(AdvisorStudentAssignment.advisor_id == advisor.advisor_id))}
+                self.advisees = set(self.advisee_students)
 
     def label_for(self, other: User) -> str | None:
-        """"Faculty advisor", "CS 608 · …", "Classmate", "Advisee", or the user's own title."""
+        """"Faculty advisor", "CS 608 · …", "Classmate", "Advisee · M.S. Computer Science", or the user's own title."""
         if other.user_id in self.advisors:
             return "Faculty advisor"
         if other.user_id in self.instructors:
             return self.instructors[other.user_id]
         if other.user_id in self.advisees:
-            return "Advisee"
+            program = self.advisee_students[other.user_id][1]
+            return f"Advisee · {program}" if program else "Advisee"
         if other.user_id in self.classmates:
             return "Classmate"
         return other.title
@@ -228,7 +234,7 @@ def _row(conversation: Conversation, members: list[User], last: Message | None, 
     elif conversation.kind == "group":
         name = conversation.title or DEFAULT_GROUP_TITLE
         initials = "".join(word[:1] for word in name.split()[:2]).upper() or "G"
-        role = f"{len(members)} members"
+        role = f"{len(members)} advisors" if conversation.team_key else f"{len(members)} members"
     elif other is not None:
         name, initials, role = other.name, _initials(other), viewer.role_line(other)
     else:  # the other person's account is gone
@@ -248,6 +254,9 @@ def _row(conversation: Conversation, members: list[User], last: Message | None, 
                          and (other.bookable or other.user_id in viewer.advisors)),
         "other_user_id": other.user_id if other is not None else None,
         "members": len(members),
+        # The advisor side's "Open record" / "Book meeting" links (spec 25).
+        "student_id": viewer.advisee_students[other.user_id][0] if other is not None and other.user_id in viewer.advisee_students else None,
+        "team": conversation.team_key is not None,
     }
 
 
@@ -336,6 +345,41 @@ def start(db: Session, user: User, recipient_ids: list[int], text: str | None = 
         message = _append(db, conversation, user.user_id, text.strip())
         participant = db.get(ConversationParticipant, (conversation.id, user.user_id))
         participant.last_read_at = message.created_at
+    db.commit()
+    return conversation.id
+
+
+def team_conversation(db: Session, user: User) -> int:
+    """The advisor's department team group (spec 25), created once per department and re-synced on every call:
+    active advisors of the department join, anyone who left or was deactivated is removed. Commits."""
+    advisor = db.query(Advisor).filter(Advisor.user_id == user.user_id).one_or_none()
+    if user.role != "advisor" or advisor is None:
+        raise forbidden("Only advisors have an advising team.")
+    department = advisor.department
+    key = f"advising:{department or 'All'}"[:60]
+    title = (f"{department} advising team" if department else "Advising team")[:80]
+    members = {user_id for user_id, in (
+        db.query(User.user_id).join(Advisor, Advisor.user_id == User.user_id)
+        .filter(User.is_active.is_(True), User.role == "advisor",
+                Advisor.department == department if department else Advisor.department.is_(None)))}
+    members.add(user.user_id)
+
+    conversation = db.query(Conversation).filter(Conversation.team_key == key).one_or_none()
+    if conversation is None:
+        conversation = Conversation(kind="group", title=title, team_key=key, created_by=user.user_id, created_at=now(),
+                                    last_message_at=now())
+        db.add(conversation)
+        try:
+            db.flush()
+        except IntegrityError:  # another advisor created it at the same moment
+            db.rollback()
+            conversation = db.query(Conversation).filter(Conversation.team_key == key).one()
+    current = {participant.user_id: participant for participant in
+               db.query(ConversationParticipant).filter(ConversationParticipant.conversation_id == conversation.id)}
+    for user_id in members - set(current):
+        db.add(ConversationParticipant(conversation_id=conversation.id, user_id=user_id, last_read_at=now()))
+    for user_id in set(current) - members:
+        db.delete(current[user_id])
     db.commit()
     return conversation.id
 

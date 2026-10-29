@@ -16,14 +16,19 @@ AMARA_NOTICES = 1304  # her seeded Acadmate system conversation
 
 @pytest.fixture
 def restore_plan():
-    """Tests that change Amara's plan put the seeded plan back afterwards (the seeded database is shared)."""
+    """Tests that change Amara's plan put the seeded plan and requests back afterwards (the seeded database is
+    shared)."""
     columns = ("id", "student_id", "course_id", "term_id", "status", "note", "source", "created_at")
+    request_columns = [c.name for c in ApprovalRequest.__table__.columns]
     with SessionLocal() as db:
         saved = [{name: getattr(item, name) for name in columns}
                  for item in db.query(PlanItem).filter(PlanItem.student_id == 101)]
+        requests = [{name: getattr(r, name) for name in request_columns}
+                    for r in db.query(ApprovalRequest).filter(ApprovalRequest.student_id == 101)]
     yield
     with SessionLocal() as db:
         db.query(ApprovalRequest).filter(ApprovalRequest.student_id == 101).delete()
+        db.add_all(ApprovalRequest(**row) for row in requests)
         # The submit notice in Amara's Acadmate conversation (spec 16).
         db.query(Message).filter(Message.conversation_id == AMARA_NOTICES, Message.text.like("%waiting for advisor approval.")).delete(
             synchronize_session=False)
@@ -76,9 +81,9 @@ def test_degree_audit_for_seeded_student(client):
         ("CS 608", "In progress", "Fall 2026"),
         ("CS 661", "In progress", "Fall 2026"),
         ("CS 675", "In progress", "Fall 2026"),
-        ("CS 680", "Planned", "Spring 2027"),
+        ("CS 680", "Pending approval", "Spring 2027"),
     ]
-    assert groups["Capstone"]["items"] == [{"code": "CS 691", "name": "Capstone Project", "status": "Needs approval",
+    assert groups["Capstone"]["items"] == [{"code": "CS 691", "name": "Capstone Project", "status": "Pending approval",
                                             "meta": "Spring 2027"}]
 
 
@@ -100,7 +105,7 @@ def test_plan_for_seeded_student(client):
     assert data["terms"][3]["courses"][0] == {"enrollmentId": 308, "code": "CS 608", "name": "Algorithms & Computing Theory",
                                               "status": "current", "planStatus": None}
     assert [(c["enrollmentId"], c["code"], c["status"], c["planStatus"]) for c in data["terms"][4]["courses"]] == [
-        (9002, "CS 680", "planned", "Planned"), (9001, "CS 691", "planned", "Needs approval")]
+        (9002, "CS 680", "planned", "Pending approval"), (9001, "CS 691", "planned", "Pending approval")]
 
     assert data["futureTerms"] == [{"id": SPRING_2027, "name": "Spring 2027"}, {"id": SUMMER_2027, "name": "Summer 2027"},
                                    {"id": FALL_2027, "name": "Fall 2027"}]
@@ -152,7 +157,17 @@ def test_prerequisites(client, new_student):
     assert capstone.status_code == 400 and capstone.json()["error"]["message"] == "Take CS 600 before CS 691."
 
 
-def test_submit_spring_plan(client, as_user, restore_plan):
+@pytest.fixture
+def unsent_plan(restore_plan):
+    """Amara's Spring 2027 plan before she sent it: request 1709 gone, items back to their draft statuses."""
+    with SessionLocal() as db:
+        db.query(ApprovalRequest).filter(ApprovalRequest.id == 1709).delete()
+        for item in db.query(PlanItem).filter(PlanItem.id.in_((9001, 9002))):
+            item.status = "needs_approval" if item.id == 9001 else "planned"
+        db.commit()
+
+
+def test_submit_spring_plan(client, as_user, unsent_plan):
     login(client, AMARA)
     response = client.post(f"{PLAN}/submit", json={"termId": SPRING_2027})
     assert response.status_code == 200
@@ -185,7 +200,7 @@ def test_submit_spring_plan(client, as_user, restore_plan):
     assert error["message"] == "Fall 2027 has no planned courses to send."
 
     as_user("advisor")
-    assert client.get("/api/v1/users/me/badges").json()["badges"]["approvals"] == 1
+    assert client.get("/api/v1/users/me/badges").json()["badges"]["approvals"] == 5  # 1706-1708 (seed_advisees), Lina's 1710 (seed_student_record) + this plan
 
 
 def test_precheck_blocking_and_warnings(client, new_student):

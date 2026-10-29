@@ -34,3 +34,9 @@ export function shortDay(ymd, { weekday = false } = {}) {
     timeZone: 'UTC', month: 'short', day: 'numeric', ...(weekday ? { weekday: 'short' } : {}),
   })
 }
+
+// "Good morning" / "Good afternoon" / "Good evening" for dashboard greetings (local time).
+export function greeting(now = new Date()) {
+  const hour = now.getHours()
+  return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+}

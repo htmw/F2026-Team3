@@ -13,14 +13,10 @@ import BarChart from '../../components/ui/BarChart.jsx'
 import { Empty, ErrorState, Loading } from '../../components/ui/Status.jsx'
 import { useApi } from '../../lib/useApi.js'
 import { DEADLINE_TONE, EVENT_COLOR } from '../../lib/status.js'
+import { greeting } from '../../lib/dates.js'
 
 const AMBER = 'var(--color-amber)'
 const AI_PROMPTS = ['Which electives fit my schedule?', 'Am I on track to graduate?', 'Plan my Spring semester']
-
-function greeting() {
-  const hour = new Date().getHours()
-  return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
-}
 
 function GpaCard({ gpa }) {
   const trend = gpa.trend

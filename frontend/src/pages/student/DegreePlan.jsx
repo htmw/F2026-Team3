@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
+import { RequirementBar } from '../../components/academics/RequirementBars.jsx'
 import Card, { CardHeader } from '../../components/ui/Card.jsx'
 import Pill, { Chip } from '../../components/ui/Pill.jsx'
-import ProgressBar from '../../components/ui/ProgressBar.jsx'
 import StatTile from '../../components/ui/StatTile.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Icon from '../../components/ui/Icon.jsx'
@@ -56,15 +56,9 @@ function RequirementGroups({ groups, subtitle }) {
       {visible.map((group) => {
         const done = Math.min(group.items.filter((item) => item.status === 'Completed').length, group.required)
         const inProgress = group.items.filter((item) => item.status === 'In progress').length
-        const pct = (n) => (group.required ? (n / group.required) * 100 : 100)
         return (
-          <section key={group.title} aria-label={group.title} className="flex flex-col gap-2">
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="m-0 text-[15px] font-bold">{group.title}</h3>
-              <span className="text-[13px] text-muted">{group.count}</span>
-            </div>
-            <ProgressBar value={pct(done)} secondary={pct(inProgress)} secondaryColor="var(--color-teal-bright)" height="h-2.5"
-              label={`${group.title}: ${group.count}`} />
+          <RequirementBar key={group.title} title={group.title} count={group.count} done={done} inProgress={inProgress}
+            required={group.required}>
             <div className="mt-1 flex flex-col">
               {group.shown.map((item) => (
                 <CourseRow key={item.code} code={item.code} name={item.name} meta={item.meta} status={item.status} />
@@ -73,7 +67,7 @@ function RequirementGroups({ groups, subtitle }) {
                 <Empty>{group.allDone ? 'Every course in this group is complete.' : 'No courses here yet — add one to your plan.'}</Empty>
               )}
             </div>
-          </section>
+          </RequirementBar>
         )
       })}
     </Card>

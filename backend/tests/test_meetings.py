@@ -16,7 +16,7 @@ from test_foundation import assert_envelope
 STAFF, MEETINGS, MINE = "/api/v1/staff", "/api/v1/meetings", "/api/v1/students/me/meetings"
 AMARA, SARAH, KOFI = "amara.okafor@pac.edu", "sarah.smith@pac.edu", "kofi.mensah@pac.edu"
 SARAH_ID, MAYA_ID, GRAD_OFFICE_ID = 2, 11, 10
-LAST_SEEDED_MEETING, LAST_SEEDED_CONVERSATION, LAST_SEEDED_MESSAGE = 1507, 1305, 1411
+LAST_SEEDED_MEETING, LAST_SEEDED_CONVERSATION, LAST_SEEDED_MESSAGE = 1513, 1309, 1417  # 1508-1513: seed_advisor_meetings; 1306-1309: seed_advisor_messages
 NEXT_WEEK = "2026-10-05"
 MEETING_FIELDS = ("starts_at", "ends_at", "status", "proposed_starts_at", "advisor_notes", "reminded_at")
 
@@ -92,10 +92,10 @@ def test_availability_shape_and_lead_time(client):
         ("2026-10-09", "Fri", "9")]
     monday = data["days"][0]
     assert len(monday["slots"]) == 16 and monday["slots"][0] == {"startsAt": "2026-10-05T13:00:00Z", "time": "09:00", "taken": True}
-    assert (monday["open"], monday["free"]) == (15, "15 open")  # 09:00 is another student's meeting
+    assert (monday["open"], monday["free"]) == (14, "14 open")  # 09:00 and 11:00 are other students' meetings
 
     wednesday = days(client, SARAH_ID)["Wed"]
-    assert [s["time"] for s in wednesday["slots"] if s["taken"]] == ["10:00", "10:30"]
+    assert [s["time"] for s in wednesday["slots"] if s["taken"]] == ["10:00", "10:30", "16:00"]
 
     this_week = days(client, SARAH_ID, "2026-09-28")  # Mon-Wed have passed (today's slots depend on the clock)
     assert all((this_week[dow]["open"], this_week[dow]["free"]) == (0, "Full") for dow in ("Mon", "Tue", "Wed"))

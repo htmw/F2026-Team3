@@ -10,7 +10,12 @@ Also seeded: a deactivated student (user 4) and a pending advisor invite (user 5
 http://localhost:5173/reset-password?token=demo-invite-token (fixed token, demo data only).
 Admin overview (spec 30): users 12-13 (students 105-106) are Prof. Kim's advisees, which puts him over his capacity
 of 2; past sign-ins 1601+ (revoked), AI threads 705-707 this week, approval requests 1701-1705 (decided ones for
-Dr. Smith, pending ones for Prof. Kim, so Dr. Smith's approvals badge stays 0).
+Dr. Smith, pending ones for Prof. Kim).
+Advisor dashboard (specs 20/21/23): users 14-20 (students 107-113) are Dr. Smith's advisees next to Amara, one per
+risk state; pending requests 1706 (Priya's plan, check passed), 1707 (Daniel's form, summary missing) and 1708
+(Marcus's drop below full time), plus 1709 (Amara's plan, spec 22) and 1710 (Lina's capstone plan, prerequisites
+missing); section 508 with Lina's 3 missed deadlines (assignments 1109-1111); Dr. Smith's
+Thursday office hours.
 Integrations (spec 35): CSV import connected (last import today 06:00), the rest off, and one API key whose raw
 value is random and never shown. Audit log (spec 36): events 1801-1812 over the last 10 days, every role."""
 import secrets
@@ -23,8 +28,10 @@ from sqlalchemy.orm import Session
 from core.security import hash_password, sha256_hex
 from core.time import local_zone, now, short_date, today
 from database import SessionLocal
+from services.approvals import precheck_summary
 from models import (
     AdvisorAvailability,
+    AdvisorNote,
     Assignment,
     AssignmentSubmission,
     AuthToken,
@@ -95,7 +102,8 @@ def seed_people(db: Session) -> None:
         User(user_id=1, name="Amara Okafor", first_name="Amara", last_name="Okafor", preferred_name="Amara", email="amara.okafor@pac.edu",
              password_hash=password_hash, role="student"),
         User(user_id=2, name="Dr. Sarah Smith", first_name="Sarah", last_name="Smith", email="sarah.smith@pac.edu",
-             password_hash=password_hash, role="advisor", bookable=True, helps_with="Degree plan, capstone, course approvals"),
+             password_hash=password_hash, role="advisor", title="Faculty advisor, Computer Science", bookable=True,
+             helps_with="Degree plan, capstone, course approvals"),
         User(user_id=3, name="Jordan Lee", first_name="Jordan", last_name="Lee", email="jordan.lee@pac.edu",
              password_hash=password_hash, role="admin"),
         # Deactivated account: signing in shows "This account is deactivated."
@@ -131,10 +139,10 @@ def seed_people(db: Session) -> None:
                                              (104, 8, "Diego Alvarez", "diego.alvarez@pac.edu")]:
         db.add(Student(student_id=student_id, user_id=user_id, name=name, email=email, program_id=1, start_term_id=2,
                        student_number=f"S1002{student_id}"))
-    db.add(Advisor(advisor_id=201, user_id=2, department="Computer Science"))
-    db.add(Advisor(advisor_id=202, user_id=5, department="Data Science"))
-    db.add(Advisor(advisor_id=203, user_id=9, department="Computer Science"))
-    db.add(Advisor(advisor_id=204, user_id=11, department="Career Services"))
+    db.add(Advisor(advisor_id=201, user_id=2, department="Computer Science", office="Science Hall, Room 4.12"))
+    db.add(Advisor(advisor_id=202, user_id=5, department="Data Science", office="Science Hall, Room 3.08"))
+    db.add(Advisor(advisor_id=203, user_id=9, department="Computer Science", office="Science Hall, Room 4.20"))
+    db.add(Advisor(advisor_id=204, user_id=11, department="Career Services", office="Career Center, Room 105"))
     db.add(AuthToken(user_id=5, token_hash=sha256_hex(DEMO_INVITE_TOKEN), purpose="invite", expires_at=now() + timedelta(days=7)))
     db.flush()
 
@@ -600,6 +608,106 @@ def seed_overview(db: Session) -> None:
     db.flush()
 
 
+def seed_advisees(db: Session) -> None:
+    """Dr. Smith's caseload for the advisor dashboard (spec 20) and the risk rules (spec 21): users 14-20 (students
+    107-113) next to Amara, one per state, and pending approval requests 1706-1708 (spec 23)."""
+    password_hash = hash_password(DEMO_PASSWORD)
+    recent = now() - timedelta(days=2)
+    people = [  # (user, student, first, last, expected graduation, last sign-in)
+        (14, 107, "Priya", "Shah", "May 2027", recent),            # plan waiting, check passed (Low)
+        (15, 108, "Marcus", "Tran", "December 2027", recent),      # term GPA 3.4 -> 2.9 + drop request (High)
+        (16, 109, "Lina", "Haddad", "May 2027", recent),           # 3 missed deadlines (High)
+        (17, 110, "Daniel", "Osei", "December 2026", recent),      # capstone form missing its summary (Medium)
+        (18, 111, "Sam", "Ruiz", "December 2026", now() - timedelta(days=25)),  # inactive, no plan (Medium)
+        (19, 112, "Elena", "Novak", "August 2027", recent),        # on track
+        (20, 113, "Jonah", "Weiss", "December 2026", recent),      # on track
+    ]
+    for user_id, student_id, first, last, graduation, last_login in people:
+        email = f"{first.lower()}.{last.lower()}@pac.edu"
+        db.add(User(user_id=user_id, name=f"{first} {last}", first_name=first, last_name=last, email=email,
+                    password_hash=password_hash, role="student", last_login_at=last_login))
+        db.flush()
+        db.add(Student(student_id=student_id, user_id=user_id, name=f"{first} {last}", email=email, program_id=1,
+                       student_number=f"S1002{student_id}", expected_graduation=graduation, start_term_id=1))
+        db.flush()
+        db.add(AdvisorStudentAssignment(student_id=student_id, advisor_id=201))
+    db.flush()
+
+    history = [  # (student, course, term, grade, points)
+        (107, 11, "Fall 2025", "A", 4.0), (107, 12, "Fall 2025", "A-", 3.7), (107, 13, "Spring 2026", "A", 4.0),
+        (108, 11, "Fall 2025", "A-", 3.7), (108, 12, "Fall 2025", "B+", 3.3), (108, 13, "Fall 2025", "B+", 3.3),
+        (108, 14, "Spring 2026", "B", 3.0), (108, 15, "Spring 2026", "B-", 2.7), (108, 16, "Spring 2026", "B", 3.0),
+        (109, 11, "Fall 2025", "B+", 3.3), (109, 12, "Spring 2026", "B+", 3.3),
+        (110, 11, "Fall 2025", "A-", 3.7), (110, 12, "Spring 2026", "A-", 3.7),
+        (111, 11, "Fall 2025", "B+", 3.3), (111, 12, "Spring 2026", "A-", 3.7),
+        (112, 11, "Fall 2025", "A-", 3.7), (112, 12, "Spring 2026", "A", 4.0),
+        (113, 11, "Fall 2025", "A-", 3.7), (113, 12, "Spring 2026", "A", 4.0),
+        # Jonah's full load, so his three Fall 2026 courses finish the degree (Graduating, spec 21).
+        (113, 13, "Fall 2025", "A", 4.0), (113, 14, "Fall 2025", "A-", 3.7), (113, 15, "Spring 2026", "A-", 3.7),
+        (113, 16, "Spring 2026", "A", 4.0), (113, 17, "Summer 2026", "A-", 3.7), (113, 18, "Summer 2026", "A", 4.0),
+        (113, 19, "Summer 2026", "A-", 3.7),
+    ]
+    enrollment_id = 321
+    for student_id, course_id, term, grade, points in history:
+        db.add(Enrollment(enrollment_id=enrollment_id, student_id=student_id, course_id=course_id, term=term,
+                          status="completed", grade=grade, grade_points=points))
+        enrollment_id += 1
+    # Marcus's current courses (the drop request) and Lina's section with the deadlines she missed.
+    db.add(CourseSection(id=508, course_id=15, term_id=4, instructor_name="Prof. Ravi Menon", meeting_days="Tue",
+                         start_time=time(18, 10), end_time=time(20, 55), room="318"))
+    db.flush()
+    db.add_all([
+        Enrollment(enrollment_id=enrollment_id, student_id=108, course_id=18, term="Fall 2026", status="in_progress"),
+        Enrollment(enrollment_id=enrollment_id + 1, student_id=108, course_id=17, term="Fall 2026", status="in_progress"),
+        Enrollment(enrollment_id=enrollment_id + 2, student_id=108, course_id=13, term="Fall 2026", status="in_progress"),
+        Enrollment(enrollment_id=enrollment_id + 3, student_id=109, course_id=15, term="Fall 2026", status="in_progress",
+                   section_id=508),
+        *(Enrollment(enrollment_id=enrollment_id + 4 + i, student_id=113, course_id=course_id, term="Fall 2026",
+                     status="in_progress") for i, course_id in enumerate((20, 21, 22))),
+    ])
+    for offset, (id_, title) in enumerate([(1109, "Lab 3: Scheduling"), (1110, "Problem set 2"), (1111, "Lab 4: Memory")]):
+        due = datetime.combine(today() - timedelta(days=3 + offset * 3), time(23, 59), local_zone()).astimezone(timezone.utc)
+        db.add(Assignment(id=id_, section_id=508, title=title, type="Individual", due_at=due, weight_text="5%",
+                          default_steps=[]))
+        db.flush()
+        db.add(AssignmentSubmission(id=1100 + id_, assignment_id=id_, student_id=109, status="todo", steps_done=[]))
+
+    # Daniel's submitted capstone form, without a project summary.
+    fields = {"Proposed topic": "Explainable models for course recommendations", "Project summary": ""}
+    db.add(AssignmentSubmission(id=2212, assignment_id=1105, student_id=110, status="submitted", form_fields=fields,
+                                submitted_at=now() - timedelta(days=3)))
+    # Priya's Spring 2027 plan, waiting for approval.
+    db.add_all([
+        PlanItem(id=9003, student_id=107, course_id=21, term_id=5, status="pending_approval"),
+        PlanItem(id=9004, student_id=107, course_id=22, term_id=5, status="pending_approval"),
+        PlanItem(id=9006, student_id=107, course_id=23, term_id=5, status="pending_approval"),
+    ])
+    db.flush()
+
+    passed = lambda text: {"ok": True, "blocking": True, "text": text}  # noqa: E731
+    requests = [  # (id, student, type, title, payload, precheck checks, created days ago)
+        (1706, 107, "plan", "Spring 2027 plan · Capstone + 2 electives", {"planItemIds": [9003, 9004, 9006]},
+         [passed("Prerequisites met"), passed("Capstone pre-approval form approved")], 6),
+        (1707, 110, "form", "Capstone pre-approval form", {"assignmentId": 1105, "fields": fields},
+         [passed("Proposed topic filled in"),
+          {"ok": False, "blocking": True, "text": "Project summary is missing"}], 3),
+        (1708, 108, "other", "Drop CS 608 · Algorithms & Computing Theory",
+         {"kind": "drop", "courseId": 18, "creditsAfter": 6},
+         [{"ok": False, "blocking": True,
+           "text": "Dropping leaves 6 credits, below full-time status. This may affect funding or visa requirements; "
+                   "check before approving."}], 1),
+    ]
+    for id_, student_id, type_, title, payload, checks, days_ago in requests:
+        created = datetime.combine(today() - timedelta(days=days_ago), time(9, 30), local_zone()).astimezone(timezone.utc)
+        db.add(ApprovalRequest(id=id_, student_id=student_id, advisor_id=201, type=type_, title=title, term_id=5,
+                               payload=payload, precheck=precheck_summary(checks), status="pending", created_at=created))
+
+    # Dr. Smith's Thursday drop-in office hours.
+    db.add(AdvisorAvailability(staff_user_id=2, weekday=3, start_time=time(10, 0), end_time=time(11, 0),
+                               kind="office_hours", location="Room 4.12, Science Hall"))
+    db.flush()
+
+
 def reset_sequences(db: Session) -> None:
     """The seed inserts fixed IDs, so move each table's id sequence past them (new rows would collide otherwise)."""
     for table in Base.metadata.sorted_tables:
@@ -670,6 +778,97 @@ def seed_audit(db: Session) -> None:
     db.flush()
 
 
+def seed_student_record(db: Session) -> None:
+    """Spec 22: Amara's Spring 2027 plan sent for approval (request 1709, items 9001-9002 pending) with her note, and
+    one private note by Dr. Smith (1901). Spec 23: Lina's capstone plan (request 1710, item 9005) without CS 600 and
+    CS 620 done, so its pre-check fails; with 1706-1708 that makes Dr. Smith's five pending requests."""
+    from services.plan import precheck  # needs the catalog, requirements and plan seeded above
+
+    spring = db.get(Term, 5)
+    lina = db.get(Student, 109)
+    db.add(PlanItem(id=9005, student_id=109, course_id=21, term_id=spring.id, status="pending_approval"))
+    db.flush()
+    db.add(ApprovalRequest(id=1710, student_id=109, advisor_id=201, type="plan", title="Spring 2027 plan · Capstone",
+                           term_id=spring.id, payload={"planItemIds": [9005]}, precheck=precheck(db, lina, spring),
+                           status="pending",
+                           created_at=datetime.combine(today() - timedelta(days=2), time(16, 15), local_zone())
+                           .astimezone(timezone.utc)))
+
+    student = db.get(Student, 101)
+    for item in db.query(PlanItem).filter(PlanItem.id.in_((9001, 9002))):
+        item.status = "pending_approval"
+        if item.id == 9001:
+            item.note = "I prefer evening classes. Can we talk about capstone topics at our next meeting?"
+    db.flush()
+    sent = datetime.combine(today() - timedelta(days=1), time(18, 40), local_zone()).astimezone(timezone.utc)
+    db.add(ApprovalRequest(id=1709, student_id=101, advisor_id=201, type="plan",
+                           title="Spring 2027 plan · Capstone Project + Machine Learning", term_id=spring.id,
+                           payload={"planItemIds": [9001, 9002]}, precheck=precheck(db, student, spring),
+                           status="pending", created_at=sent))
+    written = datetime.combine(today() - timedelta(days=19), time(11, 0), local_zone()).astimezone(timezone.utc)
+    db.add(AdvisorNote(id=1901, student_id=101, author_id=2, created_at=written,
+                       text="Strong in data science; consider recommending her for the research assistant opening."))
+    db.flush()
+
+
+def seed_advisor_messages(db: Session) -> None:
+    """Spec 25: Dr. Smith's inbox next to Amara's thread 1301: Marcus (1306, 2 unread), Daniel (1307, 1 unread), the
+    Computer Science advising team (1308, with Prof. Kim) and his Acadmate notices (1309). Badge 3."""
+    threads = [  # (id, kind, title, team key, members, Dr. Smith's last_read_at, [(sender, days_ago, hh, mm, text)])
+        (1306, "direct", None, None, [2, 15], _local_at(2, 9, 0), [
+            (15, 1, 18, 40, "I'd like to drop CS 608. My work hours changed this month."),
+            (15, 0, 8, 5, "Is there a way to stay full-time if I drop it?"),
+        ]),
+        (1307, "direct", None, None, [2, 17], _local_at(2, 9, 0), [
+            (17, 0, 7, 30, "I submitted my capstone form. Do you need anything else from me?"),
+        ]),
+        (1308, "group", "Computer Science advising team", "advising:Computer Science", [2, 9], _local_at(0, 7, 0), [
+            (9, 2, 16, 10, "Reminder: Spring registration opens Nov 3. Let's clear plan approvals by Oct 30."),
+            (9, 1, 12, 45, "I can cover drop-in hours on Friday if anyone needs it."),
+        ]),
+        (1309, "system", None, None, [2], _local_at(0, 7, 0), [
+            (None, 0, 6, 30, "5 course plans and requests are waiting for your approval."),
+        ]),
+    ]
+    message_id = 1412
+    for conversation_id, kind, title, team_key, members, read_at, messages in threads:
+        last_at = _local_at(*messages[-1][1:4])
+        db.add(Conversation(id=conversation_id, kind=kind, title=title, team_key=team_key,
+                            created_by=None if kind == "system" else members[-1],
+                            created_at=_local_at(*messages[0][1:4]), last_message_at=last_at))
+        db.flush()
+        for user_id in members:
+            db.add(ConversationParticipant(conversation_id=conversation_id, user_id=user_id,
+                                           last_read_at=read_at if user_id == 2 else last_at))
+        for sender, days_ago, hour, minute, text_ in messages:
+            db.add(Message(id=message_id, conversation_id=conversation_id, sender_id=sender, text=text_,
+                           created_at=_local_at(days_ago, hour, minute)))
+            message_id += 1
+    db.flush()
+
+
+def seed_advisor_meetings(db: Session) -> None:
+    """Spec 24: Dr. Smith's agenda with his advisees (1508-1511 confirmed today and next week) and two booking
+    requests (1512 Lina, 1513 Jonah) next to Amara's 1502 and 1507."""
+    next_monday = today() - timedelta(days=today().weekday()) + timedelta(days=7)
+    rows = [  # (id, student, day, hh, mm, format, topic, status)
+        (1508, 113, today(), 11, 0, "in_person", "Course change: swap one elective", "confirmed"),
+        (1509, 107, today(), 13, 0, "online", "Review Spring 2027 plan", "confirmed"),
+        (1510, 110, next_monday, 11, 0, "in_person", "Capstone pre-approval form", "confirmed"),
+        (1511, 108, next_monday + timedelta(days=2), 16, 0, "online", "Request to drop CS 608", "confirmed"),
+        (1512, 109, next_monday + timedelta(days=1), 16, 0, "online", "Capstone prerequisite question", "requested"),
+        (1513, 113, next_monday + timedelta(days=4), 10, 0, "in_person", "Final graduation audit", "requested"),
+    ]
+    for id_, student, day, hour, minute, format_, topic, status in rows:
+        starts = datetime.combine(day, time(hour, minute), local_zone()).astimezone(timezone.utc)
+        db.add(Meeting(id=id_, student_id=student, advisor_id=201, staff_user_id=2, starts_at=starts,
+                       ends_at=starts + timedelta(minutes=30), format=format_,
+                       location="Room 4.12, Science Hall" if format_ == "in_person" else None,
+                       video_url=f"https://meet.example.edu/{id_}" if format_ == "online" else None,
+                       topic=topic, status=status, created_at=starts - timedelta(days=4)))
+    db.flush()
+
+
 def seed(db: Session) -> None:
     """Adds all demo data to the session; the caller commits."""
     seed_programs(db)
@@ -692,6 +891,10 @@ def seed(db: Session) -> None:
     seed_messages(db)
     seed_meetings(db)
     seed_overview(db)
+    seed_advisees(db)
+    seed_advisor_messages(db)
+    seed_student_record(db)
+    seed_advisor_meetings(db)
     seed_integrations(db)
     seed_audit(db)
     reset_sequences(db)

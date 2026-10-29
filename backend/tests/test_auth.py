@@ -234,7 +234,7 @@ def test_badges_per_role(client):
     login(client, AMARA)
     assert client.get("/api/v1/users/me/badges").json() == {"badges": {"assignments": 2, "messages": 3}}  # due within a week (spec 15), unread (16)
     login(client, SARAH)
-    assert client.get("/api/v1/users/me/badges").json() == {"badges": {"advisees": 0, "approvals": 0, "messages": 0}}
+    assert client.get("/api/v1/users/me/badges").json() == {"badges": {"advisees": 4, "approvals": 5, "messages": 3}}  # specs 21, 23
     login(client, JORDAN)
     assert client.get("/api/v1/users/me/badges").json() == {"badges": {}}
 

@@ -13,7 +13,7 @@ BASE = "/api/v1/conversations"
 BADGES = "/api/v1/users/me/badges"
 AMARA, SARAH = "amara.okafor@pac.edu", "sarah.smith@pac.edu"
 ADVISOR_CHAT, TEAM_CHAT, KIM_CHAT, NOTICES, GRAD_OFFICE_CHAT = 1301, 1302, 1303, 1304, 1305
-LAST_SEEDED_CONVERSATION, LAST_SEEDED_MESSAGE = 1305, 1411
+LAST_SEEDED_CONVERSATION, LAST_SEEDED_MESSAGE = 1309, 1417  # 1306-1309: seed_advisor_messages
 
 
 @pytest.fixture
@@ -43,7 +43,7 @@ def test_list_matches_design(client):
         "id": ADVISOR_CHAT, "kind": "direct", "name": "Dr. Sarah Smith", "initials": "SS", "role": "Faculty advisor",
         "preview": "Yes. Bring two or three ideas, and please send the capstone pre-approval form by Oct 20.",
         "time": "09:42", "lastAt": "2026-10-01T13:42:00Z", "unread": 1, "canReply": True, "bookable": True,
-        "otherUserId": 2, "members": 2,
+        "otherUserId": 2, "members": 2, "studentId": None, "team": False,
     }
     assert (team["kind"], team["name"], team["role"], team["unread"], team["members"]) == ("group", "CS 675 project team", "4 members", 2, 4)
     assert (kim["role"], kim["time"], kim["unread"]) == ("CS 608 · Algorithms & Computing Theory", "Yesterday", 0)
@@ -95,9 +95,9 @@ def test_send_reply(client, restore_messages):
     message = response.json()
     assert (message["from"], message["mine"], message["showName"], message["text"]) == ("Amara Okafor", True, False, "I'll send it this week.")
     login(client, SARAH)
-    assert client.get(BADGES).json()["badges"]["messages"] == 1
+    assert client.get(BADGES).json()["badges"]["messages"] == 4  # this reply + Marcus's 2 and Daniel's 1 (spec 25 seed)
     row = next(r for r in client.get(BASE).json()["conversations"] if r["id"] == ADVISOR_CHAT)
-    assert (row["name"], row["role"], row["bookable"], row["unread"]) == ("Amara Okafor", "Advisee", False, 1)
+    assert (row["name"], row["role"], row["bookable"], row["unread"]) == ("Amara Okafor", "Advisee · M.S. Computer Science", False, 1)
 
 
 def test_send_validation(client):
