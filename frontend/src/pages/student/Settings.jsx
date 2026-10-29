@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
+import SaveBar from '../../components/settings/SaveBar.jsx'
+import SectionNav from '../../components/settings/SectionNav.jsx'
 import Avatar from '../../components/ui/Avatar.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Card, { CardHeader } from '../../components/ui/Card.jsx'
@@ -45,43 +47,6 @@ const REMINDER_OPTIONS = ['1 day before', '2 days before', '1 week before']
 const SCHOOL_MANAGED = 'Managed by your school.'
 
 const SECTION = 'scroll-mt-6 gap-3'
-
-// Highlights the section nearest the top of the viewport.
-function useActiveSection() {
-  const [active, setActive] = useState(SECTIONS[0].id)
-  useEffect(() => {
-    const visible = new Set()
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => (entry.isIntersecting ? visible.add(entry.target.id) : visible.delete(entry.target.id)))
-      const first = SECTIONS.find((section) => visible.has(section.id))
-      if (first) setActive(first.id)
-    }, { rootMargin: '0px 0px -60% 0px' })
-    SECTIONS.forEach((section) => {
-      const element = document.getElementById(section.id)
-      if (element) observer.observe(element)
-    })
-    return () => observer.disconnect()
-  }, [])
-  return active
-}
-
-function SectionNav() {
-  const active = useActiveSection()
-  return (
-    <nav aria-label="Settings sections" className="flex flex-wrap gap-1.5 lg:sticky lg:top-6 lg:flex-col lg:self-start">
-      {SECTIONS.map((section) => {
-        const current = section.id === active
-        return (
-          <a key={section.id} href={`#${section.id}`} aria-current={current ? 'true' : undefined}
-            className={`flex min-h-11 items-center rounded-xl px-3.5 text-sm text-navy no-underline hover:bg-surface-sunk lg:min-h-11 ${
-              current ? 'bg-teal-soft font-bold' : 'bg-surface font-medium lg:bg-transparent'}`}>
-            {section.label}
-          </a>
-        )
-      })}
-    </nav>
-  )
-}
 
 // One label/description/control row inside the Sign-in and Privacy cards.
 function ActionRow({ title, description, children }) {
@@ -420,14 +385,7 @@ function SettingsForm({ me, retention, reloadMe }) {
       <NotificationsSection prefs={draft.prefs} setPrefs={setPrefs} />
       <AiSection prefs={draft.prefs} setPrefs={setPrefs} />
 
-      <div className="sticky bottom-4 z-10 flex flex-col gap-2.5 rounded-[var(--radius-card)] border border-line bg-surface px-5 py-3.5 shadow-sm">
-        {saveError && <Notice tone="pink" role="alert">{saveError}</Notice>}
-        <div className="flex flex-wrap items-center gap-3">
-          <Button onClick={save} disabled={saving || !dirty} aria-live="polite">{saveLabel}</Button>
-          {dirty && !saving && <Button variant="secondary" onClick={discard}>Discard</Button>}
-          {dirty && !saving && <span className="text-[13px] text-muted">You have unsaved changes.</span>}
-        </div>
-      </div>
+      <SaveBar dirty={dirty} saving={saving} label={saveLabel} error={saveError} onSave={save} onDiscard={discard} />
 
       <SignInSection profile={me.profile} google={me.google} onGoogleChanged={reloadMe} />
       <PrivacySection profile={me.profile} retention={retention} />
@@ -472,7 +430,7 @@ export default function StudentSettings() {
     <>
       <PageHeader title="Settings" subtitle="Your profile, notifications, AI advisor and account" initials={user?.initials} />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[200px_minmax(0,1fr)]">
-        <SectionNav />
+        <SectionNav sections={SECTIONS} />
         <div className="flex min-w-0 flex-col gap-4">
           <SettingsForm me={me.data} retention={context.data.retention} reloadMe={me.reload} />
         </div>

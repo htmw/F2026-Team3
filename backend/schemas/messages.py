@@ -24,6 +24,8 @@ class ConversationOut(ApiModel):
     bookable: bool
     other_user_id: int | None
     members: int
+    student_id: int | None  # the other person, when they are the caller's advisee (spec 25)
+    team: bool
 
 
 class ConversationListOut(ApiModel):

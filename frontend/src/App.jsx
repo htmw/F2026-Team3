@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import AppShell from './components/layout/AppShell.jsx'
-import Placeholder from './pages/Placeholder.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Login from './pages/auth/Login.jsx'
 import StudentDashboard from './pages/student/Dashboard.jsx'
@@ -13,6 +12,14 @@ import StudentAssignments from './pages/student/Assignments.jsx'
 import StudentMessages from './pages/student/Messages.jsx'
 import StudentSettings from './pages/student/Settings.jsx'
 import StudentBookMeeting from './pages/student/BookMeeting.jsx'
+import AdvisorAdvisees from './pages/advisor/Advisees.jsx'
+import AdvisorDashboard from './pages/advisor/Dashboard.jsx'
+import AdvisorStudentRecord from './pages/advisor/StudentRecord.jsx'
+import AdvisorApprovals from './pages/advisor/Approvals.jsx'
+import AdvisorMeetings from './pages/advisor/Meetings.jsx'
+import AdvisorMessages from './pages/advisor/Messages.jsx'
+import AdvisorReports from './pages/advisor/Reports.jsx'
+import AdvisorSettings from './pages/advisor/Settings.jsx'
 import AdminOverview from './pages/admin/Overview.jsx'
 import AdminAiSettings from './pages/admin/AiSettings.jsx'
 import AdminUsers from './pages/admin/Users.jsx'
@@ -22,7 +29,6 @@ import AdminCatalog from './pages/admin/Catalog.jsx'
 import AdminIntegrations from './pages/admin/Integrations.jsx'
 import AdminSettings from './pages/admin/Settings.jsx'
 
-const todo = (title) => <Placeholder title={title} />
 // Dev-only component showcase; the dynamic import is dropped from production builds.
 const UiKit = import.meta.env.DEV ? lazy(() => import('./pages/dev/UiKit.jsx')) : null
 
@@ -46,14 +52,14 @@ export default function App() {
       </Route>
 
       <Route path="/advisor" element={<AppShell role="advisor" />}>
-        <Route index element={todo('Advisor dashboard')} />
-        <Route path="advisees" element={todo('Advisees')} />
-        <Route path="advisees/:studentId" element={todo('Student record')} />
-        <Route path="approvals" element={todo('Approvals')} />
-        <Route path="meetings" element={todo('Meetings')} />
-        <Route path="messages" element={todo('Messages')} />
-        <Route path="reports" element={todo('Reports')} />
-        <Route path="settings" element={todo('Settings')} />
+        <Route index element={<AdvisorDashboard />} />
+        <Route path="advisees" element={<AdvisorAdvisees />} />
+        <Route path="advisees/:studentId" element={<AdvisorStudentRecord />} />
+        <Route path="approvals" element={<AdvisorApprovals />} />
+        <Route path="meetings" element={<AdvisorMeetings />} />
+        <Route path="messages" element={<AdvisorMessages />} />
+        <Route path="reports" element={<AdvisorReports />} />
+        <Route path="settings" element={<AdvisorSettings />} />
       </Route>
 
       <Route path="/admin" element={<AppShell role="admin" />}>

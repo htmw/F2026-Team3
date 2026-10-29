@@ -173,6 +173,7 @@ class Advisor(Base):
     user_id = Column(Integer, ForeignKey("users.user_id"), unique=True, nullable=False)  # Foreign key to User
     capacity = Column(Integer, nullable=False, default=40, server_default="40")  # advisee capacity (specs 30, 32)
     department = Column(String(80), nullable=True)  # e.g. "Computer Science" (spec 32)
+    office = Column(String(120), nullable=True)  # e.g. "Science Hall, Room 4.12" (spec 27)
 
 class AdvisorStudentAssignment(Base):
     __tablename__ = "advisor_student_assignments"
@@ -287,6 +288,17 @@ class ApprovalRequest(Base):
     created_at = Column(DateTime(timezone=True), nullable=False, default=now)
 
 
+class AdvisorNote(Base):
+    """A private note on a student, visible to advisors only (spec 22). Never returned by a student endpoint."""
+    __tablename__ = "advisor_notes"
+
+    id = Column(Integer, primary_key=True)
+    student_id = Column(Integer, ForeignKey("students.student_id", ondelete="CASCADE"), nullable=False, index=True)
+    author_id = Column(Integer, ForeignKey("users.user_id", ondelete="SET NULL"), nullable=True)
+    text = Column(String(1000), nullable=False)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=now)
+
+
 class UserPreference(Base):
     """A user's preferences as JSON; services/preferences.py applies the defaults (spec 17 owns the screen)."""
     __tablename__ = "user_preferences"
@@ -348,6 +360,7 @@ class Conversation(Base):
     id = Column(Integer, primary_key=True)
     kind = Column(Enum("direct", "group", "system", name="conversation_kind"), nullable=False)
     title = Column(String(80), nullable=True)  # groups only
+    team_key = Column(String(60), unique=True, nullable=True)  # spec 25: "advising:{department}" team groups
     created_by = Column(Integer, ForeignKey("users.user_id", ondelete="SET NULL"), nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, default=now)
     last_message_at = Column(DateTime(timezone=True), nullable=False, default=now, index=True)

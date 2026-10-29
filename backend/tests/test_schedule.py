@@ -41,13 +41,17 @@ def test_default_week(client):
     assert days["Mon"] == [("13:00", "Study · CS 675 labs", "personal"), ("16:00", "CS 608 office hours", "office"),
                            ("18:10", "CS 608 Algorithms & Computing Theory", "class")]
     assert days["Wed"] == [("14:00", "CS 675 office hours", "office"), ("18:00", "Study · CS 608", "personal")]
-    assert days["Thu"] == [("10:00", "CS 675 Data Science", "class"), ("13:30", "Team project sync", "personal"),
+    assert days["Thu"] == [("10:00", "Advisor office hours", "office"),  # Dr. Smith's drop-in hours (spec 24)
+                           ("10:00", "CS 675 Data Science", "class"), ("13:30", "Team project sync", "personal"),
                            ("15:00", "Advising check-in", "meeting"), ("17:00", "CS 661 office hours", "office"),
                            ("18:10", "CS 661 Python Programming", "class")]
     thursday = next(day for day in data["days"] if day["name"] == "Thu")
-    cls = thursday["events"][0]
+    office = thursday["events"][0]  # the advisor's drop-in hours (spec 24)
+    assert (office["id"], office["editable"], office["location"]) == (
+        "aoh-11-2026-10-01", False, "Room 4.12, Science Hall · Dr. Sarah Smith")
+    cls = thursday["events"][1]
     assert cls["id"] == "cls-503-2026-10-01" and cls["editable"] is False and cls["location"] == "Room 1201"
-    advising = thursday["events"][2]  # a booked meeting (spec 18)
+    advising = thursday["events"][3]  # a booked meeting (spec 18)
     assert (advising["id"], advising["editable"], advising["type"], advising["status"], advising["location"]) == (
         "mtg-1501", False, "Advising", "confirmed", "Online · Dr. Sarah Smith")
 

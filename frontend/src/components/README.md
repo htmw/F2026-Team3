@@ -30,9 +30,9 @@ After a mutation that changes a sidebar count, call `refreshBadges()` from `useA
 | `SegmentedTabs` (`Tabs.jsx`) | `options` (strings or `{ value, label, count }`), `value`, `onChange`, `label`. Use for every tab/filter row. |
 | `Switch`, `SwitchRow` | `checked`, `onChange(next)`, `label`/`id`, `disabled`; row adds `description`. |
 | `Field`, `TextInput`, `Select`, `Textarea`, `INPUT` | `Field` takes `id`, `label`, `aside`, `hint`, `error` and wires `aria-describedby`. |
-| `SearchInput` | `label`, `placeholder`, `value`, `onChange(text)`. Also via `PageHeader`'s `search` prop. |
+| `SearchInput` | `label`, `placeholder`, `value`, `onChange(text)`, `onSubmit(text)` (Enter). Also via `PageHeader`'s `search` prop. |
 | `Notice` | `tone` amber/teal/pink/indigo, optional `icon`. Inline warnings, pre-check and import results, form errors. |
-| `StatTile` | `label`, `value`, `pill` (`{ tone, text }`), `pct` (bar only when set), `warn` (amber bar), `color` (`violet` / `amber` bar), `note`, `basis` (flex-basis, default 170px). Summary tiles on dashboards, degree plan, assignments. |
+| `StatTile` | `label`, `value`, `pill` (`{ tone, text }`), `pct` (bar only when set), `warn` (amber bar), `color` (`violet` / `amber` bar), `note`, `basis` (flex-basis, default 170px). Summary tiles on dashboards (student, advisor, admin), degree plan, assignments. |
 | `ProgressBar` | `value` 0–100, `color`, `secondary` (second segment, e.g. in progress), `secondaryColor` (default: lighter `color`), `height`, `label`. |
 | `BarChart` | `data: [{ label, value, highlight }]`, `max`, `unit`, `label`. Div bars; no chart library. |
 | `ExportButton` | `href` (`apiUrl('/…csv')`), `label` (`Export CSV`), `doneLabel` (`Exported`, shown 2 s after a click). |
@@ -43,6 +43,28 @@ After a mutation that changes a sidebar count, call `refreshBadges()` from `useA
 | `Loading`, `ErrorState`, `Empty` | The three data states + empty-list line. |
 | `ChatBubble` | `mine` (right-aligned, dark), `name` (sender label above, for group chats), `time`. One chat message; AI answers use `AiMessage` instead. |
 | `Icon` | `name`, `size`, `color` (hex or `var(--color-*)`). Add new paths to `PATHS`/`CIRCLES` rather than adding a library. |
+| `Breadcrumb` | `items: [{ label, to? }]`. `nav aria-label="Breadcrumb"`; the last item is the current page (`aria-current`). Above a `PageHeader` on detail screens (advisor student record). |
+
+## Settings (`components/settings/`)
+
+| Component | Use |
+|---|---|
+| `SectionNav` | `sections: [{ id, label }]`. Section links that highlight the section nearest the top (sticky column on wide screens). Student and advisor Settings. |
+| `SaveBar` | `dirty`, `saving`, `label` (from `useSaveState`), `error`, `onSave`, `onDiscard`. Sticky Save / Discard bar for a settings draft. |
+
+## Meetings (`components/meetings/`)
+
+| Component | Use |
+|---|---|
+| `OptionPills` | `options`, `value`, `onChange`, `label`; `multiple` makes `value` an array (office-hour days). Choice buttons with `aria-pressed`. Student Book a meeting, advisor Meetings. |
+| `SlotGrid` | `slots: [{ startsAt, time, taken? }]`, `value`, `onChange(startsAt)`. Taken slots are struck through and disabled. |
+| `BookForStudentDialog` | `open`, `onClose`, `onBooked(row)`, `today`, `studentId` (preselected). Advisee search, day, the advisor's free slots for that student, format, topic → `POST /advisor/meetings`. |
+
+## Academics (`components/academics/`)
+
+| Component | Use |
+|---|---|
+| `RequirementBars`, `RequirementBar` | Requirement groups with a stacked bar (done accent, in progress teal-bright). `RequirementBars` takes `groups: [{ title, count, done, inProgress, required }]` (advisor student record); `RequirementBar` is one row and renders `children` under the bar (student degree plan's course list). |
 
 ## AI (`components/ai/`)
 
@@ -73,6 +95,8 @@ Shared by student and advisor Messages screens (both use `/conversations`).
 | `ConversationList` | `conversations` (from `GET /conversations`), `selectedId`, `onSelect(id)`. Avatar, name, role, preview, time, unread count. |
 | `MessageThread` | `conversation` (a list row), `onRead(id)`, `onSent(id, message)`, `headerAction` (node), `aboveComposer(send)` (render prop, e.g. quick replies). Loads messages (which marks them read), optimistic send. Render with `key={conversation.id}`. Read-only for system conversations. |
 | `Composer` | `value`, `onChange`, `onSend`, `sending`, `placeholder`. Enter sends, Shift+Enter is a new line. |
+| `MessagesPage` | The whole Messages screen (search, list, thread, mark read, reply previews, New message dialog). `actions({ openNew })`, `headerActionFor(c)`, `readOnlyActionFor(c)`, `aboveComposerFor(c, send)`, `subtitle(unread)`, `searchLabel` / `searchPlaceholder`, `select` (`{ id }`, a new object selects that conversation and reloads). Student and advisor Messages are thin wrappers. |
+| `QuickReplies` | `replies`, `onPick(text)` (pass `MessageThread`'s `send`: sends at once), `disabled`. Chips above the advisor composer. |
 | `NewConversationDialog` | `open`, `onClose`, `onCreated(id)`. Contact search (`GET /conversations/contacts`) + optional first message. |
 
 ## Layout (`components/layout/`)

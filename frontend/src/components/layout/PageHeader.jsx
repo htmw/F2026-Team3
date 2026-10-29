@@ -5,7 +5,7 @@ import SearchInput from '../ui/SearchInput.jsx'
 import { useAuth } from '../../auth/AuthContext.jsx'
 import { HOME } from '../../config/nav.js'
 
-// `search` is { label, placeholder, value?, onChange? }; it's controlled when `value` is passed.
+// `search` is { label, placeholder, value?, onChange?, onSubmit? }; it's controlled when `value` is passed.
 export default function PageHeader({ title, subtitle, initials, search, actions }) {
   const { user, badges } = useAuth()
   const unread = badges.messages ?? 0
