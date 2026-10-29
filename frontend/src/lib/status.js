@@ -46,3 +46,14 @@ export const COURSE_TYPE_TONE = { Foundation: 'gray', Core: 'indigo', Elective: 
 
 // Admin integrations (spec 35): connection status pills.
 export const INTEGRATION_TONE = { Connected: 'teal', Off: 'gray', Error: 'pink', Degraded: 'amber' }
+
+// Advisor dashboard (spec 20): risk level pills, approval request types and the caseload bars.
+export const RISK_TONE = { High: 'pink', Medium: 'amber', Low: 'gray' }
+export const ADVISEE_STATUS_TONE = { 'On track': 'teal', 'Needs attention': 'amber', Graduating: 'indigo', 'At risk': 'pink' }
+export const MEETING_STATUS_TONE = { requested: 'amber', confirmed: 'teal', proposed: 'indigo', completed: 'gray', no_show: 'pink', cancelled: 'gray' }
+export const MEETING_STATUS_LABEL = { requested: 'Requested', confirmed: 'Confirmed', proposed: 'New time proposed', completed: 'Completed', no_show: 'No-show', cancelled: 'Cancelled' }
+export const FORMAT_TONE = { 'In person': 'gray', Online: 'indigo' }
+export const APPROVAL_STATUS_TONE ={ Pending: 'amber', Approved: 'teal', 'Changes requested': 'pink' }
+export const REVIEW_STATUS_TONE ={ pending: 'amber', approved: 'teal', changes_requested: 'pink' }
+export const REQUEST_TYPE_TONE ={ 'Course plan': 'indigo', Form: 'pink', Request: 'pink' }
+export const CASELOAD_COLOR = { accent: 'var(--color-accent)', amber: 'var(--color-amber)', pink: '#BE185D' }

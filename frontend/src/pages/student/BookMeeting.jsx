@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
+import OptionPills from '../../components/meetings/OptionPills.jsx'
+import SlotGrid from '../../components/meetings/SlotGrid.jsx'
 import Card, { CardHeader } from '../../components/ui/Card.jsx'
 import Avatar from '../../components/ui/Avatar.jsx'
 import Pill from '../../components/ui/Pill.jsx'
@@ -30,24 +32,6 @@ function Step({ n, title, action, children }) {
       </div>
       {children}
     </Card>
-  )
-}
-
-// Row of choice buttons (topic, format), styled like the mockup's option pills.
-function OptionPills({ options, value, onChange, label }) {
-  return (
-    <div role="group" aria-label={label} className="flex flex-wrap gap-2">
-      {options.map((option) => {
-        const active = option === value
-        return (
-          <button key={option} type="button" aria-pressed={active} onClick={() => onChange(option)}
-            className={`min-h-11 cursor-pointer rounded-xl border px-3.5 text-sm font-semibold text-navy ${
-              active ? 'border-accent bg-teal-soft/50' : 'border-line bg-surface hover:bg-surface-sunk'}`}>
-            {option}
-          </button>
-        )
-      })}
-    </div>
   )
 }
 
@@ -90,26 +74,6 @@ function DayStrip({ days, value, onChange }) {
             <span className="text-xs font-bold uppercase">{d.dow}</span>
             <span className="font-display text-lg font-bold">{d.day}</span>
             <span className={`text-[11px] font-semibold ${active ? 'text-fog' : 'text-muted'}`}>{d.free}</span>
-          </button>
-        )
-      })}
-    </div>
-  )
-}
-
-function SlotGrid({ slots, value, onChange }) {
-  return (
-    <div role="group" aria-label="Choose a time" className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-      {slots.map((s) => {
-        const active = s.startsAt === value
-        return (
-          <button key={s.startsAt} type="button" aria-pressed={active} disabled={s.taken} onClick={() => onChange(s.startsAt)}
-            aria-label={s.taken ? `${s.time}, taken` : s.time}
-            className={`min-h-11 rounded-xl border text-sm font-bold ${
-              s.taken ? 'cursor-not-allowed border-line bg-surface-sunk text-muted line-through'
-                : active ? 'cursor-pointer border-accent bg-accent text-white'
-                  : 'cursor-pointer border-line bg-surface text-navy hover:bg-surface-sunk'}`}>
-            {s.time}
           </button>
         )
       })}

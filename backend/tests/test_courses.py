@@ -18,8 +18,8 @@ def test_my_courses(client):
     assert data["counts"] == {"current": 3, "completed": 7, "planned": 2}
     assert data["addDropUrl"] is None and data["plannedNotice"] == "Spring 2027 registration opens Nov 3."
     assert [(row["enrollmentId"], row["code"], row["term"], row["status"], row["fulfills"]) for row in data["planned"]] == [
-        (9002, "CS 680", "Spring 2027", "Planned", "Electives"),
-        (9001, "CS 691", "Spring 2027", "Needs approval", "Capstone")]  # degree plan (spec 12)
+        (9002, "CS 680", "Spring 2027", "Pending approval", "Electives"),
+        (9001, "CS 691", "Spring 2027", "Pending approval", "Capstone")]  # sent to the advisor (seed_student_record)
 
     cards = {card["code"]: card for card in data["current"]}
     assert list(cards) == ["CS 608", "CS 661", "CS 675"]

@@ -25,6 +25,12 @@ def start_conversation(body: StartIn, user: User = Depends(get_current_user), db
     return {"id": messages.start(db, user, body.recipient_ids, body.text, body.title)}
 
 
+@router.post("/team", response_model=StartOut)
+def team_conversation(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """The caller's department advising team (spec 25); advisors only."""
+    return {"id": messages.team_conversation(db, user)}
+
+
 @router.get("/{conversation_id}/messages", response_model=ThreadOut)
 def get_messages(conversation_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     return messages.thread(db, user, conversation_id)

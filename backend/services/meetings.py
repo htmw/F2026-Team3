@@ -57,12 +57,23 @@ def first_week() -> date:
     return monday + timedelta(days=7) if day.weekday() >= 5 else monday
 
 
-def _check_week(week: date) -> None:
+def _check_week(week: date, weeks: int = BOOKING_WINDOW_WEEKS) -> None:
     if week.weekday() != 0:
         raise bad_request("Send the Monday of the week you want.")
     first = first_week()
-    if not first <= week < first + timedelta(weeks=BOOKING_WINDOW_WEEKS):
-        raise bad_request(f"Pick a week within the next {BOOKING_WINDOW_WEEKS} weeks.")
+    if not first <= week < first + timedelta(weeks=weeks):
+        raise bad_request(f"Pick a week within the next {weeks} week{'' if weeks == 1 else 's'}.")
+
+
+def meeting_length(db: Session, staff: User) -> timedelta:
+    """The staff member's meeting length (spec 27: 15, 30 or 45 minutes; default 30)."""
+    return timedelta(minutes=int(preferences.get(db, staff).get("bookings", {}).get("meetingLength") or 30))
+
+
+def booking_weeks(db: Session, staff: User) -> int:
+    """How many weeks ahead students may book the staff member (spec 27: 1, 2 or 4; default 2)."""
+    days = int(preferences.get(db, staff).get("bookings", {}).get("bookingWindowDays") or BOOKING_WINDOW_WEEKS * 7)
+    return max(1, days // 7)
 
 
 # --- staff --------------------------------------------------------------------------------------------------------
@@ -78,6 +89,17 @@ def _windows(db: Session, user_id: int) -> list[AdvisorAvailability]:
     return (db.query(AdvisorAvailability)
             .filter(AdvisorAvailability.staff_user_id == user_id, AdvisorAvailability.kind == "booking")
             .order_by(AdvisorAvailability.weekday, AdvisorAvailability.start_time).all())
+
+
+def _office_windows(db: Session, user_id: int) -> list[AdvisorAvailability]:
+    return (db.query(AdvisorAvailability)
+            .filter(AdvisorAvailability.staff_user_id == user_id, AdvisorAvailability.kind == "office_hours")
+            .order_by(AdvisorAvailability.weekday, AdvisorAvailability.start_time).all())
+
+
+def _books_during_office_hours(db: Session, staff: User) -> bool:
+    """Spec 27's staff setting; off by default, so office hours stay drop-in time rather than bookable slots."""
+    return bool(preferences.get(db, staff).get("bookings", {}).get("bookDuringOfficeHours", False))
 
 
 def _staff_members(db: Session, student: Student) -> tuple[list[User], set[int]]:
@@ -118,7 +140,8 @@ def bookable_staff(db: Session, student: Student) -> dict:
             "role": "Faculty advisor" if user.user_id in mine else (user.title or user.role.capitalize()),
             "helps": user.helps_with, "is_my_advisor": user.user_id in mine,
             "office": next((window.location for window in windows if window.location), None),
-            "meeting_length": int(MEETING_LENGTH.total_seconds() // 60), "booking_window_weeks": BOOKING_WINDOW_WEEKS,
+            "meeting_length": int(meeting_length(db, user).total_seconds() // 60),
+            "booking_window_weeks": booking_weeks(db, user),
         })
     return {"staff": staff, "topics": [_plan_topic(db, student), *TOPIC_TAIL], "formats": list(FORMATS),
             "first_week": first_week().isoformat()}
@@ -156,10 +179,17 @@ def _busy(db: Session, student: Student, staff_user_id: int, start: datetime, en
 
 def _week_slots(db: Session, student: Student, staff: User, week: date,
                 ignore_id: int | None = None) -> list[tuple[date, list[tuple[datetime, bool, AdvisorAvailability]]]]:
-    """Mon–Fri of the week, each with its (start, taken, window) slots in time order."""
+    """Mon–Fri of the week, each with its (start, taken, window) slots in time order. Slots inside the staff member's
+    office hours are taken (drop-in time, spec 24) unless they book during office hours."""
     busy = _busy(db, student, staff.user_id, _at(week, time(0)), _at(week + timedelta(days=5), time(0)), ignore_id)
+    if not _books_during_office_hours(db, staff):
+        for window in _office_windows(db, staff.user_id):
+            day = week + timedelta(days=window.weekday)
+            if window.weekday < 5:
+                busy.append((_at(day, window.start_time), _at(day, window.end_time)))
     cutoff = now() + LEAD_TIME
     windows = _windows(db, staff.user_id)
+    length = meeting_length(db, staff)
     days = []
     for offset in range(5):
         day = week + timedelta(days=offset)
@@ -168,19 +198,19 @@ def _week_slots(db: Session, student: Student, staff: User, week: date,
             if window.weekday != day.weekday():
                 continue
             cursor, stop = datetime.combine(day, window.start_time), datetime.combine(day, window.end_time)
-            while cursor + MEETING_LENGTH <= stop:
+            while cursor + length <= stop:
                 start = cursor.replace(tzinfo=local_zone()).astimezone(timezone.utc)
-                end = start + MEETING_LENGTH
+                end = start + length
                 taken = start < cutoff or any(b_start < end and start < b_end for b_start, b_end in busy)
                 slots.append((start, taken, window))
-                cursor += MEETING_LENGTH
+                cursor += length
         days.append((day, sorted(slots, key=lambda slot: slot[0])))
     return days
 
 
 def availability(db: Session, student: Student, staff_id: int, week: date) -> dict:
     staff = _staff(db, student, staff_id)
-    _check_week(week)
+    _check_week(week, booking_weeks(db, staff))
     days = []
     for day, slots in _week_slots(db, student, staff, week):
         open_ = sum(1 for _, taken, _ in slots if not taken)
@@ -259,13 +289,18 @@ def _auto_confirm(db: Session, staff: User) -> bool:
     return bool(preferences.get(db, staff).get("bookings", {}).get("autoConfirm", False))
 
 
+def _notifies_bookings(db: Session, staff: User) -> bool:
+    """Spec 27's "Booking requests" switch: whether new bookings post a notice to the staff member."""
+    return bool(preferences.get(db, staff).get("advisorNotify", {}).get("booking", True))
+
+
 def book(db: Session, student: Student, user: User, data: dict, ip: str | None = None) -> dict:
     """data: staff_id, starts_at (aware), format ("In person" / "Online"), topic, note, attach_plan."""
     staff = _staff(db, student, data["staff_id"])
     _lock_staff(db, staff)
     start = data["starts_at"].astimezone(timezone.utc)
     local_day = _local(start).date()
-    _check_week(local_day - timedelta(days=local_day.weekday()))
+    _check_week(local_day - timedelta(days=local_day.weekday()), booking_weeks(db, staff))
     slot = _find_slot(db, student, staff, start)
     if slot is None:
         raise bad_request("Pick one of the open times.")
@@ -276,8 +311,8 @@ def book(db: Session, student: Student, user: User, data: dict, ip: str | None =
     format_ = FORMATS[data["format"]]
     advisor = db.query(Advisor).filter(Advisor.user_id == staff.user_id).one_or_none()
     meeting = Meeting(student_id=student.student_id, advisor_id=advisor.advisor_id if advisor else None,
-                      staff_user_id=staff.user_id, starts_at=start, ends_at=start + MEETING_LENGTH, format=format_,
-                      location=window.location if format_ == "in_person" else None, topic=data["topic"],
+                      staff_user_id=staff.user_id, starts_at=start, ends_at=start + meeting_length(db, staff),
+                      format=format_, location=window.location if format_ == "in_person" else None, topic=data["topic"],
                       note=data.get("note"), attach_plan=bool(data.get("attach_plan")),
                       status="confirmed" if _auto_confirm(db, staff) else "requested")
     db.add(meeting)
@@ -290,14 +325,17 @@ def book(db: Session, student: Student, user: User, data: dict, ip: str | None =
         meeting.video_url = VIDEO_URL.format(id=meeting.id)
 
     when, place = _when(start), _place(meeting)
+    tell_staff = _notifies_bookings(db, staff)
     if meeting.status == "confirmed":
         messages.notify(db, user.user_id, f"Meeting confirmed: {meeting.topic} with {staff.name} on {when} ({place}).")
-        messages.notify(db, staff.user_id, f"{user.name} booked a meeting: {meeting.topic} on {when} ({place}).")
+        if tell_staff:
+            messages.notify(db, staff.user_id, f"{user.name} booked a meeting: {meeting.topic} on {when} ({place}).")
     else:
         messages.notify(db, user.user_id, f"Meeting requested: {meeting.topic} with {staff.name} on {when} ({place}). "
                                           f"You'll get a message here when it's confirmed.")
-        messages.notify(db, staff.user_id, f"{user.name} requested a meeting: {meeting.topic} on {when} ({place}). "
-                                           f"Accept it or propose another time.")
+        if tell_staff:
+            messages.notify(db, staff.user_id, f"{user.name} requested a meeting: {meeting.topic} on {when} ({place}). "
+                                               f"Accept it or propose another time.")
     audit.record(db, user, "meeting.book", f"{user.name} booked {meeting.topic} with {staff.name} on {when}",
                  target=("meeting", meeting.id), ip=ip)
     db.commit()
@@ -438,6 +476,14 @@ def act(db: Session, user: User, meeting_id: int, action: str, data: dict | None
         db.rollback()
         raise ApiError(409, "SLOT_TAKEN", SLOT_TAKEN)
     return _row(meeting, staff.name)
+
+
+# Shared with the advisor side (services/advisor_meetings.py, spec 24).
+local_when = _when
+slot_at = _find_slot
+lock_staff = _lock_staff
+check_week = _check_week
+office_windows = _office_windows
 
 
 def cancel_future_for(db: Session, student: Student) -> None:

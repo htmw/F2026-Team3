@@ -134,7 +134,7 @@ def test_submit_capstone_form(client, as_user, restore_assignments):
     assert_envelope(submit(client, FORM, {"fields": {"Proposed topic": "x", "Project summary": LONG_SUMMARY}}), 409, "CONFLICT")
 
     as_user("advisor")
-    assert client.get("/api/v1/users/me/badges").json()["badges"]["approvals"] == 1
+    assert client.get("/api/v1/users/me/badges").json()["badges"]["approvals"] == 6  # the 5 seeded (seed_advisees, seed_student_record) + this form
 
 
 def test_form_decision(client, restore_assignments):

@@ -18,9 +18,14 @@ DEFAULTS = {
     "targetGraduation": None,
     "classTime": None,  # "Evening" / "Daytime": used by the AI advisor's plan suggestions
 }
-# Spec 27 gives staff their own settings screen; until then staff share the student defaults plus the booking switch
-# that meetings read (spec 18: auto-confirm bookings instead of leaving them requested).
-STAFF_DEFAULTS = {**DEFAULTS, "bookings": {"autoConfirm": False}}
+# Staff also keep their booking rules (spec 18 reads them per staff member) and the advisor settings switches (spec 27,
+# edited through /advisor/settings; /users/me/preferences stays student-shaped).
+STAFF_DEFAULTS = {
+    **DEFAULTS,
+    "bookings": {"autoConfirm": False, "bookDuringOfficeHours": False, "meetingLength": 30, "bookingWindowDays": 14},
+    "advisorNotify": {"newApproval": True, "booking": True, "messages": True, "weeklyDigest": False},
+    "approvals": {"precheck": True, "remindAfter3Days": True},
+}
 DEFAULTS_BY_ROLE = {"student": DEFAULTS, "advisor": STAFF_DEFAULTS, "admin": STAFF_DEFAULTS}
 
 GRADUATION_OPTIONS = 6

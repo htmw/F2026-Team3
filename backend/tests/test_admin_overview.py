@@ -228,7 +228,7 @@ def test_seeded_overview(db):
     assert [w["value"] for w in weeks[:5]] == [2, 3, 3, 4, 4] and weeks[5]["value"] >= 5
     rows = {r["advisorId"]: r for r in ov.workload(db)}
     assert (rows[203]["advisees"], rows[203]["capacity"], rows[203]["waiting"], rows[203]["load"]) == (3, 2, 2, "Over")
-    assert (rows[201]["capacity"], rows[201]["waiting"], rows[201]["avgReply"], rows[201]["load"]) == (45, 0, "1.5 days", "OK")
+    assert (rows[201]["capacity"], rows[201]["waiting"], rows[201]["avgReply"], rows[201]["load"]) == (45, 5, "1.5 days", "OK")  # requests 1706-1708 (seed_advisees), Amara's 1709 and Lina's 1710 (seed_student_record)
     helpful, handed, flagged = ov.ai_quality(db)
     assert helpful["pct"] is not None and handed["pct"] is not None and flagged["pct"] is not None
     plans = ov.plans_waiting(db)

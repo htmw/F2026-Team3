@@ -1,5 +1,5 @@
 """Student schedule (spec 14): the week calendar (personal events, class meetings and office hours from sections,
-booked meetings from services/meetings.py), deadlines, a study-block suggestion, personal event changes, and .ics calendar feeds.
+the advisor's office hours (spec 24), booked meetings from services/meetings.py), deadlines, a study-block suggestion, personal event changes, and .ics calendar feeds.
 Also the source of the dashboard's "Today" list (events_for_day)."""
 import base64
 import hashlib
@@ -14,7 +14,7 @@ from core.config import settings
 from core.errors import ApiError, forbidden, not_found
 from core.security import sha256_hex
 from core.time import DAY_NAMES, local_zone, now, short_date, today
-from models import CalendarFeed, Event, Student, Term
+from models import Advisor, AdvisorAvailability, AdvisorStudentAssignment, CalendarFeed, Event, Student, Term, User
 from services import assignments
 from services.ai import settings as ai_config
 from services.courses import current_enrollments, meeting_days
@@ -116,6 +116,28 @@ def office_events(db: Session, student: Student, from_: date, to: date) -> list[
     return events
 
 
+def advisor_office_events(db: Session, student: Student, from_: date, to: date) -> list[dict]:
+    """The assigned advisor's drop-in office hours (spec 24 publishes them; ids aoh-{window}-{date})."""
+    rows = (db.query(AdvisorAvailability, User)
+            .join(Advisor, Advisor.user_id == AdvisorAvailability.staff_user_id)
+            .join(AdvisorStudentAssignment, AdvisorStudentAssignment.advisor_id == Advisor.advisor_id)
+            .join(User, User.user_id == Advisor.user_id)
+            .filter(AdvisorStudentAssignment.student_id == student.student_id,
+                    AdvisorAvailability.kind == "office_hours").all())
+    events = []
+    day = from_
+    while day <= to:
+        for window, advisor in rows:
+            if window.weekday == day.weekday():
+                place = " · ".join(part for part in (window.location, advisor.name) if part)
+                events.append({"id": f"aoh-{window.id}-{day.isoformat()}", "kind": "office",
+                               "title": "Advisor office hours", "type": "Office hours", "date": day.isoformat(),
+                               "start": _hhmm(window.start_time), "end": _hhmm(window.end_time), "location": place,
+                               "note": None, "editable": False, "status": None, "reminder_minutes": None})
+        day += timedelta(days=1)
+    return events
+
+
 def meeting_events(db: Session, student: Student, from_: date, to: date) -> list[dict]:
     """Requested / confirmed / proposed meetings (spec 18; ids mtg-…)."""
     from services import meetings  # imported here: meetings uses class_events from this module
@@ -126,7 +148,7 @@ def _all_events(db: Session, student: Student, from_: date, to: date, office: bo
     events = personal_events(db, student, from_, to) + class_events(db, student, from_, to)
     events += meeting_events(db, student, from_, to)
     if office:
-        events += office_events(db, student, from_, to)
+        events += office_events(db, student, from_, to) + advisor_office_events(db, student, from_, to)
     return sorted(events, key=lambda event: (event["date"], event["start"], event["end"], event["id"]))
 
 
