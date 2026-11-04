@@ -4,4 +4,5 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: { proxy: { '/api/v1/research/database': { target: process.env.ACADMATE_API_TARGET || 'http://127.0.0.1:8002', changeOrigin: true } } },
 })

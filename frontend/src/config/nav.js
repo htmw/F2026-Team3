@@ -11,6 +11,7 @@ export const NAV = {
   ],
   advisor: [
     { label: 'Dashboard', to: '/advisor', end: true },
+    { label: 'Academic risk research', to: '/advisor/academic-risk' },
     { label: 'Advisees', to: '/advisor/advisees', badge: '42' },
     { label: 'Approvals', to: '/advisor/approvals', badge: '5' },
     { label: 'Meetings', to: '/advisor/meetings' },

@@ -1,0 +1,21 @@
+# Generated research outputs and local data
+__pycache__/
+*.pyc
+artifacts/
+outputs/
+
+# Never version generated datasets, serialized models or local archives
+*.csv
+*.joblib
+*.pkl
+*.pickle
+*.zip
+*.npz
+*.parquet
+raw/
+processed/
+.venv/
+venv/
+.env
+.env.*
+*.tmp

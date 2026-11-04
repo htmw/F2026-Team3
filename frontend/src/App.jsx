@@ -4,6 +4,7 @@ import Placeholder from './pages/Placeholder.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Login from './pages/auth/Login.jsx'
 import StudentDashboard from './pages/student/Dashboard.jsx'
+import AcademicRisk from './pages/advisor/AcademicRisk.jsx'
 
 const todo = (title) => <Placeholder title={title} />
 
@@ -26,6 +27,7 @@ export default function App() {
       </Route>
 
       <Route path="/advisor" element={<AppShell role="advisor" />}>
+        <Route path="academic-risk" element={<AcademicRisk />} />
         <Route index element={todo('Advisor dashboard')} />
         <Route path="advisees" element={todo('Advisees')} />
         <Route path="advisees/:studentId" element={todo('Student record')} />
