@@ -11,7 +11,6 @@ import Icon from '../../components/ui/Icon.jsx'
 import Notice from '../../components/ui/Notice.jsx'
 import Pill from '../../components/ui/Pill.jsx'
 import ProgressBar from '../../components/ui/ProgressBar.jsx'
-import SearchInput from '../../components/ui/SearchInput.jsx'
 import SegmentedTabs from '../../components/ui/Tabs.jsx'
 import { Empty, ErrorState, Loading } from '../../components/ui/Status.jsx'
 import { useToast } from '../../components/ui/Toast.jsx'
@@ -84,7 +83,7 @@ export default function AdvisorAdvisees() {
   return (
     <>
       <PageHeader title="Advisees" subtitle={data.subtitle} initials={me?.initials}
-        search={<SearchInput label="Search advisees" placeholder="Search by name…" value={search} onChange={setSearch} />}
+        search={{ label: 'Search advisees', placeholder: 'Search by name…', value: search, onChange: setSearch }}
         actions={<MessageGroupButton rows={rows} status={status} />} />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
