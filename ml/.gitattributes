@@ -1,0 +1,2 @@
+﻿# Frozen model integrity checks hash source bytes, including line endings.
+src/acadmate_ml/*.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
