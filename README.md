@@ -2,12 +2,25 @@
 
 Acadmate: academic advising for students, faculty advisors and administrators.
 
-- `frontend/`: React + Vite + Tailwind web app
-- `backend/`: FastAPI (Python) REST API with PostgreSQL through SQLAlchemy
-- `Doumentation/`: project documents, presentations and the static design prototypes
+- `frontend/`: React 19 + Vite 8 + Tailwind CSS 4 web app (JSX, react-router-dom 7)
+- `backend/`: FastAPI (Python 3.10+) REST API with PostgreSQL (hosted on Neon) through SQLAlchemy 2
+- `Doumentation/`: sprint docs, personas, Jira exports, presentations and wiki diagrams
 
-Quick start (Python 3.10+ and Node.js 20+ required). The database is hosted on Neon (Postgres): get the
-connection strings from the Neon console (project → Connect, database `acadmate_sprint2`).
+## Features
+
+| Role | Screens |
+|---|---|
+| Student | Dashboard, My courses (grades, insights), Degree plan (audit, roadmap, submit for approval), Assignments, Schedule (with an `.ics` calendar feed), Messages, Book a meeting, AI advisor, Settings |
+| Advisor | Dashboard, Advisees, Student record (private notes), Approvals queue, Meetings and office hours, Messages (incl. the advising team group), Reports (CSV export), Settings |
+| Admin | Platform overview, Users (invite, CSV import), Advisors (capacity, reassignment), Catalog (drafts and publish), Integrations (CSV imports, mail, calendars, API keys), AI settings and flagged answers, Audit log, Settings |
+
+## Quick start
+
+Python 3.10+ and Node.js 20+ required. The database is hosted on Neon (Postgres): get the connection strings
+from the Neon console (project → Connect, database `acadmate_sprint2`).
+
+> `acadmate_sprint2` is shared by the whole team and already holds the demo data. Don't run `reset_db.py`,
+> `seed_data.py` or a demo reset against it unless you mean to wipe everyone's data.
 
 ```bash
 cd backend
@@ -16,8 +29,7 @@ python -m venv venv
 venv\Scripts\activate              # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
 python test_db.py                  # checks the database connection
-python reset_db.py --yes && python seed_data.py   # ONLY for an empty database: drops every table, loads demo data
-uvicorn main:app --reload          # http://localhost:8000, API docs at /docs (--port 8001 if 8000 is taken)
+uvicorn main:app --reload --port 8010   # http://localhost:8010, API docs at /docs
 
 # new terminal
 cd frontend
@@ -29,46 +41,60 @@ To send frontend API calls to the FastAPI server, create `frontend/.env.local` w
 
 ```
 VITE_API_URL=/api/v1
-API_PROXY_TARGET=http://localhost:8000
+API_PROXY_TARGET=http://localhost:8010
 ```
 
-Try it: `GET http://localhost:8000/api/v1/students/101/academic-profile` returns the seeded demo student.
+Check the API: `GET http://localhost:8010/api/v1/health`, or browse every endpoint at <http://localhost:8010/docs>.
 
 ### Demo accounts
 
 Seeded by `seed_data.py`. All use the password `Acadmate!2026` (demo only, never real data).
 
-| Role | Email |
-|---|---|
-| Student (id 101) | amara.okafor@pac.edu |
-| Advisor (id 201) | sarah.smith@pac.edu |
-| Admin | jordan.lee@pac.edu |
-| Deactivated student (sign-in is refused) | sam.rivera@pac.edu |
+| Role | Name | Email |
+|---|---|---|
+| Student | Amara Okafor | amara.okafor@pac.edu |
+| Student (Amara's classmate) | Kofi Mensah | kofi.mensah@pac.edu |
+| Advisor (Computer Science) | Dr. Sarah Smith | sarah.smith@pac.edu |
+| Advisor (Computer Science, over capacity) | Prof. Daniel Kim | daniel.kim@pac.edu |
+| Advisor (Career services) | Maya Brooks | maya.brooks@pac.edu |
+| Admin | Jordan Lee | jordan.lee@pac.edu |
+| Admin (Graduate office, support) | Graduate office | grad.office@pac.edu |
+| Deactivated student (sign-in is refused) | Sam Rivera | sam.rivera@pac.edu |
 
 Pending advisor invite (Dr. Priya Natarajan): open <http://localhost:5173/reset-password?token=demo-invite-token>
-to set a password and activate the account. Password reset emails aren't sent yet: the reset link is printed in the
-uvicorn log (logger `acadmate.mail`). Five wrong passwords lock an email for 15 minutes.
+to set a password and activate the account. Emails aren't sent until the mail integration is connected: reset and
+invite links are printed in the uvicorn log (logger `acadmate.mail`). Five wrong passwords lock an email for 15 minutes.
 
-Sign in as Jordan Lee and open <http://localhost:5173/admin> for the platform overview: usage, AI answer quality,
-flagged answers, system status and advisor workload (Prof. Daniel Kim is seeded over capacity). **Export report**
-downloads the same figures as a CSV. **Users** (`/admin/users`) lists every account: invite people by email, import a CSV
-(`name,email,role,program`), change a student's advisor, or deactivate an account (invite and reset links are printed
-in the uvicorn log, like password resets). **Advisors** (`/admin/advisors`) shows each advisor's caseload against
-capacity: add an advisor (by invite), change a capacity, or move advisees to another advisor (moved students get a
-notice and an email, and their pending approvals move with them).
+### What to try
+
+- **Student (Amara):** the dashboard shows today's 15:00 check-in with Dr. Smith, 3 unread messages and her
+  Spring 2027 plan waiting for approval. Book another meeting, ask the AI advisor or check the degree audit.
+- **Advisor (Dr. Smith):** 9 advisees (2 high risk, Jonah Weiss graduating), pending approvals (a plan, a capstone
+  form with a missing field, a drop below full time), 3 unread messages and today's meetings at 11:00 and 13:00.
+- **Admin (Jordan Lee):** `/admin` shows usage, AI answer quality, flagged answers, system status and advisor
+  workload (Prof. Kim is over capacity). Manage users and advisors, edit and publish the catalog, connect
+  integrations, change AI and institution settings, and read the audit log. Most screens export CSV.
+
+### Optional backend features
+
+`backend/.env.example` lists every variable with a comment. Only `DATABASE_URL` is required.
+
+- `ANTHROPIC_API_KEY`: lets the AI advisor use Claude (pick the engine under Admin → AI settings). Without it
+  the built-in rules engine answers.
+- `DEMO_MODE=true`: enables **Reset demo data** under Admin → Settings (wipes and reseeds the database).
+- `ACADMATE_TODAY=YYYY-MM-DD`: pins "today" for demos.
+- `GOOGLE_*` / `MICROSOFT_*`: needed to connect Google or Outlook calendars under Integrations.
+- Daily jobs (run from `backend/`): `python scripts/send_reminders.py` (meeting reminders, stale approval
+  reminders) and `python scripts/prune.py` (deletes audit events and AI threads past their retention).
 
 ### Changing the database schema
 
 There are no migrations. After changing `backend/models.py`, rebuild the tables and reload the demo data
-(this deletes everything in the database):
+(this deletes everything in the database `DATABASE_URL` points at):
 
 ```bash
 python reset_db.py --yes && python seed_data.py
 ```
-
-### Backend settings
-
-`backend/.env.example` lists every variable with a comment. Only `DATABASE_URL` is required.
 
 ### Backend tests
 
@@ -86,7 +112,7 @@ from the app database.
 ### Local Docker database (optional)
 
 To work offline instead of Neon, run Postgres in Docker and point `DATABASE_URL` / `TEST_DATABASE_URL` at it
-(the commented lines in `.env.example`):
+(the commented lines in `.env.example`), then run `python reset_db.py --yes && python seed_data.py` once:
 
 ```bash
 docker run -d --name acadmate-fastapi-db -e POSTGRES_USER=acadmate -e POSTGRES_PASSWORD=<choose-one> \
