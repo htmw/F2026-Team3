@@ -6,20 +6,17 @@ Acadmate: academic advising for students, faculty advisors and administrators.
 - `backend/`: FastAPI (Python) REST API with PostgreSQL through SQLAlchemy
 - `Doumentation/`: project documents, presentations and the static design prototypes
 
-Quick start (Python 3.10+, Node.js 20+ and Docker Desktop required):
+Quick start (Python 3.10+ and Node.js 20+ required). The database is hosted on Neon (Postgres): get the
+connection strings from the Neon console (project → Connect, database `acadmate_sprint2`).
 
 ```bash
-# PostgreSQL on localhost:5433 (first time only; afterwards: docker start acadmate-fastapi-db)
-docker run -d --name acadmate-fastapi-db -e POSTGRES_USER=acadmate -e POSTGRES_PASSWORD=<choose-one> \
-  -e POSTGRES_DB=acadmate -p 5433:5432 -v acadmate-fastapi-pg:/var/lib/postgresql/data postgres:16-alpine
-
 cd backend
-cp .env.example .env               # put the same password in DATABASE_URL
+cp .env.example .env               # paste the Neon pooled string into DATABASE_URL (keep ?sslmode=require)
 python -m venv venv
 venv\Scripts\activate              # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
 python test_db.py                  # checks the database connection
-python reset_db.py --yes && python seed_data.py   # (re)creates all tables and loads demo data
+python reset_db.py --yes && python seed_data.py   # ONLY for an empty database: drops every table, loads demo data
 uvicorn main:app --reload          # http://localhost:8000, API docs at /docs (--port 8001 if 8000 is taken)
 
 # new terminal
@@ -75,10 +72,24 @@ python reset_db.py --yes && python seed_data.py
 
 ### Backend tests
 
+Create the database `acadmate_sprint2_test` once in the Neon console (Databases → New), put its **direct**
+connection string (no `-pooler`) in `TEST_DATABASE_URL`, then:
+
 ```bash
-docker exec acadmate-fastapi-db createdb -U acadmate acadmate_test   # once
 cd backend && pytest -q
 ```
 
 Tests use `TEST_DATABASE_URL` (default: `DATABASE_URL` with `_test` appended to the database name) and drop and
-recreate its tables on every run.
+recreate its tables on every run. They refuse to start unless that database's name ends in `_test` and differs
+from the app database.
+
+### Local Docker database (optional)
+
+To work offline instead of Neon, run Postgres in Docker and point `DATABASE_URL` / `TEST_DATABASE_URL` at it
+(the commented lines in `.env.example`):
+
+```bash
+docker run -d --name acadmate-fastapi-db -e POSTGRES_USER=acadmate -e POSTGRES_PASSWORD=<choose-one> \
+  -e POSTGRES_DB=acadmate -p 5433:5432 -v acadmate-fastapi-pg:/var/lib/postgresql/data postgres:16-alpine
+docker exec acadmate-fastapi-db createdb -U acadmate acadmate_test
+```
