@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "frozen_at_utc": "2026-10-30T13:38:14.804037+00:00",
+  "primary": "logistic_regression_with_existing_sigmoid",
+  "comparison": "same_model_uncalibrated",
+  "features": [
+    "course_day",
+    "course_progress",
+    "window_days_28d",
+    "clicks_7d",
+    "clicks_28d",
+    "active_days_7d",
+    "active_days_28d",
+    "engagement_change",
+    "days_since_activity",
+    "no_activity",
+    "assessments_due",
+    "submissions_so_far",
+    "overdue_assessments",
+    "late_submission_rate",
+    "days_since_submission",
+    "no_submission"
+  ],
+  "threshold": 0.5,
+  "threshold_role": "diagnostic only",
+  "pooled_weights": "one total vote per retained enrollment",
+  "weekly_weights": "one vote per active enrollment",
+  "bootstrap_replicates": 300,
+  "bootstrap_seed": 42,
+  "outreach_fractions": [
+    0.1,
+    0.2
+  ],
+  "model_sha256": "93cab4b90d3fc755b087be6343673b47ec3b163f4d4a8d3aace93e356fcb0020",
+  "maps_sha256": "d9ef14cad9c5d0cc8731e68b02633bb831ebed7a8ba6bb255bef2513f7be88e7",
+  "split_manifest_sha256": "71dfc2d7f781fc524cc4ee7e7c4d86a461b938b61cd9de5a78cd0cf69c132996",
+  "baseline_report_sha256": "9597fcb2e203c2cd7f4f4161625c61365e6f581f829addf9d36ddf0ee4d25c82",
+  "calibration_report_sha256": "5d6ef63ca0a4605790880e8eb7f2a26da51be7bf5fa766848623a1efa9a8eb19",
+  "source_sha256": {
+    "evaluate.py": "e61b749f7997420f053a63f664abffd4d9d8e50bf92d6388cdb1a756c685a112",
+    "features.py": "59ee07325bede5396b0d2efc16cf1354b8f7fef6c0ed8306cd3daee6dc425f01",
+    "train.py": "3aea8acf7069327ad6dba8b2fab0c77cca2f8d11f85f6ff88e809dcc6d84be4c",
+    "calibrate.py": "57eaf9dba6b8c45d84787e23c6008bbab702dd5d42b52a3885db069d5fa60d64",
+    "uncertainty.py": "07e908ff9c3c4f7ed1ca37773374d26b83e3b06c044a77b98fe88afebcb7d782",
+    "splits.py": "8b212f531af7290c69692449fa9f21f0c50e68856e2810f9924f5735e5d07ee7"
+  },
+  "policy": "No refitting, new candidate models, calibration selection, or threshold tuning after test access",
+  "limits": [
+    "Course-end final-label maturity proxy; actual availability unverified",
+    "No validation evidence for days 7-21",
+    "Research prototype; no verified Brightspace mapping"
+  ]
+}

@@ -1,0 +1,31 @@
+course_id,course_code,course_name,credits
+11,CS501,Programming Foundations with Java,3
+12,CS510,Data Structures and Algorithms,3
+13,CS620,Database Management Systems,3
+10000,CS701,Software Engineering,3
+10001,CS702,Operating Systems,3
+10002,CS703,Computer Networks,3
+10003,CS704,Applied Statistics,3
+10004,CS705,Machine Learning,3
+10005,CS706,Artificial Intelligence,3
+10006,CS707,Data Visualization,3
+10007,CS708,Information Security,3
+10008,CS709,Cloud Computing,3
+10009,CS710,Distributed Systems,3
+10010,CS711,Advanced Databases,3
+10011,CS712,Natural Language Processing,3
+10012,CS713,Computer Vision,3
+10013,CS714,Human Computer Interaction,3
+10014,CS715,Mobile Application Development,3
+10015,CS716,Web Application Engineering,3
+10016,CS717,Data Mining,3
+10017,CS718,Parallel Computing,3
+10018,CS719,Secure Software Design,3
+10019,CS720,Information Retrieval,3
+10020,CS721,Computational Ethics,3
+10021,CS722,Research Methods in Computing,3
+10022,CS723,Internet of Things,3
+10023,CS724,Programming Language Design,3
+10024,CS725,Applied Optimization,3
+10025,CS726,Big Data Systems,3
+10026,CS799,Computer Science Capstone,3
