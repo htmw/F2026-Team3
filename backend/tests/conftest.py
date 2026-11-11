@@ -1,7 +1,9 @@
 """Test setup: points the app at a separate test database, rebuilds and seeds it once per run.
 
 TEST_DATABASE_URL (backend/.env) names that database; when unset it is DATABASE_URL with "_test" appended
-to the database name. Create it once: docker exec acadmate-fastapi-db createdb -U acadmate acadmate_test
+to the database name. Create it once (on Neon: console → Databases, e.g. acadmate_sprint2_test; on local
+Docker: docker exec acadmate-fastapi-db createdb -U acadmate acadmate_test). Its name must end in "_test":
+every run drops all of its tables, so the guard below refuses anything that could be the app's database.
 """
 import os
 import sys
@@ -24,8 +26,22 @@ def _test_database_url() -> str:
     return url.set(database=f"{url.database}_test").render_as_string(hide_password=False)
 
 
+def _guard(test_url: str) -> None:
+    """Exit before any table is dropped unless test_url is clearly a separate *_test database."""
+    test = make_url(test_url)
+    app = make_url(os.environ["DATABASE_URL"])
+    if not (test.database or "").endswith("_test"):
+        pytest.exit(f"Refusing to run: the test database '{test.database}' must end in '_test' "
+                    "(set TEST_DATABASE_URL in backend/.env).", returncode=1)
+    # Names only: Neon's pooled and direct hosts differ but reach the same database.
+    if test.database == app.database:
+        pytest.exit(f"Refusing to run: TEST_DATABASE_URL points at the app database '{app.database}'.", returncode=1)
+
+
 # Must happen before anything imports core.config / database.
-os.environ["DATABASE_URL"] = _test_database_url()
+_TEST_URL = _test_database_url()
+_guard(_TEST_URL)
+os.environ["DATABASE_URL"] = _TEST_URL
 # The seed's current term and week depend on "today"; pin it so date-dependent assertions are stable.
 os.environ["ACADMATE_TODAY"] = "2026-10-01"
 
