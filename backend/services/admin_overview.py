@@ -10,8 +10,8 @@ from datetime import date, datetime, time, timedelta
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from core.time import local_zone, now, short_date, today
-from models import (Advisor, AdvisorStudentAssignment, AiFlag, AiMessage, ApprovalRequest, AuthToken, CalendarFeed,
+from core.time import local_zone, short_date, today
+from models import (Advisor, AdvisorStudentAssignment, AiFlag, AiMessage, ApprovalRequest, CalendarFeed,
                     Course, Integration, User, UserSession)
 from services import audit, catalog, integrations, mailer, settings
 from services.approvals import avg_decision_days
@@ -82,11 +82,11 @@ def active_students(db: Session, day: date | None = None) -> dict:
 
 def advisors_stat(db: Session) -> dict:
     active = db.query(func.count(User.user_id)).filter(User.role == "advisor", User.is_active.is_(True)).scalar()
-    invited = (db.query(func.count(func.distinct(User.user_id))).join(AuthToken, AuthToken.user_id == User.user_id)
-               .filter(User.role == "advisor", User.is_active.is_(False), AuthToken.purpose == "invite",
-                       AuthToken.used_at.is_(None), AuthToken.expires_at > now())
+    # Created by an admin (spec 31) and still on the temporary password: they haven't signed in yet.
+    waiting = (db.query(func.count(User.user_id))
+               .filter(User.role == "advisor", User.is_active.is_(True), User.must_change_password.is_(True))
                .scalar())
-    note = f"{invited} invited, not yet signed in" if invited else "All advisors signed in"
+    note = f"{waiting} not yet signed in" if waiting else "All advisors signed in"
     return {"key": "advisors", "label": "Advisors", "value": _fmt(active), "tag": "Faculty", "tone": "gray",
             "note": note}
 

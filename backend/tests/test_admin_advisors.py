@@ -6,6 +6,7 @@ from datetime import timedelta
 import pytest
 
 from core.errors import ApiError
+from core.security import verify_password
 from core.time import now
 from database import SessionLocal
 from models import (Advisor, AdvisorStudentAssignment, ApprovalRequest, AuditEvent, AuthToken, Conversation,
@@ -70,14 +71,14 @@ def admin(db):
 
 
 @pytest.fixture
-def invites_used():
-    """Marks the invites of advisors added in a test as used, so the overview's "1 invited" note stays as seeded."""
+def signed_in_later():
+    """Clears must_change_password on advisors added in a test, so the overview's "not yet signed in" note stays as
+    seeded (only Priya Natarajan)."""
     emails = []
     yield emails
     with SessionLocal() as db:
-        users = db.query(User.user_id).filter(User.email.in_(emails))
-        db.query(AuthToken).filter(AuthToken.user_id.in_(users), AuthToken.used_at.is_(None)) \
-            .update({AuthToken.used_at: now()}, synchronize_session=False)
+        db.query(User).filter(User.email.in_(emails)).update({User.must_change_password: False},
+                                                              synchronize_session=False)
         db.commit()
 
 
@@ -102,10 +103,11 @@ def test_seeded_list(db):
     assert (kim["load"], kim["cap"], kim["pending"], kim["status"], kim["dept"]) == (3, 2, 2, "Over capacity",
                                                                                    "Computer Science")
     assert (by_id[201]["resp"], by_id[201]["cap"], by_id[201]["userId"]) == ("1.5 days", 45, 2)
-    assert by_id[202]["active"] is False and by_id[202]["dept"] == "Data Science"
+    assert by_id[202]["active"] is True and by_id[202]["dept"] == "Data Science"  # Priya: created, not signed in yet
     actives = [row["active"] for row in rows]
-    assert actives == sorted(actives, reverse=True)  # every active advisor before the invited one
-    assert set(kim) == {"id", "userId", "name", "dept", "load", "cap", "pending", "resp", "status", "active"}
+    assert actives == sorted(actives, reverse=True)  # active advisors before deactivated ones
+    assert set(kim) == {"id", "userId", "name", "dept", "load", "cap", "pending", "resp", "status", "active",
+                        "temporaryPassword"} and kim["temporaryPassword"] is None
     with pytest.raises(ApiError) as err:
         aa.get_row(db, 999999)
     assert err.value.status == 404
@@ -113,22 +115,24 @@ def test_seeded_list(db):
 
 # --- add and update ------------------------------------------------------------------------------------------------
 
-def test_add_invites_an_advisor(db, admin, sent, invites_used):
+def test_add_creates_an_advisor_with_a_temporary_password(db, admin, sent, signed_in_later):
     email = fresh_email()
-    invites_used.append(email)
+    signed_in_later.append(email)
     row = aa.add(db, admin, {"name": "Dr. Ada  Quinn", "email": email.upper(), "department": "Mathematics",
                              "capacity": 30})
     assert (row["name"], row["dept"], row["cap"], row["load"], row["active"]) == ("Dr. Ada Quinn", "Mathematics",
-                                                                                   30, 0, False)
+                                                                                   30, 0, True)
     user = db.get(User, row["userId"])
-    assert (user.email, user.role, user.is_active, user.password_hash) == (email, "advisor", False, None)
-    assert sent[-1][0] == email and "token=" in sent[-1][2]
+    db.refresh(user)
+    assert (user.email, user.role, user.is_active, user.must_change_password) == (email, "advisor", True, True)
+    assert verify_password(row["temporaryPassword"], user.password_hash)
+    assert sent[-1][:2] == (email, "Your Acadmate account") and row["temporaryPassword"] in sent[-1][2]
     event = db.query(AuditEvent).filter(AuditEvent.action == "advisor.add").order_by(AuditEvent.id.desc()).first()
     assert event.target_id == str(row["id"]) and event.changes["capacity"] == 30
 
     with pytest.raises(ApiError) as err:
         aa.add(db, admin, {"name": "Someone Else", "email": email, "department": "Mathematics", "capacity": 40})
-    assert (err.value.status, err.value.message) == (409, "An account with this email already exists.")
+    assert (err.value.status, err.value.code, err.value.message) == (409, "EMAIL_TAKEN", f"{email} already has an account.")
 
 
 def test_update(db, admin, make_user):

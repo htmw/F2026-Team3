@@ -18,7 +18,7 @@ from services import audit, mailer
 
 CARDS = {
     "csv": ("CSV data import", "Upload courses, enrollments and grades exported from your school's systems."),
-    "mail": ("Email (SMTP)", "Sends meeting confirmations, reminders and invites."),
+    "mail": ("Email (SMTP)", "Sends meeting confirmations, reminders and login details."),
     "gcal": ("Google Calendar", "Lets students and advisors sync Acadmate meetings."),
     "outlook": ("Outlook Calendar", "Lets students and advisors sync Acadmate meetings."),
 }

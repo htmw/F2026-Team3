@@ -148,11 +148,11 @@ function Institution({ value, terms, errors, onChange }) {
       <Field id="set-name" label="Institution name" error={errors.name}>
         <TextInput id="set-name" value={value.name} maxLength={120} onChange={(e) => onChange({ name: e.target.value })} />
       </Field>
-      <Field id="set-domain" label="Email domain" hint="Student sign-up emails must use this domain." error={errors.domain}>
+      <Field id="set-domain" label="Email domain" hint="Your school's email domain." error={errors.domain}>
         <TextInput id="set-domain" value={value.domain} maxLength={100} autoComplete="off"
           onChange={(e) => onChange({ domain: e.target.value })} />
       </Field>
-      <Field id="set-support" label="Support email" error={errors.supportEmail}>
+      <Field id="set-support" label="Support email" hint="Shown on the sign-in page for login problems." error={errors.supportEmail}>
         <TextInput id="set-support" type="email" value={value.supportEmail} maxLength={254}
           onChange={(e) => onChange({ supportEmail: e.target.value })} />
       </Field>
@@ -165,9 +165,6 @@ function Institution({ value, terms, errors, onChange }) {
       <Choice label="Time zone">
         <SegmentedTabs label="Time zone" value={value.timeZone} onChange={(timeZone) => onChange({ timeZone })} options={ZONES} />
       </Choice>
-      <SwitchRow id="set-signup" label="Students can create their own accounts"
-        description={`Sign-up is open to ${value.domain || 'school'} email addresses.`} checked={value.selfSignup}
-        onChange={(selfSignup) => onChange({ selfSignup })} />
     </Card>
   )
 }
