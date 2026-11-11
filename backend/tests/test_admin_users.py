@@ -297,7 +297,7 @@ def test_update_status(db, make_user, sent):
 
 def test_reset_password(db, sent, make_user):
     admin = db.get(User, ADMIN_ID)
-    user = make_user("student")
+    user = db.get(User, make_user("student").user_id)
     db.add(UserSession(user_id=user.user_id, token_hash=sha256_hex(uuid.uuid4().hex),
                        expires_at=datetime.now(local_zone()) + timedelta(days=1)))
     db.add(AuthToken(user_id=user.user_id, token_hash=sha256_hex(uuid.uuid4().hex), purpose="reset",

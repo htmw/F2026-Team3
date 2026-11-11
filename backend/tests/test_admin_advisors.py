@@ -106,8 +106,7 @@ def test_seeded_list(db):
     assert by_id[202]["active"] is True and by_id[202]["dept"] == "Data Science"  # Priya: created, not signed in yet
     actives = [row["active"] for row in rows]
     assert actives == sorted(actives, reverse=True)  # active advisors before deactivated ones
-    assert set(kim) == {"id", "userId", "name", "dept", "load", "cap", "pending", "resp", "status", "active",
-                        "temporaryPassword"} and kim["temporaryPassword"] is None
+    assert set(kim) == {"id", "userId", "name", "dept", "load", "cap", "pending", "resp", "status", "active"}
     with pytest.raises(ApiError) as err:
         aa.get_row(db, 999999)
     assert err.value.status == 404
