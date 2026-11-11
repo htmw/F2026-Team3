@@ -13,11 +13,13 @@ from schemas.dashboard import DashboardOut
 from schemas.meetings import MeetingListOut
 from schemas.plan import AuditOut, PlanAddIn, PlanAddOut, PlanOut, PlanSubmitIn, SubmitOut
 from schemas.students import AcademicProfileResponse
+from schemas.degree_progress import DegreeProgressResponse
 from services import assignments, calendar, meetings, plan
 from services.courses import my_courses
 from services.dashboard import build_dashboard
 from services.degree_audit import degree_audit
 from services.students import ensure_can_view, get_student_profile
+from services.degree_progress import degree_progress
 
 
 router = APIRouter(
@@ -40,6 +42,16 @@ def get_my_courses(student: Student = Depends(get_current_student), db: Session 
 @router.get("/me/degree-audit", response_model=AuditOut)
 def get_my_degree_audit(student: Student = Depends(get_current_student), db: Session = Depends(get_db)):
     return degree_audit(db, student)
+
+@router.get(
+    "/me/degree-progress",
+    response_model=DegreeProgressResponse
+)
+def get_my_degree_progress(
+    student: Student = Depends(get_current_student),
+    db: Session = Depends(get_db)
+):
+    return degree_progress(db, student.student_id)
 
 
 @router.get("/me/plan", response_model=PlanOut)
@@ -123,3 +135,33 @@ def get_my_meetings(student: Student = Depends(get_current_student), db: Session
 def get_academic_profile(student_id: int, user: User = Depends(require_role("advisor", "admin")), db: Session = Depends(get_db)):
     ensure_can_view(db, user, student_id)
     return get_student_profile(db, student_id)
+
+
+@router.get(
+    "/{student_id}/degree-progress",
+    response_model=DegreeProgressResponse
+)
+def get_degree_progress(
+    student_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if user.role == "student":
+        student = (
+            db.query(Student)
+            .filter(Student.user_id == user.user_id)
+            .one_or_none()
+        )
+
+        if student is None or student.student_id != student_id:
+            from fastapi import HTTPException
+
+            raise HTTPException(
+                status_code=403,
+                detail="You may only view your own degree progress"
+            )
+
+    else:
+        ensure_can_view(db, user, student_id)
+
+    return degree_progress(db, student_id)
