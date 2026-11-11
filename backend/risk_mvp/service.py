@@ -19,7 +19,10 @@ def normalize(cutoff):
 
 def extract(db,enrollment_id,cutoff):
     cutoff=normalize(cutoff)
-    enrollment=db.execute(select(T['enrollments']).where(T['enrollments'].c.enrollment_id==enrollment_id)).mappings().first()
+    # Project only required academic fields: main metadata may have newer columns
+    # than the isolated research database (for example section_id).
+    e=T['enrollments'].c
+    enrollment=db.execute(select(e.student_id,e.course_id).where(e.enrollment_id==enrollment_id)).mappings().first()
     if enrollment is None:raise MissingEnrollment()
     link=db.get(Link,enrollment_id)
     if link is None:return {'status':'unavailable','reason':'No dated course offering','coverage':{},'features':None,'evidence':{}}
@@ -100,10 +103,11 @@ def assessment(db,enrollment_id,cutoff):
     return response
 
 def insights(db,student_id):
-    student=db.execute(select(T['students']).where(T['students'].c.student_id==student_id)).mappings().first()
+    s=T['students'].c
+    student=db.execute(select(s.name).where(s.student_id==student_id)).mappings().first()
     if student is None:raise MissingEnrollment()
     e,c=T['enrollments'],T['courses']
-    rows=db.execute(select(e,c.c.course_code,c.c.credits).join(c,e.c.course_id==c.c.course_id).where(e.c.student_id==student_id)).mappings().all()
+    rows=db.execute(select(e.c.enrollment_id,e.c.course_id,e.c.status,e.c.grade_points,e.c.term,c.c.course_code,c.c.credits).join(c,e.c.course_id==c.c.course_id).where(e.c.student_id==student_id)).mappings().all()
     completed=[r for r in rows if r['status']=='completed' and r['grade_points'] is not None]
     credits=sum(float(r['credits']) for r in completed)
     gpa=round(sum(float(r['credits'])*float(r['grade_points']) for r in completed)/credits,2) if credits else None

@@ -2,6 +2,7 @@ from datetime import datetime
 import logging,os
 from fastapi import APIRouter,Depends,Path,Query
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from sqlalchemy import select
 from .database import session
 from .models import Base
@@ -23,7 +24,7 @@ def read_db():
             yield db
     except Exception as exc:
         from fastapi import HTTPException
-        if isinstance(exc,HTTPException):raise
+        if isinstance(exc,(HTTPException,RequestValidationError)):raise
         logging.getLogger(__name__).exception('Disposable risk database unavailable')
         raise HTTPException(503,'Synthetic database demo unavailable') from None
 
