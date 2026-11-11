@@ -1,5 +1,5 @@
-"""Admin users (spec 31). conftest pins today to 2026-10-01. Tests make their own users (an auth test activates
-Priya's seeded invite, so she isn't reliably "Invited") and use fresh email addresses each run."""
+"""Admin users (spec 31 revision 2). conftest pins today to 2026-10-01. Tests make their own users and use fresh
+email addresses each run."""
 import re
 import uuid
 from datetime import datetime, time, timedelta
@@ -7,7 +7,7 @@ from datetime import datetime, time, timedelta
 import pytest
 
 from core.errors import ApiError
-from core.security import sha256_hex
+from core.security import sha256_hex, temporary_password, verify_password
 from core.time import local_zone, today
 from database import SessionLocal
 from models import (Advisor, AdvisorStudentAssignment, AuditEvent, AuthToken, ConversationParticipant, Message,
@@ -42,8 +42,8 @@ def student_user(make_user):
     return create
 
 
-def token_from(text: str) -> str:
-    return re.search(r"token=([\w-]+)", text).group(1)
+def password_from(text: str) -> str:
+    return re.search(r"Temporary password: (\S+)", text).group(1)
 
 
 # --- labels -------------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ def test_labels():
 
 def test_status_of():
     assert au.status_of(User(is_active=True, password_hash="x")) == "Active"
-    assert au.status_of(User(is_active=False, password_hash=None)) == "Invited"
+    assert au.status_of(User(is_active=False, password_hash=None)) == "Deactivated"  # an old Invited row
     assert au.status_of(User(is_active=False, password_hash="x")) == "Deactivated"
 
 
@@ -106,33 +106,56 @@ def test_list_filters(db):
     assert len(page["rows"]) == 3 and page["rows"][0]["id"] not in [r["id"] for r in au.list_users(db, size=3)["rows"]]
 
 
-# --- invite -------------------------------------------------------------------------------------------------------
+# --- create -------------------------------------------------------------------------------------------------------
 
-def test_invite(db, sent):
+def test_temporary_password_shape():
+    for _ in range(50):
+        password = temporary_password()
+        assert len(password) == 12 and not set(password) & set("0Oo1lI")
+        assert all(any(c in pool for c in password) for pool in ("ABCDEFGHJKLMNPQRSTUVWXYZ", "abcdefghijkmnpqrstuvwxyz",
+                                                                  "23456789", "!@#$%"))
+
+
+def test_create_student(db, sent):
     admin = db.get(User, ADMIN_ID)
-    new = fresh("Maria.Lopez")
-    result = au.invite(db, admin, [new, "amara.okafor@pac.edu", "not-an-email", new.upper()], "student")
-    assert result == {"sent": 1, "skipped": [
-        {"email": "amara.okafor@pac.edu", "reason": "already has an account"},
-        {"email": "not-an-email", "reason": "not a valid email"},
-        {"email": new.lower(), "reason": "listed twice"}]}
+    email = fresh("maria.lopez")
+    result = au.create(db, admin, {"name": "Maria Lopez", "email": email.upper(), "role": "student",
+                                   "programId": None, "advisorId": 204})
+    row, password = result["user"], result["temporaryPassword"]
+    assert (row["name"], row["email"], row["role"], row["status"]) == ("Maria Lopez", email, "Student", "Active")
+    assert (row["advisorId"], row["programId"]) == (204, 1)
 
-    user = db.query(User).filter(User.email == new.lower()).one()
-    assert user.name.startswith("Maria Lopez ")  # name_from_email; the random suffix is the last word
-    assert (user.role, au.status_of(user)) == ("student", "Invited")
-    assert db.query(Student).filter(Student.user_id == user.user_id).one().program_id == 1
-    assert len(sent) == 1 and sent[0][0] == user.email and "Jordan Lee invited you" in sent[0][2]
-    token = db.query(AuthToken).filter(AuthToken.token_hash == sha256_hex(token_from(sent[0][2]))).one()
-    assert token.purpose == "invite" and token.user_id == user.user_id
-    event = db.query(AuditEvent).filter(AuditEvent.action == "user.invite").order_by(AuditEvent.id.desc()).first()
-    assert event.summary == "Invited 1 student" and event.changes["emails"] == [user.email]
+    user = db.get(User, row["id"])
+    db.refresh(user)
+    assert user.is_active and user.must_change_password and verify_password(password, user.password_hash)
+    assert len(sent) == 1 and sent[0][:2] == (email, "Your Acadmate account")
+    assert password_from(sent[0][2]) == password and "Jordan Lee created an Acadmate account for you." in sent[0][2]
+    assert "acadmate-help@pac.edu" in sent[0][2]
+    event = db.query(AuditEvent).filter(AuditEvent.action == "user.create").order_by(AuditEvent.id.desc()).first()
+    assert event.summary == "Created Maria Lopez (Student)" and event.changes == {"role": [None, "student"],
+                                                                                   "email": [None, email]}
+    assert password not in str(event.changes) and password not in event.summary
 
 
-def test_invite_advisor_gets_advisor_row(db, sent):
+@pytest.mark.parametrize("data, status, message", [
+    ({"email": "amara.okafor@pac.edu", "role": "student"}, 409, "amara.okafor@pac.edu already has an account."),
+    ({"email": "not-an-email", "role": "student"}, 422, "Enter a valid email address."),
+    ({"role": "student", "programId": 99}, 400, "Unknown program."),
+    ({"role": "advisor", "advisorId": 201}, 400, "Only students have an advisor and a program."),
+    ({"role": "student", "advisorId": 999}, 400, "Choose an active advisor."),
+])
+def test_create_refusals(db, sent, data, status, message):
+    with pytest.raises(ApiError) as err:
+        au.create(db, db.get(User, ADMIN_ID), {"name": "Some One", "email": fresh(), **data})
+    assert (err.value.status, err.value.message) == (status, message)
+    db.rollback()
+    assert sent == []
+
+
+def test_create_advisor_gets_advisor_row(db, sent):
     email = fresh("adv")
-    assert au.invite(db, db.get(User, ADMIN_ID), [email], "advisor")["sent"] == 1
-    user = db.query(User).filter(User.email == email).one()
-    assert db.query(Advisor).filter(Advisor.user_id == user.user_id).one().capacity == 40
+    row = au.create(db, db.get(User, ADMIN_ID), {"name": "Ada Visor", "email": email, "role": "advisor"})["user"]
+    assert db.query(Advisor).filter(Advisor.user_id == row["id"]).one().capacity == 40
 
 
 # --- import -------------------------------------------------------------------------------------------------------
@@ -150,7 +173,7 @@ def test_import_csv(db, sent, student_user):
             f"Amara Okafor,amara.okafor@pac.edu,advisor,\n"
             f"Dup,{new_student},student,M.S. Computer Science\n")
     result = au.import_csv(db, db.get(User, ADMIN_ID), text)
-    assert (result["created"], result["updated"], result["file"]) == (2, 1, None)
+    assert (result["created"], result["updated"], result["emailed"], result["file"]) == (2, 1, 2, None)
     assert result["skipped"] == [
         {"line": 4, "reason": 'Unknown program "MS Bio"'},
         {"line": 7, "reason": 'Not a valid email ""'},
@@ -163,9 +186,10 @@ def test_import_csv(db, sent, student_user):
     assert renamed.name == "Renamed Person" and renamed.last_name == "Person"
     assert db.query(Student).filter(Student.user_id == existing.user_id).one().name == "Renamed Person"
     advisor = db.query(User).filter(User.email == new_advisor).one()
-    assert (advisor.role, au.status_of(advisor)) == ("advisor", "Invited")
+    assert (advisor.role, au.status_of(advisor), advisor.must_change_password) == ("advisor", "Active", True)
     assert db.query(Advisor).filter(Advisor.user_id == advisor.user_id).one().department == "Mathematics"
-    assert sorted(m[0] for m in sent) == sorted([new_student, new_advisor])  # invites only for new users
+    assert sorted(m[0] for m in sent) == sorted([new_student, new_advisor])  # login details only for new users
+    assert all(m[1] == "Your Acadmate account" for m in sent)
     assert db.get(User, 1).role == "student"
 
 
@@ -237,7 +261,7 @@ def test_update_role_rules(db, student_user, make_user):
     assert au.update(db, admin, user.user_id, {"role": "student"})["studentId"] == student.student_id  # row kept
 
 
-def test_update_status(db, make_user):
+def test_update_status(db, make_user, sent):
     admin = db.get(User, ADMIN_ID)
     user = make_user("student")
     db.add(UserSession(user_id=user.user_id, token_hash=sha256_hex(uuid.uuid4().hex),
@@ -246,20 +270,24 @@ def test_update_status(db, make_user):
     assert au.update(db, admin, user.user_id, {"status": "Deactivated"})["status"] == "Deactivated"
     assert db.query(UserSession).filter(UserSession.user_id == user.user_id,
                                         UserSession.revoked_at.is_(None)).count() == 0
-    assert au.update(db, admin, user.user_id, {"status": "Active"})["status"] == "Active"
+    reactivated = au.update(db, admin, user.user_id, {"status": "Active"})
+    assert reactivated["status"] == "Active" and "temporaryPassword" not in reactivated  # still has a password
 
     for patch in ({"status": "Deactivated"}, {"role": "student"}):
         with pytest.raises(ApiError) as err:
             au.update(db, admin, ADMIN_ID, patch)
         assert (err.value.status, err.value.message) == (409, au.SELF_CHANGE)
 
+    # An Invited account left from spec 31 revision 1 (no password) gets a temporary password when reactivated.
     invited = User(name="Inv Ited", first_name="Inv", last_name="Ited", email=fresh("inv"), role="admin",
                    is_active=False, password_hash=None)
     db.add(invited)
     db.commit()
-    with pytest.raises(ApiError) as err:
-        au.update(db, admin, invited.user_id, {"status": "Active"})
-    assert err.value.status == 409 and "Re-send the invite" in err.value.message
+    assert au.list_users(db, q=invited.email)["rows"][0]["status"] == "Deactivated"
+    row = au.update(db, admin, invited.user_id, {"status": "Active"})
+    assert row["status"] == "Active" and password_from(sent[-1][2]) == row["temporaryPassword"]
+    db.refresh(invited)
+    assert invited.must_change_password and verify_password(row["temporaryPassword"], invited.password_hash)
     with pytest.raises(ApiError) as err:
         au.update(db, admin, 999999, {"status": "Active"})
     assert err.value.status == 404
@@ -267,24 +295,29 @@ def test_update_status(db, make_user):
 
 # --- reset --------------------------------------------------------------------------------------------------------
 
-def test_send_reset(db, sent, make_user):
+def test_reset_password(db, sent, make_user):
     admin = db.get(User, ADMIN_ID)
-    active = make_user("student")
-    au.send_reset(db, admin, active.user_id)
-    assert sent[-1][1] == "Reset your Acadmate password"
-    assert db.query(AuthToken).filter(AuthToken.token_hash == sha256_hex(token_from(sent[-1][2]))).one().purpose == "reset"
+    user = make_user("student")
+    db.add(UserSession(user_id=user.user_id, token_hash=sha256_hex(uuid.uuid4().hex),
+                       expires_at=datetime.now(local_zone()) + timedelta(days=1)))
+    db.add(AuthToken(user_id=user.user_id, token_hash=sha256_hex(uuid.uuid4().hex), purpose="reset",
+                     expires_at=datetime.now(local_zone()) + timedelta(minutes=30)))
+    db.commit()
 
-    email = fresh("again")
-    au.invite(db, admin, [email], "admin")
-    first = token_from(sent[-1][2])
-    invited = db.query(User).filter(User.email == email).one()
-    au.send_reset(db, admin, invited.user_id)
-    assert sent[-1][1] == "You're invited to Acadmate"
-    assert db.query(AuthToken).filter(AuthToken.token_hash == sha256_hex(first)).one().used_at is not None
+    result = au.reset_password(db, admin, user.user_id)
+    assert result["emailed"] is True and sent[-1][:2] == (user.email, "Your Acadmate password was reset")
+    assert password_from(sent[-1][2]) == result["temporaryPassword"]
+    assert "Jordan Lee reset your Acadmate password." in sent[-1][2]
+    db.refresh(user)
+    assert user.must_change_password and verify_password(result["temporaryPassword"], user.password_hash)
+    assert db.query(UserSession).filter(UserSession.user_id == user.user_id, UserSession.revoked_at.is_(None)).count() == 0
+    assert db.query(AuthToken).filter(AuthToken.user_id == user.user_id, AuthToken.used_at.is_(None)).count() == 0
+    event = db.query(AuditEvent).filter(AuditEvent.action == "user.reset", AuditEvent.target_id == str(user.user_id)).one()
+    assert event.summary == f"Reset the password for {user.name}" and not event.changes
 
-    with pytest.raises(ApiError) as err:
-        au.send_reset(db, admin, 4)  # Sam Rivera, deactivated
-    assert (err.value.status, err.value.message) == (409, "Reactivate the account first.")
-    with pytest.raises(ApiError) as err:
-        au.send_reset(db, admin, 999999)
-    assert err.value.status == 404
+    for user_id, status, message in ((4, 409, "Reactivate the account first."),  # Sam Rivera, deactivated
+                                     (ADMIN_ID, 409, "Change your own password in Settings."),
+                                     (999999, 404, "User not found.")):
+        with pytest.raises(ApiError) as err:
+            au.reset_password(db, admin, user_id)
+        assert err.value.status == status and (status == 404 or err.value.message == message)

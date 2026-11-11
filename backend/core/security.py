@@ -29,6 +29,23 @@ def verify_password(password: str, password_hash: str | None) -> bool:
         return False
 
 
+# Temporary passwords (spec 31): no look-alike characters (0 O o 1 l I), always one of each class.
+_UPPER = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+_LOWER = "abcdefghijkmnpqrstuvwxyz"
+_DIGITS = "23456789"
+_SYMBOLS = "!@#$%"
+
+
+def temporary_password(length: int = 12) -> str:
+    """A random password an admin hands out; the user must replace it at first sign-in."""
+    pools = (_UPPER, _LOWER, _DIGITS, _SYMBOLS)
+    chars = [secrets.choice(pool) for pool in pools]
+    everything = "".join(pools)
+    chars += [secrets.choice(everything) for _ in range(length - len(chars))]
+    secrets.SystemRandom().shuffle(chars)
+    return "".join(chars)
+
+
 def sha256_hex(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 

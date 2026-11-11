@@ -36,7 +36,7 @@ export const ASSIGNMENT_STATUS_TONE = { 'To do': 'gray', 'In progress': 'indigo'
 
 // Admin users (spec 31): role and account status pills, and the avatar tint per role.
 export const ROLE_TONE = { Student: 'teal', Advisor: 'amber', Admin: 'indigo' }
-export const USER_STATUS_TONE = { Active: 'teal', Invited: 'indigo', Deactivated: 'gray' }
+export const USER_STATUS_TONE = { Active: 'teal', Deactivated: 'gray' }
 
 // Admin advisors (spec 32): caseload status pills.
 export const CAPACITY_TONE = { 'Over capacity': 'pink', 'Near capacity': 'amber', 'Has room': 'teal' }

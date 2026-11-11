@@ -38,7 +38,7 @@ export default function AdminOverview() {
         actions={(
           <>
             <ExportButton href={apiUrl('/admin/overview.csv')} label="Export report" />
-            <Button to="/admin/users?invite=1">Invite users</Button>
+            <Button to="/admin/users?new=1">Add user</Button>
           </>
         )} />
 

@@ -89,12 +89,13 @@ class AdminUserRow(ApiModel):
     role: Literal["Student", "Advisor", "Admin"]
     dept: str
     program_id: int | None
-    status: Literal["Active", "Invited", "Deactivated"]
+    status: Literal["Active", "Deactivated"]
     last_active: str
     last_active_at: str | None
     student_id: int | None
     advisor_id: int | None
     advisor_name: str | None
+    temporary_password: str | None = None  # only on the PATCH that reactivated a passwordless account
 
 
 class AdvisorOption(ApiModel):
@@ -119,19 +120,23 @@ class AdminUsersOut(ApiModel):
     programs: list[ProgramOption]
 
 
-class InviteIn(ApiModel):
-    emails: list[EmailText] = Field(min_length=1, max_length=100)
+class CreateUserIn(ApiModel):
+    """Add user (spec 31 revision 2). programId / advisorId only for students."""
+    name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
+    email: EmailText
     role: RoleIn
+    program_id: int | None = None
+    advisor_id: int | None = None
 
 
-class InviteSkip(ApiModel):
-    email: str
-    reason: str
+class CreateUserOut(ApiModel):
+    user: AdminUserRow
+    temporary_password: str
 
 
-class InviteOut(ApiModel):
-    sent: int
-    skipped: list[InviteSkip]
+class ResetPasswordOut(ApiModel):
+    temporary_password: str
+    emailed: bool
 
 
 class ImportSkip(ApiModel):
@@ -142,6 +147,7 @@ class ImportSkip(ApiModel):
 class ImportOut(ApiModel):
     created: int
     updated: int
+    emailed: int
     skipped: list[ImportSkip]
     file: str | None
 
@@ -171,6 +177,7 @@ class AdminAdvisorRow(ApiModel):
     resp: str  # "1.4 days", "—" without decisions in the last 60 days
     status: Literal["Over capacity", "Near capacity", "Has room"]
     active: bool
+    temporary_password: str | None = None  # only in the Add advisor response (spec 32)
 
 
 class AdvisorsOut(ApiModel):

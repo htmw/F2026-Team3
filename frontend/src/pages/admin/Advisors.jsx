@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
 import MasterDetail, { DetailEmpty, ListRow } from '../../components/layout/MasterDetail.jsx'
+import TempPasswordNotice from '../../components/admin/TempPasswordNotice.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Card, { CardHeader } from '../../components/ui/Card.jsx'
 import { Field, TextInput } from '../../components/ui/Field.jsx'
@@ -106,8 +107,8 @@ function Caseload({ row, height }) {
   )
 }
 
-function InvitedPill({ row }) {
-  return row.active ? null : <Pill tone={USER_STATUS_TONE.Invited}>Invited</Pill>
+function InactivePill({ row }) {
+  return row.active ? null : <Pill tone={USER_STATUS_TONE.Deactivated}>Deactivated</Pill>
 }
 
 function AdvisorList({ rows, selectedId, onSelect }) {
@@ -131,7 +132,7 @@ function AdvisorList({ rows, selectedId, onSelect }) {
                   <td className="py-2 pl-2 pr-4">
                     <button type="button" aria-pressed={active} onClick={() => onSelect(row)}
                       className="flex cursor-pointer flex-col border-0 bg-transparent p-1 text-left font-semibold text-navy">
-                      <span className="flex flex-wrap items-center gap-2">{row.name}<InvitedPill row={row} /></span>
+                      <span className="flex flex-wrap items-center gap-2">{row.name}<InactivePill row={row} /></span>
                       <span className="text-xs font-normal text-muted">{row.dept}</span>
                     </button>
                   </td>
@@ -157,7 +158,7 @@ function AdvisorList({ rows, selectedId, onSelect }) {
               <span className="truncate text-xs text-muted">{row.dept} · {row.load} / {row.cap}</span>
               <Caseload row={row} height="h-1" />
             </span>
-            {row.active ? <Pill tone={CAPACITY_TONE[row.status]}>{row.status}</Pill> : <InvitedPill row={row} />}
+            {row.active ? <Pill tone={CAPACITY_TONE[row.status]}>{row.status}</Pill> : <InactivePill row={row} />}
           </ListRow>
         ))}
       </div>
@@ -192,7 +193,12 @@ function AddAdvisorPanel({ onAdded, onCancel }) {
         body: { name: form.name.trim(), email: form.email.trim(), department: form.department.trim(), capacity },
       })
       setForm(empty)
-      setResult({ tone: 'teal', text: 'Advisor added. An invite email is on its way.' })
+      setResult({
+        tone: 'teal',
+        text: `Advisor added. Login details were emailed to ${form.email.trim().toLowerCase()}.`,
+        password: row.temporaryPassword,
+        firstName: form.name.trim().split(/\s+/).find((word) => !/^(dr|prof)\.?$/i.test(word)),
+      })
       onAdded(row)
     } catch (err) {
       if (err.status === 409) setErrors({ email: err.message })
@@ -206,7 +212,8 @@ function AddAdvisorPanel({ onAdded, onCancel }) {
 
   return (
     <Card as="section" aria-label="Add an advisor" className="gap-4">
-      <CardHeader title="Add an advisor" subtitle="They get an email with a link to set up their account." />
+      <CardHeader title="Add an advisor"
+        subtitle="The account is ready right away. Acadmate emails the sign-in details with a temporary password." />
       <form onSubmit={submit} noValidate className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field id={`${id}-name`} label="Full name" error={errors.name}>
@@ -225,6 +232,7 @@ function AddAdvisorPanel({ onAdded, onCancel }) {
           </Field>
         </div>
         {result && <Notice tone={result.tone} role="status">{result.text}</Notice>}
+        {result?.password && <TempPasswordNotice password={result.password} firstName={result.firstName} />}
         <div className="flex flex-wrap gap-2">
           <Button type="submit" disabled={busy}>{busy ? 'Adding…' : 'Add advisor'}</Button>
           <Button variant="secondary" onClick={onCancel}>Cancel</Button>
@@ -283,7 +291,7 @@ function AdvisorDetail({ advisor, others, onChanged }) {
         <span className="text-[13px] text-muted">{advisor.dept}</span>
         <div className="flex flex-wrap gap-1.5">
           <Pill tone={CAPACITY_TONE[advisor.status]}>{advisor.status}</Pill>
-          <InvitedPill row={advisor} />
+          <InactivePill row={advisor} />
         </div>
       </div>
 

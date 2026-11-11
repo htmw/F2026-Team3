@@ -6,13 +6,13 @@ Acadmate: academic advising for students, faculty advisors and administrators.
 - `backend/`: FastAPI (Python 3.10+) REST API with PostgreSQL (hosted on Neon) through SQLAlchemy 2
 - `Doumentation/`: sprint docs, personas, Jira exports, presentations and wiki diagrams
 
-## Features
+## Features 
 
 | Role | Screens |
 |---|---|
 | Student | Dashboard, My courses (grades, insights), Degree plan (audit, roadmap, submit for approval), Assignments, Schedule (with an `.ics` calendar feed), Messages, Book a meeting, AI advisor, Settings |
 | Advisor | Dashboard, Advisees, Student record (private notes), Approvals queue, Meetings and office hours, Messages (incl. the advising team group), Reports (CSV export), Settings |
-| Admin | Platform overview, Users (invite, CSV import), Advisors (capacity, reassignment), Catalog (drafts and publish), Integrations (CSV imports, mail, calendars, API keys), AI settings and flagged answers, Audit log, Settings |
+| Admin | Platform overview, Users (add users with a temporary password, reset passwords, CSV import), Advisors (capacity, reassignment), Catalog (drafts and publish), Integrations (CSV imports, mail, calendars, API keys), AI settings and flagged answers, Audit log, Settings |
 
 ## Quick start
 
@@ -29,6 +29,7 @@ python -m venv venv
 venv\Scripts\activate              # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
 python test_db.py                  # checks the database connection
+python scripts/add_must_change_password.py   # once, on a database created before spec 31 revision 2 (safe to re-run)
 uvicorn main:app --reload --port 8010   # http://localhost:8010, API docs at /docs
 
 # new terminal
@@ -57,13 +58,16 @@ Seeded by `seed_data.py`. All use the password `Acadmate!2026` (demo only, never
 | Advisor (Computer Science) | Dr. Sarah Smith | sarah.smith@pac.edu |
 | Advisor (Computer Science, over capacity) | Prof. Daniel Kim | daniel.kim@pac.edu |
 | Advisor (Career services) | Maya Brooks | maya.brooks@pac.edu |
+| Advisor (Data Science, new: must choose a password at first sign-in) | Dr. Priya Natarajan | priya.natarajan@pac.edu |
 | Admin | Jordan Lee | jordan.lee@pac.edu |
 | Admin (Graduate office, support) | Graduate office | grad.office@pac.edu |
 | Deactivated student (sign-in is refused) | Sam Rivera | sam.rivera@pac.edu |
 
-Pending advisor invite (Dr. Priya Natarajan): open <http://localhost:5173/reset-password?token=demo-invite-token>
-to set a password and activate the account. Emails aren't sent until the mail integration is connected: reset and
-invite links are printed in the uvicorn log (logger `acadmate.mail`). Five wrong passwords lock an email for 15 minutes.
+There is no sign-up and no *Forgot password?*: administrators create accounts and reset passwords (Admin → Users).
+Both give the person a **temporary password** by email (also shown to the admin once); the first sign-in with it asks
+for a new password. Dr. Priya Natarajan is seeded that way. Emails aren't sent until the mail integration is
+connected: they're printed in the uvicorn log (logger `acadmate.mail`), temporary passwords included. Five wrong
+passwords lock an email for 15 minutes.
 
 ### What to try
 
@@ -72,7 +76,8 @@ invite links are printed in the uvicorn log (logger `acadmate.mail`). Five wrong
 - **Advisor (Dr. Smith):** 9 advisees (2 high risk, Jonah Weiss graduating), pending approvals (a plan, a capstone
   form with a missing field, a drop below full time), 3 unread messages and today's meetings at 11:00 and 13:00.
 - **Admin (Jordan Lee):** `/admin` shows usage, AI answer quality, flagged answers, system status and advisor
-  workload (Prof. Kim is over capacity). Manage users and advisors, edit and publish the catalog, connect
+  workload (Prof. Kim is over capacity). Add users (Users → **Add user**), reset a forgotten password (select a
+  user → **Reset password**), manage advisors, edit and publish the catalog, connect
   integrations, change AI and institution settings, and read the audit log. Most screens export CSV.
 
 ### Optional backend features

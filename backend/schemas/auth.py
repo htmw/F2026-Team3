@@ -46,6 +46,13 @@ class AuthOut(ApiModel):
     home: str
 
 
+class PasswordChangeOut(ApiModel):
+    """Signed in with an admin-issued temporary password (spec 31): no session yet, choose a new password first."""
+    password_change_required: Literal[True] = True
+    token: str
+    email: str
+
+
 class MeOut(ApiModel):
     user: UserOut
 
@@ -55,6 +62,7 @@ class ConfigOut(ApiModel):
     accent: str
     institution_name: str
     self_signup: bool
+    support_email: str
 
 
 class LinkOut(ApiModel):

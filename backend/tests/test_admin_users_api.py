@@ -1,4 +1,4 @@
-"""Admin users over HTTP (spec 31): /api/v1/admin/users*. Service rules are covered in test_admin_users.py.
+"""Admin users over HTTP (spec 31 revision 2): /api/v1/admin/users*. Service rules are covered in test_admin_users.py.
 conftest pins today to 2026-10-01."""
 import re
 import uuid
@@ -30,10 +30,10 @@ def calls(client):
     """One request per route (bodies valid enough to reach the role check)."""
     return [
         client.get(USERS),
-        client.post(f"{USERS}/invite", json={"emails": [fresh()], "role": "student"}),
+        client.post(USERS, json={"name": "New Person", "email": fresh(), "role": "student"}),
         client.post(f"{USERS}/import", content=b"name,email,role,program\n", headers=CSV),
         client.patch(f"{USERS}/1", json={}),
-        client.post(f"{USERS}/1/reset"),
+        client.post(f"{USERS}/1/reset-password"),
     ]
 
 
@@ -63,18 +63,33 @@ def test_list_route(admin):
     assert_envelope(admin.get(USERS, params={"role": "teacher"}), 400, "BAD_REQUEST")
 
 
-def test_invite_route(admin):
-    response = admin.post(f"{USERS}/invite", json={"emails": [fresh()], "role": "advisor"})
-    assert response.status_code == 200 and response.json() == {"sent": 1, "skipped": []}
-    assert_envelope(admin.post(f"{USERS}/invite", json={"emails": [], "role": "student"}), 422, "VALIDATION_ERROR")
-    assert_envelope(admin.post(f"{USERS}/invite", json={"emails": [fresh()], "role": "owner"}), 422, "VALIDATION_ERROR")
+def test_create_route(admin, mail):
+    email = fresh("route")
+    response = admin.post(USERS, json={"name": "  Rita Ng ", "email": email, "role": "admin"})
+    assert response.status_code == 201
+    body = response.json()
+    assert set(body) == {"user", "temporaryPassword"} and len(body["temporaryPassword"]) == 12
+    assert (body["user"]["name"], body["user"]["role"], body["user"]["status"]) == ("Rita Ng", "Admin", "Active")
+    error = assert_envelope(admin.post(USERS, json={"name": "Again", "email": email, "role": "admin"}), 409, "EMAIL_TAKEN")
+    assert error["message"] == f"{email} already has an account."
+    assert_envelope(admin.post(USERS, json={"name": "", "email": fresh(), "role": "student"}), 422, "VALIDATION_ERROR")
+    assert_envelope(admin.post(USERS, json={"name": "X", "email": fresh(), "role": "owner"}), 422, "VALIDATION_ERROR")
+    assert_envelope(admin.post(USERS, json={"name": "X", "email": "nope", "role": "student"}), 422, "VALIDATION_ERROR")
+
+
+def test_invite_routes_are_gone(admin):
+    # /users/invite now only matches PATCH /users/{id}, so POST is "method not allowed".
+    response = admin.post(f"{USERS}/invite", json={"emails": [fresh()], "role": "student"})
+    assert response.status_code in (404, 405) and response.json()["error"]["code"] in ("NOT_FOUND", "METHOD_NOT_ALLOWED")
+    assert_envelope(admin.post(f"{USERS}/1/reset"), 404, "NOT_FOUND")
+    assert_envelope(admin.get(USERS, params={"status": "Invited"}), 422, "VALIDATION_ERROR")
 
 
 def test_import_route(admin):
     text = f"name,email,role,program\nNew Person,{fresh('csv')},student,M.S. Computer Science\n"
     response = admin.post(f"{USERS}/import", content=text.encode(), headers=CSV)
     assert response.status_code == 200
-    assert response.json() == {"created": 1, "updated": 0, "skipped": [], "file": None}
+    assert response.json() == {"created": 1, "updated": 0, "emailed": 1, "skipped": [], "file": None}
 
     too_big = b"name,email,role,program\n" + b"x" * (1024 * 1024)
     error = assert_envelope(admin.post(f"{USERS}/import", content=too_big, headers=CSV), 400, "BAD_REQUEST")
@@ -103,12 +118,15 @@ def test_patch_route(admin, make_user, db):
     assert_envelope(admin.patch(f"{USERS}/999999", json={}), 404, "NOT_FOUND")
 
 
-def test_reset_route(admin, make_user):
+def test_reset_route(admin, make_user, mail):
     user = make_user("student")
-    response = admin.post(f"{USERS}/{user.user_id}/reset")
-    assert response.status_code == 202 and response.json() == {"ok": True}
-    assert_envelope(admin.post(f"{USERS}/999999/reset"), 404, "NOT_FOUND")
-    assert_envelope(admin.post(f"{USERS}/4/reset"), 409, "CONFLICT")  # Sam Rivera is deactivated
+    response = admin.post(f"{USERS}/{user.user_id}/reset-password")
+    assert response.status_code == 200 and response.json()["emailed"] is True
+    assert len(response.json()["temporaryPassword"]) == 12
+    assert_envelope(admin.post(f"{USERS}/999999/reset-password"), 404, "NOT_FOUND")
+    assert_envelope(admin.post(f"{USERS}/4/reset-password"), 409, "CONFLICT")  # Sam Rivera is deactivated
+    error = assert_envelope(admin.post(f"{USERS}/3/reset-password"), 409, "CONFLICT")
+    assert error["message"] == "Change your own password in Settings."
 
 
 # --- end-to-end flows (spec 31 acceptance) ----------------------------------------------------------------------------
@@ -121,8 +139,8 @@ def mail(monkeypatch):
     return sent
 
 
-def token_of(message) -> str:
-    return re.search(r"token=([\w-]+)", message[2]).group(1)
+def password_of(message) -> str:
+    return re.search(r"Temporary password: (\S+)", message[2]).group(1)
 
 
 def row_for(client, email: str) -> dict:
@@ -172,38 +190,44 @@ def test_paging_through_200_users(admin, page_users):
     assert admins["total"] == 0 and admins["rows"] == [] and admins["counts"]["Students"] == 200
 
 
-def test_invite_through_to_sign_in(admin, client, mail):
-    email = fresh("invitee")
-    assert admin.post(f"{USERS}/invite", json={"emails": [email], "role": "advisor"}).json() == {"sent": 1, "skipped": []}
-    token = token_of(mail[-1])
+def test_create_user_then_first_sign_in(admin, client, mail):
+    email = fresh("newcomer")
+    created = admin.post(USERS, json={"name": "Nia Cole", "email": email, "role": "advisor"}).json()
+    temporary = created["temporaryPassword"]
+    assert mail[-1][:2] == (email, "Your Acadmate account") and password_of(mail[-1]) == temporary
     row = row_for(admin, email)
-    assert (row["status"], row["lastActive"], row["role"]) == ("Invited", "Never", "Advisor")
-
-    link = admin.get(f"/api/v1/auth/password-reset/{token}")
-    assert link.json() == {"email": email, "purpose": "invite"}  # the page shows "Set up your account"
-    assert admin.post("/api/v1/auth/password-reset/confirm",
-                      json={"token": token, "password": "advisor-pass-1"}).status_code == 204
+    assert (row["status"], row["lastActive"], row["role"]) == ("Active", "Never", "Advisor")
 
     newcomer = client.__class__(client.app)
+    first = login(newcomer, email, temporary)
+    assert first.status_code == 200 and first.json()["passwordChangeRequired"] is True
+    assert first.json()["email"] == email and "acadmate_session" not in first.cookies
+    assert_envelope(newcomer.get("/api/v1/auth/me"), 401, "UNAUTHENTICATED")
+
+    token = first.json()["token"]
+    assert newcomer.get(f"/api/v1/auth/password-reset/{token}").json() == {"email": email, "purpose": "reset"}
+    same = newcomer.post("/api/v1/auth/password-reset/confirm", json={"token": token, "password": temporary})
+    assert assert_envelope(same, 422, "VALIDATION_ERROR")["message"] == "Choose a password different from the temporary one."
+    assert newcomer.post("/api/v1/auth/password-reset/confirm",
+                         json={"token": token, "password": "advisor-pass-1"}).status_code == 204
+
+    assert_envelope(login(newcomer, email, temporary), 401, "INVALID_CREDENTIALS")
     response = login(newcomer, email, "advisor-pass-1")
     assert response.status_code == 200 and response.json()["home"] == "/advisor"
     row = row_for(admin, email)
     assert (row["status"], row["lastActive"]) == ("Active", "Today")
 
-    again = admin.post(f"{USERS}/invite", json={"emails": [email], "role": "advisor"}).json()
-    assert again == {"sent": 0, "skipped": [{"email": email, "reason": "already has an account"}]}
 
+def test_reset_password_signs_out_and_replaces_the_password(admin, client, mail, make_user):
+    user = make_user("student")
+    browser = client.__class__(client.app)
+    assert login(browser, user.email).status_code == 200
 
-def test_resent_invite_replaces_the_old_link(admin, mail):
-    email = fresh("resend")
-    admin.post(f"{USERS}/invite", json={"emails": [email], "role": "student"})
-    first = token_of(mail[-1])
-    user_id = row_for(admin, email)["id"]
-    assert admin.post(f"{USERS}/{user_id}/reset").status_code == 202
-    second = token_of(mail[-1])
-    assert mail[-1][1] == "You're invited to Acadmate" and second != first
-    assert_envelope(admin.get(f"/api/v1/auth/password-reset/{first}"), 410, "LINK_EXPIRED")
-    assert admin.get(f"/api/v1/auth/password-reset/{second}").json()["purpose"] == "invite"
+    temporary = admin.post(f"{USERS}/{user.user_id}/reset-password").json()["temporaryPassword"]
+    assert mail[-1][:2] == (user.email, "Your Acadmate password was reset") and password_of(mail[-1]) == temporary
+    assert_envelope(browser.get("/api/v1/auth/me"), 401, "UNAUTHENTICATED")
+    assert_envelope(login(browser, user.email), 401, "INVALID_CREDENTIALS")  # the old password stopped working
+    assert login(browser, user.email, temporary).json()["passwordChangeRequired"] is True
 
 
 def test_deactivation_signs_the_person_out(admin, client, make_user):
@@ -234,9 +258,9 @@ def test_import_with_a_bad_program(admin, db, mail, monkeypatch):
             f"Tom Reyes,{advisor},advisor,Data Science\n"
             f"Bad Program,{fresh('impbad')},student,MS Bio\n")
     body = admin.post(f"{USERS}/import", content=text.encode(), headers=CSV).json()
-    assert (body["created"], body["updated"]) == (2, 0)
+    assert (body["created"], body["updated"], body["emailed"]) == (2, 0, 2)
     assert body["skipped"] == [{"line": 4, "reason": 'Unknown program "MS Bio"'}]
-    assert (row_for(admin, student)["status"], row_for(admin, student)["dept"]) == ("Invited", "M.S. Computer Science")
+    assert (row_for(admin, student)["status"], row_for(admin, student)["dept"]) == ("Active", "M.S. Computer Science")
     assert (row_for(admin, advisor)["role"], row_for(admin, advisor)["dept"]) == ("Advisor", "Data Science")
     assert sorted(m[0] for m in mail) == sorted([student, advisor])
     event = db.query(AuditEvent).filter(AuditEvent.action == "user.import").order_by(AuditEvent.id.desc()).first()
@@ -261,11 +285,15 @@ def test_advisor_change_reaches_the_student(admin, client, student_with_row):
     assert (system["unread"], system["preview"]) == (1, "Your advisor is now Maya Brooks.")
 
 
-def test_reset_email_for_an_active_user(admin, db, mail, make_user):
+def test_audit_never_contains_a_password(admin, db, mail, make_user):
     user = make_user("student")
-    assert admin.post(f"{USERS}/{user.user_id}/reset").status_code == 202
-    assert mail[-1][0] == user.email and mail[-1][1] == "Reset your Acadmate password"
-    assert admin.get(f"/api/v1/auth/password-reset/{token_of(mail[-1])}").json()["purpose"] == "reset"
+    temporary = admin.post(f"{USERS}/{user.user_id}/reset-password").json()["temporaryPassword"]
+    created = admin.post(USERS, json={"name": "Audit Check", "email": fresh("audit"), "role": "student"}).json()
     event = db.query(AuditEvent).filter(AuditEvent.action == "user.reset",
                                         AuditEvent.target_id == str(user.user_id)).one()
-    assert event.summary == f"Sent a password reset to {user.name}"
+    assert event.summary == f"Reset the password for {user.name}"
+    for secret in (temporary, created["temporaryPassword"]):
+        assert db.query(AuditEvent).filter(AuditEvent.summary.contains(secret)).count() == 0
+        assert all(secret not in str(e.changes) for e in db.query(AuditEvent).filter(
+            AuditEvent.action.in_(["user.create", "user.reset"])))
+        assert secret not in str(admin.get(USERS, params={"q": "Audit Check"}).json())
