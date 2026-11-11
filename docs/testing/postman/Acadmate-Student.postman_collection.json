@@ -1,0 +1,1908 @@
+{
+  "info": {
+    "_postman_id": "aaf1fc66-34c6-40c2-8fd9-95747aa2b6da",
+    "name": "Acadmate - Student API",
+    "description": "Student endpoints (specs 10-18), addressed as /students/me/... from the session. Run 'Auth > Login as student' first (Amara Okafor). Teammates kofi.mensah@pac.edu, lena.fischer@pac.edu also work. Data-changing requests alter the demo data; reset with `python reset_db.py --yes && python seed_data.py`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52044069",
+    "_collection_link": "https://go.postman.co/collection/52044069-aaf1fc66-34c6-40c2-8fd9-95747aa2b6da?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login as student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Session cookie set', () => pm.expect(pm.cookies.has('acadmate_session')).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/auth/login",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Auth config",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/auth/config",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "config"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Who am I",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/auth/me",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sidebar badges",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me/badges",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "badges"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard & courses (10-11)",
+      "item": [
+        {
+          "name": "Dashboard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/dashboard",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "My courses",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/courses",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "courses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Course grades",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/courses/{{courseId}}/grades",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "courses",
+                "{{courseId}}",
+                "grades"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Degree plan (12)",
+      "item": [
+        {
+          "name": "Degree audit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/degree-audit",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "degree-audit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/plan",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "plan"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add course to plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('planItemId', pm.response.json().enrollmentId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"CS 665\",\n  \"termId\": {{planTermId}},\n  \"note\": \"Prefer evening section\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/plan",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "plan"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove plan item",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/plan/{{planItemId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "plan",
+                "{{planItemId}}"
+              ]
+            },
+            "description": "Only items that aren't waiting for approval."
+          },
+          "response": []
+        },
+        {
+          "name": "Add course again",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('planItemId', pm.response.json().enrollmentId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"CS 665\",\n  \"termId\": {{planTermId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/plan",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "plan"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Submit plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"termId\": {{planTermId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/plan/submit",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "plan",
+                "submit"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI advisor (13)",
+      "item": [
+        {
+          "name": "Context",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/ai/context",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "context"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Threads",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/ai/threads",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "threads"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ask (new thread)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('threadId', pm.response.json().thread.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"What should I take in Spring 2027?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/ai/threads",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "threads"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Thread",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/ai/threads/{{threadId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "threads",
+                "{{threadId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ask in thread",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Can I take CS 691 then?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/ai/threads/{{threadId}}/messages",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "threads",
+                "{{threadId}}",
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Rate answer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"helpful\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/ai/messages/{{aiMessageId}}/rating",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "messages",
+                "{{aiMessageId}}",
+                "rating"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Flag answer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"issue\": \"The prerequisite info looks wrong.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/ai/messages/{{aiMessageId}}/flag",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "messages",
+                "{{aiMessageId}}",
+                "flag"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete thread",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/ai/threads/{{threadId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "threads",
+                "{{threadId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete all threads",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/ai/threads",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "ai",
+                "threads"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Schedule (14)",
+      "item": [
+        {
+          "name": "Events",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/events?from=2026-11-09&to=2026-11-15",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "events"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11-09"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-11-15"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create event",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('eventId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Study session\",\n  \"type\": \"Study\",\n  \"date\": \"2026-11-13\",\n  \"start\": \"14:00\",\n  \"end\": \"15:30\",\n  \"location\": \"Library\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/events",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update event",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"end\": \"16:00\",\n  \"reminderMinutes\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/students/me/events/{{eventId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "events",
+                "{{eventId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete event",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/events/{{eventId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "events",
+                "{{eventId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Calendar feed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/calendar",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "calendar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Rotate feed link",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/calendar/rotate",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "calendar",
+                "rotate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download .ics",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/calendar.ics",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "calendar.ics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Public feed (.ics)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/calendar/{{feedToken}}.ics",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "calendar",
+                "{{feedToken}}.ics"
+              ]
+            },
+            "description": "No cookie needed. Copy the token from the feed URL in 'Calendar feed'."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assignments (15)",
+      "item": [
+        {
+          "name": "Assignments",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/assignments",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "assignments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update progress",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stepsDone\": [\n    1\n  ],\n  \"status\": \"In progress\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/assignments/{{assignmentId}}/progress",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "assignments",
+                "{{assignmentId}}",
+                "progress"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Submit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/assignments/{{assignmentId}}/submit",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "assignments",
+                "{{assignmentId}}",
+                "submit"
+              ]
+            },
+            "description": "Form items take {fields: {...}} and create a form approval request."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messages (18)",
+      "item": [
+        {
+          "name": "Conversations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/conversations",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Contacts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/conversations/contacts",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations",
+                "contacts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Thread",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/conversations/{{conversationId}}/messages",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send message",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Thanks, see you then!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/conversations/{{conversationId}}/messages",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Start conversation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientIds\": [\n    2\n  ],\n  \"text\": \"Hi Dr. Smith, quick question.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/conversations",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile & settings (17)",
+      "item": [
+        {
+          "name": "My profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preferredName\": \"Amara\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/users/me",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update preferences",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notify\": {\n    \"deadlines\": true\n  },\n  \"reminderTiming\": \"1 day before\",\n  \"ai\": {\n    \"shareWithAdvisor\": true\n  },\n  \"aiStyle\": \"Concise\",\n  \"classTime\": \"Evening\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/users/me/preferences",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "preferences"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export my data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me/export",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "export"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Connect Google",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me/google/connect",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "google",
+                "connect"
+              ]
+            },
+            "description": "400 GOOGLE_DISABLED until spec 02 Phase B."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Meetings (18)",
+      "item": [
+        {
+          "name": "Bookable staff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/staff",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "staff"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Staff availability",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/staff/{{staffId}}/availability?week=2026-10-05",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "staff",
+                "{{staffId}}",
+                "availability"
+              ],
+              "query": [
+                {
+                  "key": "week",
+                  "value": "2026-10-05"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Book meeting",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set(\"meetingId\", pm.response.json().id);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"staffId\": 2,\n  \"startsAt\": \"2026-10-05T13:30:00Z\",\n  \"format\": \"In person\",\n  \"topic\": \"Plan review\",\n  \"note\": \"Want to discuss Spring electives\",\n  \"attachPlan\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/meetings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "My meetings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/me/meetings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "me",
+                "meetings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Accept proposed time",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/meetings/{{meetingId}}/accept",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}",
+                "accept"
+              ]
+            },
+            "description": "Only when staff proposed a new time (status proposed); otherwise 409."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel meeting",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Schedule conflict\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/meetings/{{meetingId}}/cancel",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}",
+                "cancel"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sign out",
+      "item": [
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/auth/logout",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8010/api/v1"
+    },
+    {
+      "key": "password",
+      "value": "Acadmate!2026"
+    },
+    {
+      "key": "studentEmail",
+      "value": "amara.okafor@pac.edu"
+    },
+    {
+      "key": "courseId",
+      "value": "18",
+      "description": "CS 608"
+    },
+    {
+      "key": "termId",
+      "value": "5",
+      "description": "Spring 2027"
+    },
+    {
+      "key": "planTermId",
+      "value": "6",
+      "description": "Summer 2027 (Spring 2027 is already waiting for approval)"
+    },
+    {
+      "key": "planItemId",
+      "value": "",
+      "description": "Set by 'Add course to plan'"
+    },
+    {
+      "key": "assignmentId",
+      "value": "1101"
+    },
+    {
+      "key": "eventId",
+      "value": "ev-1006",
+      "description": "Overwritten by 'Create event'"
+    },
+    {
+      "key": "threadId",
+      "value": "701",
+      "description": "Overwritten by 'Ask (new thread)'"
+    },
+    {
+      "key": "aiMessageId",
+      "value": "802",
+      "description": "An assistant answer"
+    },
+    {
+      "key": "conversationId",
+      "value": "1301"
+    },
+    {
+      "key": "staffId",
+      "value": "2",
+      "description": "Dr. Sarah Smith (user id)"
+    },
+    {
+      "key": "week",
+      "value": "2026-11-16",
+      "description": "Monday of a week inside the 2-week booking window"
+    },
+    {
+      "key": "slotStartsAt",
+      "value": "2026-11-16T14:30:00Z",
+      "description": "UTC with Z; copy a free startsAt from Staff availability"
+    },
+    {
+      "key": "meetingId",
+      "value": "1502",
+      "description": "Overwritten by 'Book meeting'"
+    },
+    {
+      "key": "feedToken",
+      "value": "",
+      "description": "Set by 'Calendar feed'"
+    }
+  ]
+}

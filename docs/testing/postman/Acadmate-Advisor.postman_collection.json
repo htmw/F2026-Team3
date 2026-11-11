@@ -1,0 +1,1484 @@
+{
+  "info": {
+    "_postman_id": "927ee339-3850-4c72-ad4a-ffe67afb291e",
+    "name": "Acadmate - Advisor API",
+    "description": "Advisor endpoints (specs 20-27). Run 'Auth > Login as advisor' first: it sets the acadmate_session cookie, which Postman sends on every later request to localhost. Other advisors: daniel.kim@pac.edu (pending approvals 1701-1705), maya.brooks@pac.edu. Data-changing requests alter the demo data; reset with `python reset_db.py --yes && python seed_data.py`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52044069",
+    "_collection_link": "https://go.postman.co/collection/52044069-927ee339-3850-4c72-ad4a-ffe67afb291e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login as advisor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Session cookie set', () => pm.expect(pm.cookies.has('acadmate_session')).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{advisorEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/auth/login",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Who am I",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/auth/me",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sidebar badges",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me/badges",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "badges"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard & advisees (20-22)",
+      "item": [
+        {
+          "name": "Dashboard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/dashboard",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Advisees",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/advisees",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "advisees"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Needs attention | At risk | Graduating | On track",
+                  "disabled": true
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": "name search",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Student record",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/advisees/{{studentId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "advisees",
+                "{{studentId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Academic profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/students/{{studentId}}/academic-profile",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "students",
+                "{{studentId}}",
+                "academic-profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add private note",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('noteId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Follow up on capstone topic.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/advisor/advisees/{{studentId}}/notes",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "advisees",
+                "{{studentId}}",
+                "notes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete note",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/notes/{{noteId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "notes",
+                "{{noteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Shared AI threads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/advisees/{{studentId}}/ai-threads",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "advisees",
+                "{{studentId}}",
+                "ai-threads"
+              ]
+            },
+            "description": "403 NOT_SHARED unless the student shares AI threads with their advisor."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Approvals (23)",
+      "item": [
+        {
+          "name": "List approvals",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/approvals?status=Pending",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "approvals"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Pending",
+                  "description": "Pending | Approved | Changes requested"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get approval",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/approvals/{{approvalId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "approvals",
+                "{{approvalId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Approve",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"Looks good.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/advisor/approvals/{{approvalId}}/approve",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "approvals",
+                "{{approvalId}}",
+                "approve"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Request changes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"Please complete the prerequisites first.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/advisor/approvals/{{changesApprovalId}}/request-changes",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "approvals",
+                "{{changesApprovalId}}",
+                "request-changes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reopen decision",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/approvals/{{approvalId}}/reopen",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "approvals",
+                "{{approvalId}}",
+                "reopen"
+              ]
+            },
+            "description": "Within 24 h of the decision, by the advisor who made it."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Meetings (25)",
+      "item": [
+        {
+          "name": "Agenda",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/meetings?range=today",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "meetings"
+              ],
+              "query": [
+                {
+                  "key": "range",
+                  "value": "today",
+                  "description": "today | week"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Free slots",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/meetings/free-slots?date={{slotDate}}&studentId={{bookStudentId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "meetings",
+                "free-slots"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "{{slotDate}}"
+                },
+                {
+                  "key": "studentId",
+                  "value": "{{bookStudentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Book for student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": {{bookStudentId}},\n  \"startsAt\": \"{{slotStartsAt}}\",\n  \"format\": \"Online\",\n  \"topic\": \"Plan review\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/advisor/meetings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "meetings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save meeting notes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Discussed electives for Spring.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/advisor/meetings/{{meetingId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "meetings",
+                "{{meetingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set office hours",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"days\": [\n    \"Thu\"\n  ],\n  \"start\": \"10:00\",\n  \"end\": \"11:00\",\n  \"location\": \"Room 204\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/advisor/office-hours",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "office-hours"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Accept request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/meetings/{{requestedMeetingId}}/accept",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{requestedMeetingId}}",
+                "accept"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Decline request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Out of office that day.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/meetings/{{declineMeetingId}}/decline",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{declineMeetingId}}",
+                "decline"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Propose new time",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startsAt\": \"{{proposeStartsAt}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/meetings/{{proposeMeetingId}}/propose",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{proposeMeetingId}}",
+                "propose"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/meetings/{{cancelMeetingId}}/cancel",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{cancelMeetingId}}",
+                "cancel"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark complete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/meetings/{{meetingId}}/complete",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}",
+                "complete"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark no-show",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/meetings/{{noShowMeetingId}}/no-show",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "meetings",
+                "{{noShowMeetingId}}",
+                "no-show"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messages (25)",
+      "item": [
+        {
+          "name": "Conversations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/conversations",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Contacts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/conversations/contacts",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations",
+                "contacts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Open advising team",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/conversations/team",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations",
+                "team"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Thread",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/conversations/{{conversationId}}/messages",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send message",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hi Marcus, can we talk Thursday?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/conversations/{{conversationId}}/messages",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Start conversation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientIds\": [\n    1\n  ],\n  \"text\": \"Hi Amara!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/conversations",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "conversations"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reports (26)",
+      "item": [
+        {
+          "name": "Report",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/reports",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "reports"
+              ],
+              "query": [
+                {
+                  "key": "term",
+                  "value": "{{termId}}",
+                  "description": "term id; omit for current",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Report CSV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/reports.csv",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "reports.csv"
+              ],
+              "query": [
+                {
+                  "key": "term",
+                  "value": "{{termId}}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Settings (27)",
+      "item": [
+        {
+          "name": "Get settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/advisor/settings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meetingLength\": 30,\n  \"bookingWindow\": \"2 weeks ahead\",\n  \"autoConfirm\": false,\n  \"notify\": {\n    \"booking\": true\n  },\n  \"approvals\": {\n    \"precheck\": true,\n    \"remindAfter3Days\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/advisor/settings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "advisor",
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sign out",
+      "item": [
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/auth/logout",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8010/api/v1"
+    },
+    {
+      "key": "password",
+      "value": "Acadmate!2026"
+    },
+    {
+      "key": "advisorEmail",
+      "value": "sarah.smith@pac.edu"
+    },
+    {
+      "key": "studentId",
+      "value": "101",
+      "description": "Amara Okafor"
+    },
+    {
+      "key": "bookStudentId",
+      "value": "107",
+      "description": "Priya Shah"
+    },
+    {
+      "key": "approvalId",
+      "value": "1706",
+      "description": "Priya's pending plan (checks pass)"
+    },
+    {
+      "key": "changesApprovalId",
+      "value": "1710",
+      "description": "Lina's capstone plan (prerequisites missing)"
+    },
+    {
+      "key": "meetingId",
+      "value": "1508",
+      "description": "Confirmed meeting with Jonah today (notes, complete)"
+    },
+    {
+      "key": "noShowMeetingId",
+      "value": "1509",
+      "description": "Confirmed meeting with Priya today"
+    },
+    {
+      "key": "cancelMeetingId",
+      "value": "1511",
+      "description": "Confirmed meeting with Marcus next Wed"
+    },
+    {
+      "key": "proposeMeetingId",
+      "value": "1510",
+      "description": "Confirmed meeting with Daniel next Mon"
+    },
+    {
+      "key": "requestedMeetingId",
+      "value": "1512",
+      "description": "Lina's requested meeting (accept)"
+    },
+    {
+      "key": "declineMeetingId",
+      "value": "1513",
+      "description": "Jonah's requested meeting (decline)"
+    },
+    {
+      "key": "noteId",
+      "value": "1901",
+      "description": "Overwritten by 'Add private note'"
+    },
+    {
+      "key": "conversationId",
+      "value": "1306",
+      "description": "Dr. Smith and Marcus"
+    },
+    {
+      "key": "slotDate",
+      "value": "2026-11-12",
+      "description": "A weekday within the booking window"
+    },
+    {
+      "key": "slotStartsAt",
+      "value": "2026-11-12T19:00:00Z",
+      "description": "UTC with Z; copy a startsAt from Free slots"
+    },
+    {
+      "key": "proposeStartsAt",
+      "value": "2026-11-12T20:00:00Z",
+      "description": "UTC with Z"
+    },
+    {
+      "key": "termId",
+      "value": "",
+      "description": "Term id; empty = current term"
+    }
+  ]
+}

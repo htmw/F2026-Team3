@@ -1,0 +1,2050 @@
+{
+  "info": {
+    "_postman_id": "70ab013e-a068-4deb-8ab6-be25f1575c0b",
+    "name": "Acadmate - Admin API",
+    "description": "Admin endpoints (specs 30-37). Run 'Auth > Login as admin' first (Jordan Lee). Data-changing requests alter the demo data; reset with `python reset_db.py --yes && python seed_data.py`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52044069",
+    "_collection_link": "https://go.postman.co/collection/52044069-70ab013e-a068-4deb-8ab6-be25f1575c0b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login as admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Session cookie set', () => pm.expect(pm.cookies.has('acadmate_session')).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/auth/login",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Who am I",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/auth/me",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sidebar badges",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me/badges",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "badges"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Overview (30)",
+      "item": [
+        {
+          "name": "Overview",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/overview",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "overview"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Overview CSV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/overview.csv",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "overview.csv"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users (31)",
+      "item": [
+        {
+          "name": "List users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/users?role=all&page=1&pageSize=50",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "all",
+                  "description": "all | student | advisor | admin"
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Active | Invited | Deactivated",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invite users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emails\": [\n    \"new.student@pac.edu\"\n  ],\n  \"role\": \"student\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/users/invite",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "invite"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Import users (CSV)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/csv"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "name,email,role,program\nTest Student,test.student@pac.edu,student,1\n",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/users/import",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "import"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"advisorId\": 201\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/users/{{userId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": "Also: role, programId, status (Active | Deactivated)."
+          },
+          "response": []
+        },
+        {
+          "name": "Send password reset",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 202', () => pm.response.to.have.status(202));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/users/{{userId}}/reset",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{userId}}",
+                "reset"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Advisors (32)",
+      "item": [
+        {
+          "name": "List advisors",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/advisors",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "advisors"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add advisor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Test Advisor\",\n  \"email\": \"test.advisor@pac.edu\",\n  \"department\": \"Computer Science\",\n  \"capacity\": 40\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/advisors",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "advisors"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update advisor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"capacity\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/advisors/{{advisorId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "advisors",
+                "{{advisorId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reassign advisees",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"toAdvisorId\": {{toAdvisorId}},\n  \"count\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/advisors/{{advisorId}}/reassign",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "advisors",
+                "{{advisorId}}",
+                "reassign"
+              ]
+            },
+            "description": "Send either count or studentIds."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Catalog (33)",
+      "item": [
+        {
+          "name": "Summary",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/catalog/summary",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "summary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Courses",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/catalog/courses",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "courses"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "term",
+                  "value": "{{termId}}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add course (draft)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"CS 699\",\n  \"name\": \"Special Topics\",\n  \"credits\": 3,\n  \"type\": \"Elective\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/catalog/courses",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "courses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit course (draft)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Cloud platforms and services.\",\n  \"offered\": true,\n  \"termId\": {{termId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/catalog/courses/{{courseCode}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "courses",
+                "{{courseCode}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Requirements",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/catalog/requirements?program={{programId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "requirements"
+              ],
+              "query": [
+                {
+                  "key": "program",
+                  "value": "{{programId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save requirements (draft)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"programId\": {{programId}},\n  \"groups\": [\n    {\n      \"id\": 401,\n      \"courses\": 2\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/catalog/requirements",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "requirements"
+              ]
+            },
+            "description": "Use group ids from 'Requirements'."
+          },
+          "response": []
+        },
+        {
+          "name": "Terms",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/catalog/terms",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "terms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add term",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Spring 2028\",\n  \"startDate\": \"2028-01-18\",\n  \"endDate\": \"2028-05-12\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/catalog/terms",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "terms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit term dates (draft)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registrationOpens\": \"2026-11-16\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/catalog/terms/{{termId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "terms",
+                "{{termId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Publish drafts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/catalog/publish",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "publish"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Discard drafts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/catalog/drafts",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "catalog",
+                "drafts"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI (34)",
+      "item": [
+        {
+          "name": "AI settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/ai/settings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "ai",
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update AI settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"style\": \"Balanced\",\n  \"engine\": \"Rules\",\n  \"dailyLimit\": 50,\n  \"blockedTopics\": [\n    \"exam answers\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/ai/settings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "ai",
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test question",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"What should I take next term?\",\n  \"studentId\": {{studentUserId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/ai/test",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "ai",
+                "test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Flags",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/ai/flags?status=Open",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "ai",
+                "flags"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Open",
+                  "description": "Open | Resolved | Dismissed | All"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resolve flag",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resolution\": \"Resolved\",\n  \"note\": \"Answer corrected.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/ai/flags/{{flagId}}/resolve",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "ai",
+                "flags",
+                "{{flagId}}",
+                "resolve"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reopen flag",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/ai/flags/{{flagId}}/reopen",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "ai",
+                "flags",
+                "{{flagId}}",
+                "reopen"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Integrations (35)",
+      "item": [
+        {
+          "name": "Integrations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/integrations",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "integrations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Connect",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/integrations/{{integrationId}}/connect",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "integrations",
+                "{{integrationId}}",
+                "connect"
+              ]
+            },
+            "description": "mail needs an SMTP body: {host, port, username, password, from, tls}. gcal/outlook return an OAuth URL."
+          },
+          "response": []
+        },
+        {
+          "name": "Connect mail (SMTP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"host\": \"smtp.example.com\",\n  \"port\": 587,\n  \"username\": \"acadmate\",\n  \"password\": \"secret\",\n  \"from\": \"noreply@pac.edu\",\n  \"tls\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/integrations/mail/connect",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "integrations",
+                "mail",
+                "connect"
+              ]
+            },
+            "description": "Sends a test email first; 400 SMTP_FAILED if it can't."
+          },
+          "response": []
+        },
+        {
+          "name": "Import CSV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/csv"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "code,name,credits,type,description\nCS 698,Research Methods,3,Elective,Intro to research\n",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/imports?type=courses",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "imports"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "courses",
+                  "description": "courses | enrollments | grades"
+                }
+              ]
+            },
+            "description": "Needs the csv integration connected. Headers: enrollments = student_email,course_code,term,status; grades = student_email,course_code,term,grade,grade_points."
+          },
+          "response": []
+        },
+        {
+          "name": "Sync now",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/integrations/{{integrationId}}/sync",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "integrations",
+                "{{integrationId}}",
+                "sync"
+              ]
+            },
+            "description": "For csv this re-runs the latest import, so run 'Import CSV' first."
+          },
+          "response": []
+        },
+        {
+          "name": "API keys",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/api-keys",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "api-keys"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create API key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('apiKeyId', pm.response.json().id);",
+                  "pm.collectionVariables.set('apiKey', pm.response.json().key);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Reporting\",\n  \"scope\": \"reports:read\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/api-keys",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "api-keys"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reports CSV (session)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/reports/overview.csv",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "reports",
+                "overview.csv"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reports CSV (API key)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/reports/overview.csv",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "reports",
+                "overview.csv"
+              ]
+            },
+            "description": "Uses the Bearer key from 'Create API key' instead of the cookie."
+          },
+          "response": []
+        },
+        {
+          "name": "Revoke API key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/api-keys/{{apiKeyId}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "api-keys",
+                "{{apiKeyId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Disconnect",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/integrations/{{integrationId}}/disconnect",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "integrations",
+                "{{integrationId}}",
+                "disconnect"
+              ]
+            },
+            "description": "Run Connect again afterwards: CSV imports need the csv integration connected."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audit log (36)",
+      "item": [
+        {
+          "name": "Audit events",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/audit?role=All&range=30d",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "audit"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "All",
+                  "description": "All | Admin | Advisor | Student | System"
+                },
+                {
+                  "key": "range",
+                  "value": "30d",
+                  "description": "today | 7d | 30d"
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "description": "nextCursor from the previous page",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Audit CSV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/audit.csv?role=All&range=30d",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "audit.csv"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "All"
+                },
+                {
+                  "key": "range",
+                  "value": "30d"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Settings (37)",
+      "item": [
+        {
+          "name": "Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/settings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"institution\": {\n    \"selfSignup\": true\n  },\n  \"security\": {\n    \"timeout\": \"2 hours\"\n  },\n  \"retention\": {\n    \"audit\": \"1 year\"\n  },\n  \"branding\": {\n    \"accent\": \"#1D4ED8\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/admin/settings",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset demo data",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/admin/demo/reset",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "admin",
+                "demo",
+                "reset"
+              ]
+            },
+            "description": "404 unless DEMO_MODE=true in backend/.env."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile & settings (17)",
+      "item": [
+        {
+          "name": "My profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preferredName\": \"Amara\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/users/me",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export my data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me/export",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "export"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Connect Google",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/users/me/google/connect",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "google",
+                "connect"
+              ]
+            },
+            "description": "400 GOOGLE_DISABLED until spec 02 Phase B."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sign out",
+      "item": [
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/auth/logout",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8010/api/v1"
+    },
+    {
+      "key": "password",
+      "value": "Acadmate!2026"
+    },
+    {
+      "key": "adminEmail",
+      "value": "jordan.lee@pac.edu"
+    },
+    {
+      "key": "userId",
+      "value": "6",
+      "description": "Kofi Mensah (student)"
+    },
+    {
+      "key": "advisorId",
+      "value": "203",
+      "description": "Prof. Daniel Kim (over capacity)"
+    },
+    {
+      "key": "toAdvisorId",
+      "value": "201",
+      "description": "Dr. Sarah Smith"
+    },
+    {
+      "key": "studentUserId",
+      "value": "1",
+      "description": "Amara Okafor's user id (AI test)"
+    },
+    {
+      "key": "courseCode",
+      "value": "CS 650"
+    },
+    {
+      "key": "termId",
+      "value": "5",
+      "description": "Spring 2027"
+    },
+    {
+      "key": "programId",
+      "value": "1"
+    },
+    {
+      "key": "flagId",
+      "value": "902"
+    },
+    {
+      "key": "integrationId",
+      "value": "csv",
+      "description": "csv | mail | gcal | outlook"
+    },
+    {
+      "key": "apiKeyId",
+      "value": "",
+      "description": "Set by 'Create API key'"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "description": "Set by 'Create API key' (shown once)"
+    }
+  ]
+}
