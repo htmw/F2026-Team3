@@ -307,7 +307,13 @@ function AdvisorDetail({ advisor, others, onChanged }) {
           hint={capError ? undefined : `Up to ${MAX_CAP} advisees. Reassignment can go 20% over.`}>
           <div className="flex gap-2">
             <TextInput id={`${id}-cap`} type="number" inputMode="numeric" min={MIN_CAP} max={MAX_CAP} className="max-w-[120px]"
-              value={cap} onChange={(e) => setCap(e.target.value)} />
+              value={cap} onChange={(e) => {
+                const next = e.target.value
+                setCap(next)
+                setCapError(validCap(Number(next))
+                  ? null
+                  : `Enter a whole number from ${MIN_CAP} to ${MAX_CAP}.`)
+              }} />
             <Button variant="secondary" onClick={saveCap}
               disabled={saving || !validCap(capNumber) || capNumber === advisor.cap}>{saveLabel}</Button>
           </div>

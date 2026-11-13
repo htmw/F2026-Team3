@@ -266,9 +266,79 @@ def _has(text: str, *words: str) -> bool:
     return any(re.search(rf"\b{re.escape(word)}\b", text) for word in words)
 
 
+def move_course_answer(db: Session, student: Student, ctx: dict, text: str, codes: list[str]) -> dict:
+    if not ctx["settings"]["features"]["planSuggestions"]:
+        return _reply("Course plan suggestions are turned off for your school. Your advisor can help you plan.", [])
+    if not (ctx["sources"]["audits"] and ctx["sources"]["catalog"]):
+        return _reply("I need both your degree audit and the course catalog to assess this change.", [])
+
+    sources = [AUDIT, catalog_label(db)]
+    if len(codes) != 1:
+        return _reply("Which single course would you like to move, and to which term and year?", sources)
+
+    target = re.search(
+        r"\b(?:to|until)\s+(?:the\s+)?(spring|summer|fall)\s+(\d{4})\b",
+        text, re.IGNORECASE,
+    )
+    if target is None:
+        return _reply(
+            f"Which term and year would you like to move {codes[0]} to?",
+            sources,
+        )
+
+    course = _course(db, codes[0])
+    if course is None:
+        return _reply(f"I couldn't find {codes[0]} in the course catalog.", sources)
+
+    completed, _ = course_sets(db, student)
+    if course.course_id in completed:
+        return _reply(
+            f"Your record already shows {course.course_code} completed. "
+            "Are you asking about repeating it or moving a different course?",
+            sources,
+        )
+
+    term_name = f"{target.group(1).title()} {target.group(2)}"
+    term = db.query(Term).filter(Term.name == term_name).one_or_none()
+    offering = None
+    if term is not None:
+        offering = db.query(CourseOffering).filter(
+            CourseOffering.course_id == course.course_id,
+            CourseOffering.term_id == term.id,
+        ).first()
+
+    message = (
+        f"You want to move {course.course_code} to {term_name}. "
+        f"If you still need this course to complete your degree and take it in {term_name}, "
+        f"you could graduate no earlier than {graduation_label(term_name)}, "
+        "provided you pass it and finish every other requirement. "
+        "This is a conditional estimate, not a revised degree plan. "
+    )
+    if offering is None:
+        message += (
+            f"I cannot confirm a {term_name} offering for this course from the available catalog. "
+        )
+    else:
+        message += (
+            f"The catalog lists this course in {term_name}, but registration eligibility, "
+            "section availability and any required approval still need checking. "
+        )
+    message += (
+        "Ask your advisor to confirm the offering, prerequisites and remaining requirements "
+        "before changing your plan."
+    )
+    return _reply(message, sources)
+
+
 def answer(db: Session, student: Student, text: str, ctx: dict) -> dict:
     lowered = text.lower()
     codes = find_codes(text)
+    if codes and _has(
+        lowered, "move", "moving", "postpone", "postponing",
+        "defer", "deferring", "delay", "delaying",
+        "shift", "shifting", "reschedule", "rescheduling"
+    ):
+        return move_course_answer(db, student, ctx, text, codes)
     if _has(lowered, "email"):
         return email_answer(db, student, ctx)
     if _has(lowered, "fail", "drop", "only one", "retake"):

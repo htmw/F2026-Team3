@@ -284,8 +284,16 @@ function EventDialog({ editing, onClose, onSaved }) {
     event.preventDefault()
     setErrors({})
     setFormError(null)
-    if (form.end <= form.start) {
-      setErrors({ end: 'The end time must be after the start time.' })
+    const requiredErrors = {}
+    if (!form.title.trim()) requiredErrors.title = 'Enter an event title.'
+    if (!form.date) requiredErrors.date = 'Choose a date.'
+    if (!form.start) requiredErrors.start = 'Choose a start time.'
+    if (!form.end) requiredErrors.end = 'Choose an end time.'
+    else if (form.start && form.end <= form.start) {
+      requiredErrors.end = 'The end time must be after the start time.'
+    }
+    if (Object.keys(requiredErrors).length > 0) {
+      setErrors(requiredErrors)
       return
     }
     let body = bodyOf(form)
@@ -343,7 +351,7 @@ function EventDialog({ editing, onClose, onSaved }) {
         {formError && <Notice tone="pink">{formError}</Notice>}
         <div className="flex flex-wrap justify-end gap-2">
           <Button variant="secondary" onClick={close} disabled={saving}>Cancel</Button>
-          <Button type="submit" disabled={saving || !form.title.trim() || !form.date}>
+          <Button type="submit" disabled={saving}>
             {saving ? 'Saving…' : isEdit ? 'Save changes' : 'Add event'}
           </Button>
         </div>
