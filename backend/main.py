@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from risk_mvp.router import router as risk_mvp_router
 from core.config import settings
 from core.errors import register_error_handlers
 from database import SessionLocal
@@ -43,7 +44,7 @@ app.add_middleware(
 for router in (auth.router, users.router, students.router, courses.router, student_ai.router, calendar_feed.router,
                assignments.router, conversations.router, staff.router, meetings.router, admin.router,
                admin_ai.router, admin_catalog.router, admin_integrations.router, advisor.router, advisor_approvals.router,
-               advisor_meetings.router, research_predictions.router):
+               advisor_meetings.router, research_predictions.router, risk_mvp_router):
     app.include_router(router)
 
 
