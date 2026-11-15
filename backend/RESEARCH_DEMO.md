@@ -53,3 +53,7 @@ $env:RUN_RESEARCH_ARTIFACT_SMOKE = 'true'
 Do not use unrestricted discovery over backend/: backend/test_db.py intentionally connects to a database. The new API tests stub database imports/dependencies for existing route registration. The optional real-artifact test verifies actual predict.predict calls, finite scored responses, artifact caching, no pipeline refit/network calls/output writes, and unchanged fixture/academic hashes. Without RUN_RESEARCH_ARTIFACT_SMOKE=true that test is explicitly skipped.
 
 Existing pinned Starlette emits an httpx TestClient deprecation warning. Tests currently pass with httpx==0.28.1; migration to its preferred client is deferred to avoid unrelated dependency changes.
+
+## Frozen artifact provisioning
+
+Use tools/provision_ml_artifacts.py to install the trusted two-artifact package without retraining, then run verify --smoke. See ML_ARTIFACT_SETUP.md for exact paths/hashes, ZIP checksum, teammate commands and mismatch handling. The earlier documentation identified missing files but did not provide a repository provisioning command; this tool closes that setup gap.

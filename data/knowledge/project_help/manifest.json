@@ -1,0 +1,59 @@
+[
+  {
+    "id": "project-help-plan",
+    "title": "Submitting and reviewing a degree plan",
+    "path": "project-help-plan.md",
+    "version": "1.0",
+    "scope": "project_demo",
+    "approved": true,
+    "approved_by": "User authorization to use project documents, 2026-11-14",
+    "approved_on": "2026-11-14",
+    "effective_from": "2026-11-14",
+    "effective_until": null,
+    "audiences": [
+      "student",
+      "advisor",
+      "admin"
+    ],
+    "sha256": "74bf588804f51632af956438934aada27fcc849fc955d9701e630b22e0083cb5",
+    "provenance": "Curated application-help excerpts from verified workflows in backend/SPRINT2_HANDOFF_ACCEPTANCE.md and frontend/src/components/research; not institutional policy"
+  },
+  {
+    "id": "project-help-assessment",
+    "title": "Understanding a course assessment",
+    "path": "project-help-assessment.md",
+    "version": "1.0",
+    "scope": "project_demo",
+    "approved": true,
+    "approved_by": "User authorization to use project documents, 2026-11-14",
+    "approved_on": "2026-11-14",
+    "effective_from": "2026-11-14",
+    "effective_until": null,
+    "audiences": [
+      "student",
+      "advisor",
+      "admin"
+    ],
+    "sha256": "f00c1ff93c88dab94a3f488c8807d4dae5d9444c6975885116e79c1156e59fc9",
+    "provenance": "Curated application-help excerpts from verified workflows in backend/SPRINT2_HANDOFF_ACCEPTANCE.md and frontend/src/components/research; not institutional policy"
+  },
+  {
+    "id": "project-help-followup",
+    "title": "Messages and advising meetings",
+    "path": "project-help-followup.md",
+    "version": "1.0",
+    "scope": "project_demo",
+    "approved": true,
+    "approved_by": "User authorization to use project documents, 2026-11-14",
+    "approved_on": "2026-11-14",
+    "effective_from": "2026-11-14",
+    "effective_until": null,
+    "audiences": [
+      "student",
+      "advisor",
+      "admin"
+    ],
+    "sha256": "027730e37afe7f28a64790ce9bb869033b27a4947901625558ed4b70491af314",
+    "provenance": "Curated application-help excerpts from verified workflows in backend/SPRINT2_HANDOFF_ACCEPTANCE.md and frontend/src/components/research; not institutional policy"
+  }
+]

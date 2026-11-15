@@ -105,3 +105,7 @@ npm.cmd test
 ```
 
 Without the opt-in, the live test is explicitly skipped; other component/helper tests run offline. The live test selects a real synthetic student with multiple courses, requests actual predictions through the Vite proxy and checks rendered results in a DOM environment. This is automated component/API integration, not interactive browser verification. The earlier browser URL-policy block remains; no alternate browser automation is used.
+
+## Teammate artifact setup
+
+Provision the trusted frozen model and sigmoid maps with tools/provision_ml_artifacts.py before scoring. See backend/ML_ARTIFACT_SETUP.md for the verified minimal ZIP and exact install/verify commands. No retraining or shared schema operation is required. Artifact binaries remain under ignored ml/outputs/ paths.

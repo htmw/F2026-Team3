@@ -67,8 +67,16 @@ def extract(db,enrollment_id,cutoff):
     from acadmate_ml.features import snapshot
     features=snapshot(day,length,daily,submissions,[(str(aid),due(a)) for aid,a in eligible.items()])
     complete=all(cov.get(s,{}).get('complete',False) for s in ['activity','submissions','schedule'])
-    evidence={'assessments_due':features['assessments_due'] if cov.get('schedule',{}).get('complete') else None,
+    # Same as-of definitions/submissions as frozen features, restricted to the
+    # existing dashboard's 14-day deadline window. Never a new model input.
+    submitted_ids={aid for aid,_,_ in submissions}
+    overdue_recent=sum(1 for aid,a in eligible.items()
+        if max(0,day-13)<=due(a)<=day and str(aid) not in submitted_ids)
+    evidence={'overdue_last_14_days':overdue_recent if all(cov.get(s,{}).get('complete') for s in ['schedule','submissions']) else None,
+        'assessments_due':features['assessments_due'] if cov.get('schedule',{}).get('complete') else None,
         'submissions':features['submissions_so_far'] if all(cov.get(s,{}).get('complete') for s in ['schedule','submissions']) else None,
+        'received_submissions':len(submissions) if all(cov.get(s,{}).get('complete') for s in ['schedule','submissions']) else None,
+        'late_submissions':sum(submitted > deadline for _,submitted,deadline in submissions) if all(cov.get(s,{}).get('complete') for s in ['schedule','submissions']) else None,
         'overdue_assignments':features['overdue_assessments'] if all(cov.get(s,{}).get('complete') for s in ['schedule','submissions']) else None,
         'clicks_7d':features['clicks_7d'] if cov.get('activity',{}).get('complete') else None,
         'active_days_7d':features['active_days_7d'] if cov.get('activity',{}).get('complete') else None,

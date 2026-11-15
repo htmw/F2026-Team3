@@ -1,0 +1,317 @@
+{
+  "plan": {
+    "terms": [
+      {
+        "advisorFeedback": null,
+        "name": "Fall 2025",
+        "tag": "Done",
+        "credits": "6 credits",
+        "courses": [
+          {
+            "enrollmentId": 20000,
+            "code": "CS701",
+            "name": "Software Engineering",
+            "status": "completed",
+            "planStatus": null
+          },
+          {
+            "enrollmentId": 20001,
+            "code": "CS702",
+            "name": "Operating Systems",
+            "status": "completed",
+            "planStatus": null
+          }
+        ]
+      },
+      {
+        "advisorFeedback": null,
+        "name": "Spring 2026",
+        "tag": "Done",
+        "credits": "6 credits",
+        "courses": [
+          {
+            "enrollmentId": 20002,
+            "code": "CS703",
+            "name": "Computer Networks",
+            "status": "completed",
+            "planStatus": null
+          },
+          {
+            "enrollmentId": 20003,
+            "code": "CS704",
+            "name": "Applied Statistics",
+            "status": "completed",
+            "planStatus": null
+          }
+        ]
+      },
+      {
+        "advisorFeedback": null,
+        "name": "Summer 2026",
+        "tag": "Done",
+        "credits": "3 credits",
+        "courses": [
+          {
+            "enrollmentId": 20004,
+            "code": "CS705",
+            "name": "Machine Learning",
+            "status": "completed",
+            "planStatus": null
+          }
+        ]
+      },
+      {
+        "advisorFeedback": null,
+        "name": "Fall 2026",
+        "tag": "Done",
+        "credits": "6 credits",
+        "courses": [
+          {
+            "enrollmentId": 301,
+            "code": "CS501",
+            "name": "Programming Foundations with Java",
+            "status": "completed",
+            "planStatus": null
+          },
+          {
+            "enrollmentId": 302,
+            "code": "CS510",
+            "name": "Data Structures and Algorithms",
+            "status": "completed",
+            "planStatus": null
+          }
+        ]
+      },
+      {
+        "advisorFeedback": null,
+        "name": "Spring 2027",
+        "tag": "Current",
+        "credits": "3 credits",
+        "courses": [
+          {
+            "enrollmentId": 303,
+            "code": "CS620",
+            "name": "Database Management Systems",
+            "status": "current",
+            "planStatus": null
+          }
+        ]
+      },
+      {
+        "advisorFeedback": null,
+        "name": "Summer 2027",
+        "tag": "Planned",
+        "credits": "0 credits",
+        "courses": []
+      },
+      {
+        "advisorFeedback": "Please confirm that CS706 and CS799 will be offered in Fall 2027 before resubmitting your plan. If either course is unavailable, we can review an alternative together.",
+        "name": "Fall 2027",
+        "tag": "Planned",
+        "credits": "6 credits",
+        "courses": [
+          {
+            "enrollmentId": 1,
+            "code": "CS706",
+            "name": "Artificial Intelligence",
+            "status": "planned",
+            "planStatus": "Changes requested"
+          },
+          {
+            "enrollmentId": 2,
+            "code": "CS799",
+            "name": "Computer Science Capstone",
+            "status": "planned",
+            "planStatus": "Changes requested"
+          }
+        ]
+      }
+    ],
+    "available": [],
+    "futureTerms": [
+      {
+        "id": 6,
+        "name": "Summer 2027"
+      },
+      {
+        "id": 7,
+        "name": "Fall 2027"
+      }
+    ],
+    "notice": "Fall 2027 is a draft until your advisor approves it. Registration opens Apr 5."
+  },
+  "audit": {
+    "subtitle": "MS Computer Science · catalog year 2025–26 · expected graduation December 2027",
+    "requirementsSubtitle": "MS Computer Science · 10 courses · 30 credits",
+    "graduation": {
+      "label": "December 2027",
+      "status": "Plan changes requested",
+      "estimateNote": "Estimate assumes successful completion of current courses and 9 credits each Spring/Fall; required courses and approvals still apply."
+    },
+    "stats": [
+      {
+        "label": "Credits earned",
+        "value": "21 / 30",
+        "pct": 70,
+        "warn": false,
+        "color": null,
+        "note": "7 of 10 courses complete"
+      },
+      {
+        "label": "In progress",
+        "value": "3",
+        "pct": 10,
+        "warn": false,
+        "color": "violet",
+        "note": "1 course this Spring"
+      },
+      {
+        "label": "Left after this term",
+        "value": "6",
+        "pct": 20,
+        "warn": false,
+        "color": "amber",
+        "note": "Capstone and 1 elective"
+      },
+      {
+        "label": "Expected graduation",
+        "value": "December 2027",
+        "pct": 64,
+        "warn": false,
+        "color": null,
+        "note": "Plan changes requested"
+      }
+    ],
+    "groups": [
+      {
+        "id": 401,
+        "title": "Core",
+        "required": 3,
+        "count": "2 of 3 done · 1 in progress",
+        "allDone": false,
+        "items": [
+          {
+            "code": "CS501",
+            "name": "Programming Foundations with Java",
+            "status": "Completed",
+            "meta": "Fall 2026"
+          },
+          {
+            "code": "CS510",
+            "name": "Data Structures and Algorithms",
+            "status": "Completed",
+            "meta": "Fall 2026"
+          },
+          {
+            "code": "CS620",
+            "name": "Database Management Systems",
+            "status": "In progress",
+            "meta": "Spring 2027"
+          }
+        ]
+      },
+      {
+        "id": 10400,
+        "title": "Electives",
+        "required": 6,
+        "count": "5 of 6 done",
+        "allDone": false,
+        "items": [
+          {
+            "code": "CS701",
+            "name": "Software Engineering",
+            "status": "Completed",
+            "meta": "Fall 2025"
+          },
+          {
+            "code": "CS702",
+            "name": "Operating Systems",
+            "status": "Completed",
+            "meta": "Fall 2025"
+          },
+          {
+            "code": "CS703",
+            "name": "Computer Networks",
+            "status": "Completed",
+            "meta": "Spring 2026"
+          },
+          {
+            "code": "CS704",
+            "name": "Applied Statistics",
+            "status": "Completed",
+            "meta": "Spring 2026"
+          },
+          {
+            "code": "CS705",
+            "name": "Machine Learning",
+            "status": "Completed",
+            "meta": "Summer 2026"
+          },
+          {
+            "code": "CS706",
+            "name": "Artificial Intelligence",
+            "status": "Changes requested",
+            "meta": "Fall 2027"
+          }
+        ]
+      },
+      {
+        "id": 10401,
+        "title": "Capstone",
+        "required": 1,
+        "count": "0 of 1 done",
+        "allDone": false,
+        "items": [
+          {
+            "code": "CS799",
+            "name": "Computer Science Capstone",
+            "status": "Changes requested",
+            "meta": "Fall 2027"
+          }
+        ]
+      }
+    ],
+    "alert": null
+  },
+  "progress": {
+    "studentId": 101,
+    "programId": 1,
+    "requiredCredits": 30,
+    "earnedCredits": 21,
+    "remainingCredits": 9,
+    "completionRate": 0.7,
+    "requirements": [
+      {
+        "requirementId": 401,
+        "groupName": "Core",
+        "requiredCredits": 9,
+        "earnedCredits": 6,
+        "remainingCredits": 3,
+        "isSatisfied": false,
+        "eligibleCourseIds": [
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "requirementId": 10400,
+        "groupName": "Electives",
+        "requiredCredits": 18,
+        "earnedCredits": 15,
+        "remainingCredits": 3,
+        "isSatisfied": false,
+        "eligibleCourseIds": []
+      },
+      {
+        "requirementId": 10401,
+        "groupName": "Capstone",
+        "requiredCredits": 3,
+        "earnedCredits": 0,
+        "remainingCredits": 3,
+        "isSatisfied": false,
+        "eligibleCourseIds": []
+      }
+    ]
+  }
+}

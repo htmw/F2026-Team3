@@ -1,0 +1,5 @@
+# Optional explanation environment; not a serving dependency.
+-r requirements.txt
+shap==0.54.1
+pandas==2.3.3
+python-dateutil==2.9.0.post0
