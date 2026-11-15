@@ -83,8 +83,9 @@ After a mutation that changes a sidebar count, call `refreshBadges()` from `useA
 | Component | Use |
 |---|---|
 | `SystemStatus` | `systems: [{ key, name, detail, status }]`, status `Healthy` / `Degraded` / `Down` / `Off` → dot + pill (teal / amber / pink / gray). List only; wrap it in a `Card`. Admin overview and Integrations (spec 35). |
-| `InvitePanel` | `onDone`, `onCancel`. Emails (comma, space or newline separated, deduped by `parseEmails`) + Invite as Student / Advisor / Admin → `POST /admin/users/invite`; `role="status"` notice with sent count and skipped addresses. |
-| `ImportPanel` | `onDone`, `onCancel`. `.csv` ≤ 1 MB picked through a hidden file input → raw `text/csv` `POST /admin/users/import`; notice with the imported count and skipped lines. |
+| `CreateUserPanel` | `programs`, `advisors`, `onCreated(row)`, `onCancel`. Add user (spec 31): full name, email, role pills, program and optional advisor for students → `POST /admin/users`; then *Created {name}. Login details were emailed to {email}.* with `TempPasswordNotice`, **Add another** / **Done**. |
+| `TempPasswordNotice` | `password`, `firstName`, optional `note`. Sunk box with the temporary password, **Copy** (selects the text when the clipboard is blocked) and *Shown once. {first name} will choose a new password at first sign-in.* Used by Add user, Reset password / reactivation (Users) and Add advisor. |
+| `ImportPanel` | `onDone`, `onCancel`. `.csv` ≤ 1 MB picked through a hidden file input → raw `text/csv` `POST /admin/users/import`; notice with new / updated counts, how many got login details by email, and skipped lines. |
 
 ## Messages (`components/messages/`)
 

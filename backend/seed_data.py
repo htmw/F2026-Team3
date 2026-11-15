@@ -6,8 +6,8 @@ Meetings 1501-1507 (spec 18): Amara's check-in today 15:00 (confirmed), capstone
 the rest fill Dr. Smith's next week. Dr. Smith, Maya Brooks and the Graduate office have booking hours.
 Run on empty tables: python reset_db.py --yes && python seed_data.py
 Every seeded user's password is DEMO_PASSWORD (demo only). Each feature adds its own seed_<area>(db).
-Also seeded: a deactivated student (user 4) and a pending advisor invite (user 5) whose link is
-http://localhost:5173/reset-password?token=demo-invite-token (fixed token, demo data only).
+Also seeded: a deactivated student (user 4) and an advisor an admin just created (user 5, Priya Natarajan): she
+still has to replace her temporary password (DEMO_PASSWORD) at her first sign-in (spec 31 revision 2).
 Admin overview (spec 30): users 12-13 (students 105-106) are Prof. Kim's advisees, which puts him over his capacity
 of 2; past sign-ins 1601+ (revoked), AI threads 705-707 this week, approval requests 1701-1705 (decided ones for
 Dr. Smith, pending ones for Prof. Kim).
@@ -34,7 +34,6 @@ from models import (
     AdvisorNote,
     Assignment,
     AssignmentSubmission,
-    AuthToken,
     Base,
     User,
     Program,
@@ -69,7 +68,6 @@ from models import (
 )
 
 DEMO_PASSWORD = "Acadmate!2026"
-DEMO_INVITE_TOKEN = "demo-invite-token"
 
 
 def seed_programs(db: Session) -> None:
@@ -109,9 +107,9 @@ def seed_people(db: Session) -> None:
         # Deactivated account: signing in shows "This account is deactivated."
         User(user_id=4, name="Sam Rivera", first_name="Sam", last_name="Rivera", email="sam.rivera@pac.edu",
              password_hash=password_hash, role="student", is_active=False),
-        # Invited advisor who hasn't set a password yet (activates through the invite link).
+        # Created by an admin, not signed in yet: the first sign-in asks for a new password (spec 31).
         User(user_id=5, name="Dr. Priya Natarajan", first_name="Priya", last_name="Natarajan", email="priya.natarajan@pac.edu",
-             password_hash=None, role="advisor", is_active=False),
+             password_hash=password_hash, role="advisor", must_change_password=True),
         # Amara's CS 675 project team (spec 16 messages).
         User(user_id=6, name="Kofi Mensah", first_name="Kofi", last_name="Mensah", email="kofi.mensah@pac.edu",
              password_hash=password_hash, role="student"),
@@ -143,7 +141,6 @@ def seed_people(db: Session) -> None:
     db.add(Advisor(advisor_id=202, user_id=5, department="Data Science", office="Science Hall, Room 3.08"))
     db.add(Advisor(advisor_id=203, user_id=9, department="Computer Science", office="Science Hall, Room 4.20"))
     db.add(Advisor(advisor_id=204, user_id=11, department="Career Services", office="Career Center, Room 105"))
-    db.add(AuthToken(user_id=5, token_hash=sha256_hex(DEMO_INVITE_TOKEN), purpose="invite", expires_at=now() + timedelta(days=7)))
     db.flush()
 
 
@@ -745,7 +742,7 @@ def seed_audit(db: Session) -> None:
     meeting_day = short_date(today() + timedelta(days=7))
     rows = [
         # id, days ago, time, actor id, label, role, action, summary, target, changes, ip, result, error
-        (1801, 9, (9, 12), 3, "Jordan Lee", "Admin", "user.import", "Invited 12 students from a CSV import", None,
+        (1801, 9, (9, 12), 3, "Jordan Lee", "Admin", "user.import", "Imported 12 students from a CSV file", None,
          {"created": 12}, "10.0.4.20", "success", None),
         (1802, 8, (11, 40), 3, "Jordan Lee", "Admin", "catalog.course.draft", "Changed CS 650 to not offered in Spring 2027",
          ("course", "CS 650"), {"offered": [True, False]}, "10.0.4.20", "success", None),

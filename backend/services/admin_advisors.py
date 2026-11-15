@@ -7,11 +7,11 @@ from datetime import timedelta
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from core.errors import bad_request, conflict, not_found
+from core.errors import ApiError, bad_request, conflict, not_found
 from core.time import now
 from models import MEETING_ACTIVE, Advisor, AdvisorStudentAssignment, ApprovalRequest, Meeting, Student, User
 from services import audit, mailer, messages
-from services.admin_users import create_invited
+from services.admin_users import create_user
 from services.approvals import avg_decision_days
 
 RESPONSE_WINDOW = timedelta(days=60)
@@ -39,7 +39,7 @@ def _plural(n: int, word: str) -> str:
 # --- rows ----------------------------------------------------------------------------------------------------------
 
 def list_advisors(db: Session, ids: list[int] | None = None) -> list[dict]:
-    """Every advisor (invited and deactivated ones too), active first, then by name."""
+    """Every advisor (deactivated ones too), active first, then by name."""
     query = db.query(Advisor, User).join(User, User.user_id == Advisor.user_id)
     if ids is not None:
         query = query.filter(Advisor.advisor_id.in_(ids))
@@ -85,19 +85,20 @@ def _advisor(db: Session, advisor_id: int) -> tuple[Advisor, User]:
 # --- adding and editing --------------------------------------------------------------------------------------------
 
 def add(db: Session, admin: User, data: dict, ip: str | None = None) -> dict:
-    """An invited advisor (inactive until they accept). `data`: name, email, department, capacity."""
+    """A new Active advisor with a temporary password (spec 32, spec 31 revision 2): emailed after the commit and
+    returned once as `temporaryPassword`. `data`: name, email, department, capacity."""
     email = data["email"].strip().lower()
     if db.query(User.user_id).filter(func.lower(User.email) == email).first() is not None:
-        raise conflict("An account with this email already exists.")
-    user, mail = create_invited(db, admin, email, "advisor", name=data["name"],
-                                department=(data.get("department") or "").strip() or None)
+        raise ApiError(409, "EMAIL_TAKEN", f"{email} already has an account.")
+    user, password, mail = create_user(db, admin, email=email, role="advisor", name=data["name"],
+                                       department=(data.get("department") or "").strip() or None)
     advisor = db.query(Advisor).filter(Advisor.user_id == user.user_id).one()
     advisor.capacity = data.get("capacity") or 40
     audit.record(db, admin, "advisor.add", f"Added advisor {user.name}", ("advisor", advisor.advisor_id),
                  {"email": email, "department": advisor.department, "capacity": advisor.capacity}, ip=ip)
     db.commit()
     mailer.send_all([mail])
-    return get_row(db, advisor.advisor_id)
+    return {**get_row(db, advisor.advisor_id), "temporaryPassword": password}
 
 
 def update(db: Session, admin: User, advisor_id: int, patch: dict, ip: str | None = None) -> dict:

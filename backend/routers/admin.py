@@ -11,7 +11,8 @@ from core.errors import bad_request
 from database import get_db
 from models import User
 from schemas.admin import (AddAdvisorIn, AdminAdvisorRow, AdminUserRow, AdminUsersOut, AdvisorPatch, AdvisorsOut,
-                           AuditListOut, ImportOut, InviteIn, InviteOut, OverviewOut, ReassignIn, ReassignOut, UserPatch)
+                           AuditListOut, CreateUserIn, CreateUserOut, ImportOut, OverviewOut, ReassignIn, ReassignOut,
+                           ResetPasswordOut, UserPatch)
 from schemas.settings import DemoResetOut, SettingsOut, SettingsPatch
 from services import admin_advisors, admin_overview, admin_users, audit, demo, settings
 from services.audit import request_ip
@@ -36,16 +37,16 @@ def export_overview(request: Request, user: User = Depends(admin_only), db: Sess
 # --- users (spec 31) ----------------------------------------------------------------------------------------------
 
 @router.get("/users", response_model=AdminUsersOut)
-def list_users(role: str = "all", q: str = "", status_: Literal["Active", "Invited", "Deactivated"] | None =
+def list_users(role: str = "all", q: str = "", status_: Literal["Active", "Deactivated"] | None =
                Query(None, alias="status"), page: int = Query(1, ge=1),
                page_size: int = Query(50, ge=1, le=200, alias="pageSize"),
                user: User = Depends(admin_only), db: Session = Depends(get_db)):
     return admin_users.list_users(db, role, q, status_, page, page_size)
 
 
-@router.post("/users/invite", response_model=InviteOut)
-def invite_users(body: InviteIn, request: Request, user: User = Depends(admin_only), db: Session = Depends(get_db)):
-    return admin_users.invite(db, user, body.emails, body.role, ip=request_ip(request))
+@router.post("/users", response_model=CreateUserOut, status_code=status.HTTP_201_CREATED)
+def create_user(body: CreateUserIn, request: Request, user: User = Depends(admin_only), db: Session = Depends(get_db)):
+    return admin_users.create(db, user, body.model_dump(by_alias=True), ip=request_ip(request))
 
 
 @router.post("/users/import", response_model=ImportOut)
@@ -67,10 +68,9 @@ def update_user(user_id: int, body: UserPatch, request: Request, user: User = De
     return admin_users.update(db, user, user_id, patch, ip=request_ip(request))
 
 
-@router.post("/users/{user_id}/reset", status_code=status.HTTP_202_ACCEPTED)
-def reset_user(user_id: int, request: Request, user: User = Depends(admin_only), db: Session = Depends(get_db)):
-    admin_users.send_reset(db, user, user_id, ip=request_ip(request))
-    return {"ok": True}
+@router.post("/users/{user_id}/reset-password", response_model=ResetPasswordOut)
+def reset_password(user_id: int, request: Request, user: User = Depends(admin_only), db: Session = Depends(get_db)):
+    return admin_users.reset_password(db, user, user_id, ip=request_ip(request))
 
 
 # --- advisors (spec 32) -------------------------------------------------------------------------------------------

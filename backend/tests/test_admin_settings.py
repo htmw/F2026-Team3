@@ -52,7 +52,7 @@ def test_get_returns_defaults_and_terms(admin):
     assert data["institution"] == {
         "name": "Pace University", "domain": "pac.edu", "supportEmail": "acadmate-help@pac.edu", "currentTermId": 4,
         "terms": [{"id": 3, "name": "Summer 2026"}, {"id": 4, "name": "Fall 2026"}, {"id": 5, "name": "Spring 2027"}],
-        "timeZone": "Eastern", "selfSignup": True}
+        "timeZone": "Eastern", "selfSignup": False}
     assert data["security"] == {"google": True, "mfa": True, "ipLog": True, "timeout": "2 hours"}
     assert data["retention"] == {"ai": "1 year", "audit": "1 year"}
     assert data["branding"] == {"accent": "#0F766E"} and data["demoMode"] is False
@@ -109,7 +109,7 @@ def test_thirty_minute_timeout_signs_idle_sessions_out(admin, client):
 
 
 def test_signup_uses_the_school_domain(admin, client):
-    _patch(admin, {"institution": {"domain": "Example.edu"}})
+    _patch(admin, {"institution": {"domain": "Example.edu", "selfSignup": True}})
     client.cookies.clear()
     response = client.post("/api/v1/auth/signup", json={"name": "Ana Diaz", "email": "ana.diaz@pac.edu", "password": "longenough"})
     error = assert_envelope(response, 422, "VALIDATION_ERROR")

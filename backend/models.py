@@ -23,9 +23,11 @@ class User(Base):
     last_name = Column(String(60), nullable=False, default="")
     preferred_name = Column(String(60), nullable=True)  # used in greetings (spec 17)
     email = Column(String(100), unique=True, nullable=False)
-    password_hash = Column(String(255), nullable=True)  # null for invited (not yet activated) accounts
+    password_hash = Column(String(255), nullable=True)  # null only for old invited accounts (spec 31 rev. 1)
     role= Column(Enum("student", "advisor", "admin", name="user_role"), nullable=False)  # e.g., 'student', 'advisor', 'admin'
     is_active = Column(Boolean, default=True,nullable=False)
+    # Set when an admin creates the account or resets the password (spec 31): the next sign-in must choose a new one.
+    must_change_password = Column(Boolean, default=False, nullable=False, server_default=text("false"))
     totp_secret = Column(String(64), nullable=True)  # two-step sign-in, spec 02 Phase B
     mfa_enabled = Column(Boolean, default=False, nullable=False)
     google_sub = Column(String(64), unique=True, nullable=True)  # Google sign-in, spec 02 Phase B
@@ -449,7 +451,7 @@ class UserSession(Base):
 
 
 class AuthToken(Base):
-    """Password reset and invite links (hashed, single use)."""
+    """Password reset links (hashed, single use). "invite" is only left from spec 31 revision 1."""
     __tablename__ = "auth_tokens"
 
     id = Column(Integer, primary_key=True)
