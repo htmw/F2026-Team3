@@ -12,6 +12,7 @@ export const NAV = {
   advisor: [
     { label: 'Dashboard', to: '/advisor', end: true },
     { label: 'Advisees', to: '/advisor/advisees', badgeKey: 'advisees' },
+    { label: 'Academic risk', to: '/advisor/academic-risk'},
     { label: 'Approvals', to: '/advisor/approvals', badgeKey: 'approvals' },
     { label: 'Meetings', to: '/advisor/meetings' },
     { label: 'Messages', to: '/advisor/messages', badgeKey: 'messages' },

@@ -298,6 +298,63 @@ class AdvisorNote(Base):
     text = Column(String(1000), nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, default=now)
 
+class AcademicIntervention(Base):
+    """Advisor-assigned support action for an advisee."""
+
+    __tablename__ = "academic_interventions"
+
+    id = Column(Integer, primary_key=True)
+
+    student_id = Column(
+        Integer,
+        ForeignKey("students.student_id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    advisor_id = Column(
+        Integer,
+        ForeignKey("advisors.advisor_id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
+    title = Column(String(200), nullable=False)
+
+    description = Column(
+        Text,
+        nullable=True,
+    )
+
+    due_date = Column(
+        Date,
+        nullable=True,
+    )
+
+    status = Column(
+        Enum(
+            "open",
+            "in_progress",
+            "done",
+            name="academic_intervention_status",
+        ),
+        nullable=False,
+        default="open",
+        index=True,
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=now,
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=now,
+        onupdate=now,
+    )
 
 class UserPreference(Base):
     """A user's preferences as JSON; services/preferences.py applies the defaults (spec 17 owns the screen)."""

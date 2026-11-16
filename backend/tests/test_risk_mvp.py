@@ -18,12 +18,26 @@ CUT=datetime.fromisoformat('2027-02-08T23:59:59.999999+00:00')
 
 class GeneratorTests(unittest.TestCase):
     def test_determinism_valid_links_and_original_hashes(self):
+        import csv
         a=generate();b=generate()
         self.assertEqual(a,b)
-        self.assertEqual(a['manifest']['counts']['risk_enrollment_offerings'],800)
-        ids={r['enrollment_id'] for r in a['tables']['risk_source_coverage']}
-        self.assertEqual(len(ids),179)
-        self.assertGreater(a['manifest']['counts']['risk_activity_events'],1000)
+        source_file = ROOT/'data'/'synthetic'/'enrollments.csv'
+        with source_file.open(encoding='utf-8-sig',newline='') as file:
+            source_rows=list(csv.DictReader(file))
+            source_ids={int(row['enrollment_id']) for row in source_rows}
+            generated_ids={row['enrollment_id'] for row in a["tables"]["risk_enrollment_offerings"]}
+            covered_ids={row['enrollment_id'] for row in a["tables"]["risk_source_coverage"]}
+            self.assertEqual(len(source_ids),len(source_rows))
+            self.assertEqual(
+                a["manifest"]["counts"]["risk_enrollment_offerings"],
+                len(source_rows),
+            )
+            self.assertEqual(source_ids,generated_ids)
+
+            self.assertTrue(covered_ids)
+            self.assertTrue(covered_ids.issubset(source_ids))
+
+            self.assertGreater(a["manifest"]["counts"]["risk_activity_events"],1000)
 
     def test_cutoff_validation(self):
         with self.assertRaises(InvalidCutoff):normalize(datetime(2027,2,8))

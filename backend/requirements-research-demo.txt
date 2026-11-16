@@ -1,0 +1,7 @@
+-r requirements.txt
+-r ../ml/requirements.txt
+# Existing student-route imports require SQLAlchemy even in isolated registration tests.
+SQLAlchemy==2.1.1
+httpx==0.28.1
+psycopg[binary]==3.3.8
+tzdata==2026.6

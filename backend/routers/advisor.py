@@ -10,7 +10,8 @@ from database import get_db
 from models import Advisor
 from schemas.advisor import (AdviseesOut, AdvisorDashboardOut, AdvisorSettingsOut, AdvisorSettingsPatch, NoteIn, NoteOut,
                              RecordOut, ReportOut, SharedThreadsOut)
-from services import advisees, advisor_dashboard, advisor_reports, advisor_settings, student_record
+from schemas.interventions import ( InterventionCreateIn, InterventionOut, InterventionPatchIn, InterventionsOut)
+from services import advisees, advisor_dashboard, advisor_reports, advisor_settings,interventions, student_record
 
 router = APIRouter(prefix="/api/v1/advisor", tags=["Advisor"])
 
@@ -64,6 +65,73 @@ def add_note(student_id: int, body: NoteIn, advisor: Advisor = Depends(get_curre
     db.commit()
     return note
 
+@router.get(
+    "/advisees/{student_id}/interventions",
+    response_model=InterventionsOut,
+)
+def list_interventions(
+    student_id: int,
+    advisor: Advisor = Depends(get_current_advisor),
+    db: Session = Depends(get_db),
+):
+    return {
+        "interventions": interventions.list_for(
+            db,
+            advisor,
+            student_id,
+        )
+    }
+
+
+@router.post(
+    "/advisees/{student_id}/interventions",
+    response_model=InterventionOut,
+    status_code=201,
+)
+def create_intervention(
+    student_id: int,
+    body: InterventionCreateIn,
+    advisor: Advisor = Depends(get_current_advisor),
+    db: Session = Depends(get_db),
+):
+    intervention = interventions.create(
+        db,
+        advisor,
+        student_id,
+        title=body.title,
+        description=body.description,
+        due_date=body.due_date,
+    )
+
+    db.commit()
+    db.refresh(intervention)
+
+    return intervention
+
+
+@router.patch(
+    "/interventions/{intervention_id}",
+    response_model=InterventionOut,
+)
+def update_intervention(
+    intervention_id: int,
+    body: InterventionPatchIn,
+    advisor: Advisor = Depends(get_current_advisor),
+    db: Session = Depends(get_db),
+):
+    intervention = interventions.update(
+        db,
+        advisor,
+        intervention_id,
+        body.model_dump(
+            exclude_unset=True,
+        ),
+    )
+
+    db.commit()
+    db.refresh(intervention)
+
+    return intervention
 
 @router.delete("/notes/{note_id}", status_code=204)
 def delete_note(note_id: int, advisor: Advisor = Depends(get_current_advisor), db: Session = Depends(get_db)):

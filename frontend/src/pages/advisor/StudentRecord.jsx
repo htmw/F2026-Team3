@@ -77,8 +77,24 @@ export default function AdvisorStudentRecord() {
 
         <aside aria-label={`${student.fullName} details`} className="flex min-w-0 flex-col gap-4">
           <MeetingsList meetings={data.meetings} />
-          <PrivateNotes key={student.id} notes={data.notes} studentId={student.id} />
-          <SharedActivity items={data.activity} aiShared={data.aiShared} studentId={student.id} firstName={student.firstName} />
+
+          <Interventions
+            key={`interventions-${student.id}`}
+            studentId={student.id}
+          />
+
+          <PrivateNotes
+            key={student.id}
+            notes={data.notes}
+            studentId={student.id}
+          />
+
+          <SharedActivity
+            items={data.activity}
+            aiShared={data.aiShared}
+            studentId={student.id}
+            firstName={student.firstName}
+          />
         </aside>
       </div>
     </>
@@ -235,6 +251,240 @@ function MeetingsList({ meetings }) {
             </li>
           ))}
         </ul>
+      )}
+    </Card>
+  )
+}
+
+function Interventions({ studentId }) {
+  const { data, error, reload } = useApi(
+    `/advisor/advisees/${studentId}/interventions`
+  )
+
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [dueDate, setDueDate] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [actionError, setActionError] = useState(null)
+
+  const createIntervention = async (event) => {
+    event.preventDefault()
+
+    if (!title.trim()) return
+
+    setSaving(true)
+    setActionError(null)
+
+    try {
+      await api(
+        `/advisor/advisees/${studentId}/interventions`,
+        {
+          method: 'POST',
+          body: {
+            title: title.trim(),
+            description: description.trim() || null,
+            dueDate: dueDate || null,
+          },
+        }
+      )
+
+      setTitle('')
+      setDescription('')
+      setDueDate('')
+
+      await reload()
+    } catch (err) {
+      setActionError(errorText(err))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const updateStatus = async (intervention, status) => {
+    setActionError(null)
+
+    try {
+      await api(
+        `/advisor/interventions/${intervention.id}`,
+        {
+          method: 'PATCH',
+          body: { status },
+        }
+      )
+
+      await reload()
+    } catch (err) {
+      setActionError(errorText(err))
+    }
+  }
+
+  if (!data && !error) {
+    return (
+      <Card as="section" aria-label="Academic interventions">
+        <CardHeader title="Academic interventions" />
+        <Loading label="Loading interventions…" />
+      </Card>
+    )
+  }
+
+  const rows = data?.interventions ?? []
+
+  return (
+    <Card
+      as="section"
+      aria-label="Academic interventions"
+      className="gap-4"
+    >
+      <CardHeader
+        title="Academic interventions"
+        subtitle="Support actions and follow-up progress."
+      />
+
+      {error && (
+        <Notice tone="pink" role="alert">
+          {errorText(error)}
+        </Notice>
+      )}
+
+      {rows.length === 0 ? (
+        <Empty>No interventions yet.</Empty>
+      ) : (
+        <ul className="m-0 flex list-none flex-col p-0">
+          {rows.map((intervention) => {
+            const nextStatus =
+              intervention.status === 'open'
+                ? 'in_progress'
+                : intervention.status === 'in_progress'
+                  ? 'done'
+                  : null
+
+            const statusLabel = {
+              open: 'Open',
+              in_progress: 'In progress',
+              done: 'Done',
+            }[intervention.status]
+
+            return (
+              <li
+                key={intervention.id}
+                className="flex flex-col gap-2 border-t border-canvas py-3 first:border-t-0"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 flex-col gap-1">
+                    <span className="text-sm font-semibold text-navy">
+                      {intervention.title}
+                    </span>
+
+                    {intervention.description && (
+                      <span className="text-xs text-muted">
+                        {intervention.description}
+                      </span>
+                    )}
+
+                    {intervention.dueDate && (
+                      <span className="text-xs text-muted">
+                        Due {intervention.dueDate}
+                      </span>
+                    )}
+                  </div>
+
+                  <Pill
+                    tone={
+                      intervention.status === 'done'
+                        ? 'teal'
+                        : intervention.status === 'in_progress'
+                          ? 'amber'
+                          : 'gray'
+                    }
+                  >
+                    {statusLabel}
+                  </Pill>
+                </div>
+
+                {nextStatus && (
+                  <div>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() =>
+                        updateStatus(intervention, nextStatus)
+                      }
+                    >
+                      {nextStatus === 'in_progress'
+                        ? 'Start intervention'
+                        : 'Mark done'}
+                    </Button>
+                  </div>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      )}
+
+      <form
+        className="flex flex-col gap-3 border-t border-canvas pt-3"
+        onSubmit={createIntervention}
+      >
+        <Field
+          id="intervention-title"
+          label="New intervention"
+        >
+          <TextInput
+            id="intervention-title"
+            placeholder="Weekly advisor check-in"
+            maxLength={200}
+            value={title}
+            onChange={(event) =>
+              setTitle(event.target.value)
+            }
+          />
+        </Field>
+
+        <Field
+          id="intervention-description"
+          label="Description"
+        >
+          <Textarea
+            id="intervention-description"
+            rows={3}
+            maxLength={2000}
+            placeholder="Describe the support action…"
+            value={description}
+            onChange={(event) =>
+              setDescription(event.target.value)
+            }
+          />
+        </Field>
+
+        <Field
+          id="intervention-due-date"
+          label="Due date"
+        >
+          <TextInput
+            id="intervention-due-date"
+            type="date"
+            value={dueDate}
+            onChange={(event) =>
+              setDueDate(event.target.value)
+            }
+          />
+        </Field>
+
+        <div>
+          <Button
+            type="submit"
+            disabled={saving || !title.trim()}
+          >
+            {saving ? 'Adding…' : 'Add intervention'}
+          </Button>
+        </div>
+      </form>
+
+      {actionError && (
+        <Notice tone="pink" role="alert">
+          {actionError}
+        </Notice>
       )}
     </Card>
   )
