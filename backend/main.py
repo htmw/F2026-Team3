@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from core.errors import register_error_handlers
 from database import SessionLocal
-from routers import (admin, admin_ai, admin_catalog, admin_integrations, advisor, advisor_approvals, advisor_meetings, assignments, auth, calendar_feed, conversations, courses, meetings, staff,
+from routers import (admin, admin_ai, admin_catalog, admin_integrations, admin_knowledge, advisor, advisor_approvals, advisor_meetings, assignments, auth, calendar_feed, conversations, courses, meetings, staff,
                      student_ai, students, users)
 from risk_mvp.router import router as risk_mvp_router
 
@@ -43,7 +43,7 @@ app.add_middleware(
 # Feature specs add their routers here.
 for router in (auth.router, users.router, students.router, courses.router, student_ai.router, calendar_feed.router,
                assignments.router, conversations.router, staff.router, meetings.router, admin.router,
-               admin_ai.router, admin_catalog.router, admin_integrations.router, advisor.router, advisor_approvals.router,
+               admin_ai.router, admin_catalog.router, admin_integrations.router, admin_knowledge.router, advisor.router, advisor_approvals.router,
                advisor_meetings.router, risk_mvp_router):
     app.include_router(router)
 

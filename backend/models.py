@@ -1,4 +1,4 @@
-from sqlalchemy import (JSON, BigInteger, Boolean, Column, Date, DateTime, Enum, ForeignKey, Index, Integer, Numeric,
+from sqlalchemy import (JSON, BigInteger, Boolean, Column, Date, DateTime, Enum, ForeignKey, Index, Integer, LargeBinary, Numeric,
                         SmallInteger, String, Text, Time, UniqueConstraint, text)
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -364,6 +364,80 @@ class UserPreference(Base):
     data = Column(JSON, nullable=False, default=dict)
     updated_at = Column(DateTime(timezone=True), nullable=False, default=now, onupdate=now)
 
+class KnowledgeDocument(Base):
+    __tablename__ = "knowledge_documents"
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(200), nullable=False)
+    source_name = Column(String(255), nullable=False)
+    content_type = Column(String(100), nullable=True)
+    file_content = Column(LargeBinary, nullable=False)  # the uploaded document's raw bytes
+
+    status = Column(
+        Enum(
+            "uploaded",
+            "processing",
+            "ready",
+            "failed",
+            name="knowledge_document_status",
+        ),
+        nullable=False,
+        default="uploaded",
+    )
+
+    chunk_count = Column(Integer, nullable=False, default=0)
+    error_message = Column(Text, nullable=True)
+
+    uploaded_by = Column(
+        Integer,
+        ForeignKey("users.user_id", ondelete="SET NULL"),
+        nullable=True,
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=now,
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=now,
+        onupdate=now,
+    )
+
+
+class KnowledgeChunk(Base):
+    __tablename__ = "knowledge_chunks"
+
+    id = Column(Integer, primary_key=True)
+
+    document_id = Column(
+        Integer,
+        ForeignKey("knowledge_documents.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    chunk_index = Column(Integer, nullable=False)
+    content = Column(Text, nullable=False)
+
+    page_number = Column(Integer, nullable=True)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=now,
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "document_id",
+            "chunk_index",
+            name="uq_knowledge_chunk_document_index",
+        ),
+    )
 
 class AiThread(Base):
     """An AI advisor conversation (spec 13)."""
