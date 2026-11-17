@@ -2,7 +2,7 @@
 import os
 import unittest
 from datetime import datetime, timezone
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -109,17 +109,23 @@ class PostgreSQLSchemaCompatibilityTests(unittest.TestCase):
 
 class ValidationDependencyTests(unittest.TestCase):
     def test_real_dependency_preserves_request_validation_errors(self):
-        from unittest.mock import MagicMock
         app = FastAPI()
         app.include_router(router)
-        with patch.dict(os.environ, {'ACADMATE_RISK_MVP_ENABLED':'true'}), \
-             patch('risk_mvp.router.session', side_effect=lambda: iter([MagicMock()])), \
-             patch('risk_mvp.router.assessment', side_effect=AssertionError('Invalid input must not invoke inference')), \
-             TestClient(app) as client:
-            for value in ['0', '-1', 'abc']:
+        from database import get_db
+        def mock_db():
+            yield MagicMock()
+        app.dependency_overrides[read_db] = mock_db
+        try:
+            with patch.dict(os.environ, {'ACADMATE_RISK_MVP_ENABLED':'true'}), \
+                 patch('risk_mvp.router.assessment', side_effect=AssertionError('Invalid input must not invoke inference')), \
+                 TestClient(app) as client:
+
+             for value in ['0', '-1', 'abc']:
                 response = client.get(f'/api/v1/research/database/enrollments/{value}/risk-assessment',
                                       params={'cutoff':'2027-02-08T23:59:59.999999Z'})
                 self.assertEqual(response.status_code, 422, response.text)
             response = client.get('/api/v1/research/database/enrollments/101/risk-assessment',
                                   params={'cutoff':'not-a-date'})
             self.assertEqual(response.status_code, 422, response.text)
+        finally:
+            app.dependency_overrides.clear()

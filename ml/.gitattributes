@@ -1,2 +1,2 @@
-﻿# Preserve original bytes of ML source files.
-src/acadmate_ml/*.py -text
+﻿# Frozen model integrity: preserve original source bytes and validate whitespace.
+src/acadmate_ml/*.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

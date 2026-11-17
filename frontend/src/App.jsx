@@ -14,6 +14,7 @@ import StudentSettings from './pages/student/Settings.jsx'
 import StudentBookMeeting from './pages/student/BookMeeting.jsx'
 import AdvisorAdvisees from './pages/advisor/Advisees.jsx'
 import AdvisorDashboard from './pages/advisor/Dashboard.jsx'
+import AdvisorAcademicRisk from './pages/advisor/AcademicRisk.jsx'
 import AdvisorStudentRecord from './pages/advisor/StudentRecord.jsx'
 import AdvisorApprovals from './pages/advisor/Approvals.jsx'
 import AdvisorMeetings from './pages/advisor/Meetings.jsx'
@@ -53,6 +54,7 @@ export default function App() {
 
       <Route path="/advisor" element={<AppShell role="advisor" />}>
         <Route index element={<AdvisorDashboard />} />
+        <Route path="academic-risk" element={<AdvisorAcademicRisk />} />
         <Route path="advisees" element={<AdvisorAdvisees />} />
         <Route path="advisees/:studentId" element={<AdvisorStudentRecord />} />
         <Route path="approvals" element={<AdvisorApprovals />} />

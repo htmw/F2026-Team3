@@ -227,6 +227,7 @@ export default function StudentDegreePlan() {
   const toast = useToast()
   const navigate = useNavigate()
   const audit = useApi('/students/me/degree-audit')
+  const progress = useApi('/students/me/degree-progress')
   const plan = useApi('/students/me/plan')
   const [adding, setAdding] = useState(null) // null = closed, otherwise { termId }
   const [removing, setRemoving] = useState(null)
@@ -234,9 +235,9 @@ export default function StudentDegreePlan() {
   const [termErrors, setTermErrors] = useState({})
   const [result, setResult] = useState(null)
 
-  const refresh = () => { audit.reload(); plan.reload() }
+  const refresh = () => { audit.reload(); progress.reload(); plan.reload() }
 
-  const error = audit.error ?? plan.error
+  const error = audit.error ?? progress.error ?? plan.error
   if (error) {
     return (
       <>
@@ -245,9 +246,10 @@ export default function StudentDegreePlan() {
       </>
     )
   }
-  if (!audit.data || !plan.data) return <Loading label="Loading your degree plan…" />
+  if (!audit.data || !progress.data || !plan.data) return <Loading label="Loading your degree plan…" />
 
   const { stats, groups, subtitle, requirementsSubtitle } = audit.data
+  const { requiredCredits,  earnedCredits,  remainingCredits,  completionRate,  requirements: degreeRequirements,} = progress.data
   const { terms, available, futureTerms, notice } = plan.data
   const termIdOf = (name) => futureTerms.find((term) => term.name === name)?.id
   // "Send plan to advisor" sends the first planned term that still has unsent rows (same as its card's button).
@@ -304,6 +306,98 @@ export default function StudentDegreePlan() {
             </Button>
           </>
         )} />
+        <Card className="gap-5">
+  <CardHeader
+    title="Degree progress"
+    subtitle={`${earnedCredits} of ${requiredCredits} credits completed`}
+  />
+
+  <section
+    aria-label="Degree progress summary"
+    className="flex flex-wrap gap-4"
+  >
+    <StatTile
+      label="Completion"
+      value={`${Math.round(completionRate * 100)}%`}
+      pct={Math.round(completionRate * 100)}
+      warn={false}
+      color="teal"
+      note={`${remainingCredits} credits remaining`}
+      basis="200px"
+    />
+
+    <StatTile
+      label="Credits earned"
+      value={`${earnedCredits} / ${requiredCredits}`}
+      pct={Math.round(completionRate * 100)}
+      warn={false}
+      color="navy"
+      note="Completed credits applied to your degree"
+      basis="200px"
+    />
+
+    <StatTile
+      label="Credits remaining"
+      value={`${remainingCredits}`}
+      pct={Math.round(
+        requiredCredits > 0
+          ? (remainingCredits / requiredCredits) * 100
+          : 0
+      )}
+      warn={remainingCredits > 0}
+      color="amber"
+      note="Credits still required for completion"
+      basis="200px"
+    />
+  </section>
+
+  <div className="flex flex-col gap-3">
+    {degreeRequirements.map((requirement) => {
+      const pct = Math.round(
+        requirement.requiredCredits > 0
+          ? (requirement.earnedCredits / requirement.requiredCredits) * 100
+          : 100
+      )
+
+      return (
+        <div
+          key={requirement.requirementId}
+          className="rounded-xl border border-line p-4"
+        >
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <div>
+              <div className="font-semibold">
+                {requirement.groupName}
+              </div>
+
+              <div className="text-sm text-muted">
+                {requirement.earnedCredits} of{' '}
+                {requirement.requiredCredits} credits
+              </div>
+            </div>
+
+            <Pill tone={requirement.isSatisfied ? 'teal' : 'amber'}>
+              {requirement.isSatisfied ? 'Complete' : 'Remaining'}
+            </Pill>
+          </div>
+
+          <div className="h-2 overflow-hidden rounded-full bg-surface-sunk">
+            <div
+              className="h-full rounded-full bg-accent"
+              style={{ width: `${Math.min(pct, 100)}%` }}
+            />
+          </div>
+
+          {!requirement.isSatisfied && (
+            <div className="mt-2 text-xs text-muted">
+              {requirement.remainingCredits} credits remaining
+            </div>
+          )}
+        </div>
+      )
+    })}
+  </div>
+</Card>
 
       <section aria-label="Degree summary" className="flex flex-wrap gap-4">
         {stats.map((stat) => (

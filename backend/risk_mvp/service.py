@@ -1,4 +1,5 @@
 """Read-only as-of extraction; frozen model never receives grades or outcomes."""
+import numpy as np
 from datetime import datetime,timedelta,timezone
 from collections import Counter
 from sqlalchemy import select
@@ -84,6 +85,242 @@ def extract(db,enrollment_id,cutoff):
         'coverage':cov,'features':features if complete and available else None,'evidence':evidence,'as_of_day':day,
         'student_id':enrollment['student_id'],'course_id':enrollment['course_id']}
 
+FACTOR_LABELS = {
+    "course_day": "Course timing",
+    "course_progress": "Course progress",
+    "window_days_28d": "Recent observation window",
+    "clicks_7d": "LMS activity in the last 7 days",
+    "clicks_28d": "LMS activity in the last 28 days",
+    "active_days_7d": "Active LMS days in the last 7 days",
+    "active_days_28d": "Active LMS days in the last 28 days",
+    "engagement_change": "Change in recent engagement",
+    "days_since_activity": "Time since last LMS activity",
+    "no_activity": "No recorded LMS activity",
+    "assessments_due": "Assessments due",
+    "submissions_so_far": "Assignments submitted",
+    "overdue_assessments": "Overdue assessments",
+    "late_submission_rate": "Late submission rate",
+    "days_since_submission": "Time since last submission",
+    "no_submission": "No recorded submission",
+}
+
+
+def model_factors(features: dict) -> list[dict]:
+    """Return the three strongest SHAP factors for the frozen risk model.
+
+    SHAP values are calculated in the transformed feature space used by
+    the frozen LogisticRegression model.
+
+    Positive SHAP values push the prediction toward higher modeled risk.
+    Negative SHAP values push it toward lower modeled risk.
+    """
+    import shap
+
+    from acadmate_ml.features import FEATURES
+
+    with MODEL._lock:
+        if MODEL._artifacts is None:
+            MODEL._artifacts = MODEL._load()
+
+        pipeline = MODEL._artifacts[0]
+
+        imputer = pipeline.named_steps["imputer"]
+        scaler = pipeline.named_steps["scaler"]
+        classifier = pipeline.named_steps["classifier"]
+
+        raw = np.asarray(
+            [[
+                np.nan if features[name] is None
+                else features[name]
+                for name in FEATURES
+            ]],
+            dtype=float,
+        )
+
+        # Apply the exact preprocessing from the frozen model.
+        imputed = imputer.transform(raw)
+        scaled = scaler.transform(imputed)
+
+        names = imputer.get_feature_names_out(FEATURES)
+
+        # StandardScaler centers training features around zero.
+        # Use that transformed-space center as the SHAP reference.
+        background = np.zeros(
+            (1, scaled.shape[1]),
+            dtype=float,
+        )
+
+        explainer = shap.LinearExplainer(
+            classifier,
+            background,
+            feature_names=list(names),
+        )
+
+        explanation = explainer(scaled)
+
+        shap_values = np.asarray(
+            explanation.values[0],
+            dtype=float,
+        )
+
+        base_value = float(
+            np.asarray(explanation.base_values).reshape(-1)[0]
+        )
+
+    factors = []
+
+    for name, shap_value in zip(names, shap_values):
+        # Missingness indicators are legitimate model features,
+        # but are implementation details rather than useful
+        # advisor-facing academic explanations.
+        if name.startswith("missingindicator_"):
+            continue
+
+        factors.append({
+            "feature": name,
+            "label": FACTOR_LABELS.get(
+                name,
+                name.replace("_", " ").title(),
+            ),
+            "direction": (
+                "increases risk"
+                if shap_value > 0
+                else "reduces risk"
+            ),
+            "shap_value": round(
+                float(shap_value),
+                6,
+            ),
+            "value": features.get(name),
+        })
+
+    factors.sort(
+        key=lambda factor: abs(factor["shap_value"]),
+        reverse=True,
+    )
+
+    top_factors = factors[:3]
+
+    for factor in top_factors:
+        factor["base_value"] = round(
+            base_value,
+            6,
+        )
+        factor["explanation_method"] = "shap_linear"
+
+    return top_factors
+
+RECOMMENDATION_RULES = {
+      "overdue_assessments": {
+          "increases risk": {
+              "title": "Catch up on overdue assessments",
+              "detail": "Prioritize overdue coursework and contact the instructor if additional support is needed.",
+              "action": "review_assignments",
+          },
+          "reduces risk": {
+              "title": "Keep assignments on schedule",
+              "detail": "No overdue assessments are currently contributing to academic risk.",
+              "action": "review_assignments",
+          },
+      },
+
+      "days_since_activity": {
+          "increases risk": {
+              "title": "Resume regular course activity",
+              "detail": "Return to the LMS regularly and review recent course materials.",
+              "action": "open_courses",
+          },
+          "reduces risk": {
+              "title": "Maintain recent engagement",
+              "detail": "Recent LMS activity is helping reduce the modeled risk.",
+              "action": "open_courses",
+          },
+      },
+
+      "active_days_28d": {
+          "increases risk": {
+              "title": "Increase weekly engagement",
+              "detail": "Use the LMS more consistently throughout the week.",
+              "action": "open_courses",
+          },
+          "reduces risk": {
+              "title": "Continue consistent participation",
+              "detail": "Regular activity across the last four weeks is a positive factor.",
+              "action": "open_courses",
+          },
+      },
+
+      "late_submission_rate": {
+          "increases risk": {
+              "title": "Improve submission timing",
+              "detail": "Create a schedule for upcoming deadlines and submit work before the due date.",
+              "action": "review_assignments",
+          },
+          "reduces risk": {
+              "title": "Maintain on-time submissions",
+              "detail": "On-time coursework is currently reducing modeled risk.",
+              "action": "review_assignments",
+          },
+      },
+
+      "days_since_submission": {
+          "increases risk": {
+              "title": "Review upcoming coursework",
+              "detail": "Check upcoming assignments and make a plan for the next submission.",
+              "action": "review_assignments",
+          },
+          "reduces risk": {
+              "title": "Keep submitting regularly",
+              "detail": "Recent coursework submission is a positive academic signal.",
+              "action": "review_assignments",
+          },
+      },
+
+      "clicks_7d": {
+          "increases risk": {
+              "title": "Increase recent course engagement",
+              "detail": "Spend more time reviewing current course materials and announcements.",
+              "action": "open_courses",
+          },
+          "reduces risk": {
+              "title": "Maintain recent LMS activity",
+              "detail": "Recent course interaction is helping reduce modeled risk.",
+              "action": "open_courses",
+          },
+      },
+  }
+
+
+def recommendations_for(factors: list[dict]) -> list[dict]:
+    recommendations = []
+
+    for factor in factors:
+        rule = RECOMMENDATION_RULES.get(factor["feature"], {}).get(
+            factor["direction"]
+        )
+
+        if rule is None:
+            continue
+
+        recommendations.append({
+            "source_feature": factor["feature"],
+            "title": rule["title"],
+            "detail": rule["detail"],
+            "action": rule["action"],
+        })
+
+    # Always provide an advisor option for a student who wants
+    # additional guidance.
+    if len(recommendations) < 3:
+        recommendations.append({
+            "source_feature": "advisor_support",
+            "title": "Meet with your advisor",
+            "detail": "Discuss academic progress and next steps with your assigned advisor.",
+            "action": "book_advisor",
+        })
+
+    return recommendations[:3]
+
 def assessment(db,enrollment_id,cutoff):
     row=extract(db,enrollment_id,cutoff)
     response={k:v for k,v in row.items() if k!='features'}
@@ -99,7 +336,9 @@ def assessment(db,enrollment_id,cutoff):
                 'rows':[{'enrollment_id':str(enrollment_id),'student_id':str(row['student_id']),'course_id':str(row['course_id']),
                     'as_of_day':row['as_of_day'],'case':'database_demo','source_kind':'synthetic_lms_demo','status':'ready','reason':None,'features':row['features']}]}
             scored=predict(document,*MODEL._artifacts)['rows'][0]
-        response.update(status='scored_research_demo',research_risk_probability=scored['research_risk_probability'])
+
+        factors=model_factors(row["features"])
+        response.update(status='scored_research_demo',research_risk_probability=scored['research_risk_probability'],top_factors=factors,recommendations=recommendations_for(factors),)
     return response
 
 def insights(db,student_id):

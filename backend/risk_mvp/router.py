@@ -3,8 +3,9 @@ import logging,os
 from fastapi import APIRouter,Depends,Path,Query
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
-from sqlalchemy import select
-from .database import session
+from sqlalchemy import select,text
+from sqlalchemy.orm import Session
+from database import get_db
 from .models import Base
 from .service import assessment,insights,MissingEnrollment,InvalidCutoff
 
@@ -15,18 +16,27 @@ def enabled():
         from fastapi import HTTPException
         raise HTTPException(503,'Synthetic database demo disabled')
 
-def read_db():
-    from sqlalchemy import text
+def read_db(db: Session = Depends(get_db)):
     enabled()
+
     try:
-        for db in session():
-            db.execute(text('SET TRANSACTION READ ONLY'))
-            yield db
+        db.execute(text("SET TRANSACTION READ ONLY"))
+        yield db
+
     except Exception as exc:
         from fastapi import HTTPException
-        if isinstance(exc,(HTTPException,RequestValidationError)):raise
-        logging.getLogger(__name__).exception('Disposable risk database unavailable')
-        raise HTTPException(503,'Synthetic database demo unavailable') from None
+
+        if isinstance(exc, (HTTPException, RequestValidationError)):
+            raise
+
+        logging.getLogger(__name__).exception(
+            "Academic risk database unavailable"
+        )
+
+        raise HTTPException(
+            status_code=503,
+            detail="Academic risk database unavailable",
+        ) from None
 
 def error(code,message):return JSONResponse(status_code=code,content={'error':{'code':'NOT_FOUND' if code==404 else 'INVALID_CUTOFF','message':message,'details':[]}})
 
