@@ -69,7 +69,7 @@ def test_filters_combine(admin):
         assert e["when"].startswith("Today")
     # Other tests add events today, so narrow by text: 1807 is 3 days old, 1801 is 9 days old.
     week = lambda q: [e["eventId"] for e in admin.get(AUDIT, params={"range": "7d", "q": q}).json()["events"]]  # noqa: E731
-    assert week("grade-based insights") == ["evt_1807"] and week("Invited 12 students") == []
+    assert week("grade-based insights") == ["evt_1807"] and week("Imported 12 students") == []
 
     # Other tests add catalog events today, so search for text only the seeded event has (8 days ago).
     catalog = admin.get(AUDIT, params={"q": "catalog"}).json()["events"]

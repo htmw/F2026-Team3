@@ -138,7 +138,7 @@ def test_workload(db, make_user, added):
 
 def test_summary_tiles(db):
     advisors = ov.advisors_stat(db)
-    assert advisors["note"] == "1 invited, not yet signed in"  # Priya Natarajan (user 5)
+    assert advisors["note"] == "1 not yet signed in"  # Priya Natarajan (user 5), still on her temporary password
     plans = ov.plans_waiting(db)
     assert plans["key"] == "plansWaiting" and plans["note"] == "Spring registration opens Nov 3"
     assert ov.subtitle(db) == "Pace University · Fall 2026 · Week 6"

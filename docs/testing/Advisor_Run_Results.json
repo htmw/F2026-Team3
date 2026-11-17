@@ -1,0 +1,1166 @@
+{
+	"id": "3d4aa461-6e2f-4d28-8e68-ae90c988d3ab",
+	"name": "Acadmate - Advisor API",
+	"timestamp": "2026-11-11T22:11:55.885Z",
+	"collection_id": "52044069-927ee339-3850-4c72-ad4a-ffe67afb291e",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 37,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-11-11T22:11:53.395Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "3aab905d-d560-4769-986c-0388fa810c10",
+			"name": "Login as advisor",
+			"url": "http://localhost:8010/api/v1/auth/login",
+			"time": 277,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true,
+				"Session cookie set": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Session cookie set": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				277
+			],
+			"allTests": [
+				{
+					"Status 200": true,
+					"Session cookie set": true
+				}
+			]
+		},
+		{
+			"id": "d4c8ad21-c81f-4603-b716-a89ffa72b588",
+			"name": "Who am I",
+			"url": "http://localhost:8010/api/v1/auth/me",
+			"time": 9,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "3c4293ed-0f82-4e7c-94bf-06ab81f6c9b8",
+			"name": "Sidebar badges",
+			"url": "http://localhost:8010/api/v1/users/me/badges",
+			"time": 45,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				45
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "c72c09d7-256e-4951-a2e4-909ecf8fbefd",
+			"name": "Dashboard",
+			"url": "http://localhost:8010/api/v1/advisor/dashboard",
+			"time": 69,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				69
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "a9624f2c-e10a-4771-bd06-7470e9b0388d",
+			"name": "Advisees",
+			"url": "http://localhost:8010/api/v1/advisor/advisees",
+			"time": 30,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				30
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "e888c81f-118c-4eae-bf3f-eb5959e8cd8d",
+			"name": "Student record",
+			"url": "http://localhost:8010/api/v1/advisor/advisees/101",
+			"time": 51,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				51
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "eab3880e-b228-44d3-b9e9-ce6f9c86230a",
+			"name": "Academic profile",
+			"url": "http://localhost:8010/api/v1/students/101/academic-profile",
+			"time": 15,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "50979b31-b131-444d-a90e-ce96a8c2a11c",
+			"name": "Add private note",
+			"url": "http://localhost:8010/api/v1/advisor/advisees/101/notes",
+			"time": 16,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status 201": true
+			},
+			"testPassFailCounts": {
+				"Status 201": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status 201": true
+				}
+			]
+		},
+		{
+			"id": "91d6031e-f44e-4f2e-9ce4-75da84fd4ab4",
+			"name": "Delete note",
+			"url": "http://localhost:8010/api/v1/advisor/notes/1902",
+			"time": 14,
+			"responseCode": {
+				"code": 204,
+				"name": "No Content"
+			},
+			"tests": {
+				"Status 204": true
+			},
+			"testPassFailCounts": {
+				"Status 204": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status 204": true
+				}
+			]
+		},
+		{
+			"id": "8d9e514d-57cd-4877-b4fe-42d83dff881d",
+			"name": "Shared AI threads",
+			"url": "http://localhost:8010/api/v1/advisor/advisees/101/ai-threads",
+			"time": 13,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				13
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "7da0051e-2039-4891-be3a-b2aaf2a3e110",
+			"name": "List approvals",
+			"url": "http://localhost:8010/api/v1/advisor/approvals?status=Pending",
+			"time": 43,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				43
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "0ae2497c-4e7b-4cf1-a107-db71c5d672a1",
+			"name": "Get approval",
+			"url": "http://localhost:8010/api/v1/advisor/approvals/1706",
+			"time": 22,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				22
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "d0b4ab2d-ee82-4b38-bcdb-9c18378ba81f",
+			"name": "Approve",
+			"url": "http://localhost:8010/api/v1/advisor/approvals/1706/approve",
+			"time": 60,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				60
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "2f1eb744-a9d8-4afc-ba7d-90f8eff1bc11",
+			"name": "Request changes",
+			"url": "http://localhost:8010/api/v1/advisor/approvals/1710/request-changes",
+			"time": 59,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				59
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "5b59d585-35d3-4280-b800-f9ded49c0948",
+			"name": "Reopen decision",
+			"url": "http://localhost:8010/api/v1/advisor/approvals/1706/reopen",
+			"time": 55,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				55
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "cb00a318-5673-4add-927f-f6bde707ee62",
+			"name": "Agenda",
+			"url": "http://localhost:8010/api/v1/advisor/meetings?range=today",
+			"time": 41,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				41
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "d9bd971f-23d3-4513-8af0-aa0e45111ba7",
+			"name": "Free slots",
+			"url": "http://localhost:8010/api/v1/advisor/meetings/free-slots?date=2026-10-06&studentId=110",
+			"time": 36,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				36
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "dafe8360-1a30-468f-9e4c-526400d506d2",
+			"name": "Book for student",
+			"url": "http://localhost:8010/api/v1/advisor/meetings",
+			"time": 63,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status 201": true
+			},
+			"testPassFailCounts": {
+				"Status 201": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				63
+			],
+			"allTests": [
+				{
+					"Status 201": true
+				}
+			]
+		},
+		{
+			"id": "fa6aaaba-8ec5-447a-8f20-65ef5b6d37c0",
+			"name": "Save meeting notes",
+			"url": "http://localhost:8010/api/v1/advisor/meetings/1508",
+			"time": 28,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				28
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "95f61bf1-5959-42f2-92a1-f2ef865198c0",
+			"name": "Set office hours",
+			"url": "http://localhost:8010/api/v1/advisor/office-hours",
+			"time": 34,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				34
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "aaa6fa82-8e45-4d3c-9850-67c796fab5a2",
+			"name": "Accept request",
+			"url": "http://localhost:8010/api/v1/meetings/1512/accept",
+			"time": 43,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				43
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "12ddd3d0-7612-409d-a3e3-c413cf48bdae",
+			"name": "Decline request",
+			"url": "http://localhost:8010/api/v1/meetings/1513/decline",
+			"time": 46,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				46
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "05126a0d-90e1-4a5f-9069-4007ed59456e",
+			"name": "Propose new time",
+			"url": "http://localhost:8010/api/v1/meetings/1510/propose",
+			"time": 40,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				40
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "484ce008-003e-4d25-a157-26d7d54ef15d",
+			"name": "Cancel",
+			"url": "http://localhost:8010/api/v1/meetings/1511/cancel",
+			"time": 22,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				22
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "156e6ed2-5728-4287-8305-186cb8997347",
+			"name": "Mark complete",
+			"url": "http://localhost:8010/api/v1/meetings/1508/complete",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "afb0da62-abfa-4c82-b846-9befb15c37c5",
+			"name": "Mark no-show",
+			"url": "http://localhost:8010/api/v1/meetings/1509/no-show",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "4173184d-e390-4de0-a009-86a8d2037cce",
+			"name": "Conversations",
+			"url": "http://localhost:8010/api/v1/conversations",
+			"time": 28,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				28
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "2dc6039c-e541-4957-9c05-12bb58845c27",
+			"name": "Contacts",
+			"url": "http://localhost:8010/api/v1/conversations/contacts",
+			"time": 15,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "1b744281-686a-43dc-8c69-7da8e5e9224e",
+			"name": "Open advising team",
+			"url": "http://localhost:8010/api/v1/conversations/team",
+			"time": 18,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				18
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "90ae1d19-a5b5-4e5a-be51-cd05867d6335",
+			"name": "Thread",
+			"url": "http://localhost:8010/api/v1/conversations/1306/messages",
+			"time": 31,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				31
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "67e21a74-d335-453d-b828-4976c0ac623b",
+			"name": "Send message",
+			"url": "http://localhost:8010/api/v1/conversations/1306/messages",
+			"time": 23,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status 201": true
+			},
+			"testPassFailCounts": {
+				"Status 201": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				23
+			],
+			"allTests": [
+				{
+					"Status 201": true
+				}
+			]
+		},
+		{
+			"id": "a504952c-be4e-4b8a-9d4f-f5d9c062f3d4",
+			"name": "Start conversation",
+			"url": "http://localhost:8010/api/v1/conversations",
+			"time": 31,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status 201": true
+			},
+			"testPassFailCounts": {
+				"Status 201": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				31
+			],
+			"allTests": [
+				{
+					"Status 201": true
+				}
+			]
+		},
+		{
+			"id": "2ba9e97f-be33-44e8-9db7-2ba4634ed081",
+			"name": "Report",
+			"url": "http://localhost:8010/api/v1/advisor/reports",
+			"time": 133,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				133
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "e980a4ee-7e75-4ed0-b1a0-c4d7a0259dbd",
+			"name": "Report CSV",
+			"url": "http://localhost:8010/api/v1/advisor/reports.csv",
+			"time": 76,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				76
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "603b2534-0441-4b9a-adc4-5a4d86695667",
+			"name": "Get settings",
+			"url": "http://localhost:8010/api/v1/advisor/settings",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "9b566860-92b8-4353-8549-1b979e563b3e",
+			"name": "Update settings",
+			"url": "http://localhost:8010/api/v1/advisor/settings",
+			"time": 29,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status 200": true
+			},
+			"testPassFailCounts": {
+				"Status 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				29
+			],
+			"allTests": [
+				{
+					"Status 200": true
+				}
+			]
+		},
+		{
+			"id": "e29d7226-08ce-4b8e-986f-19ee6153fff7",
+			"name": "Logout",
+			"url": "http://localhost:8010/api/v1/auth/logout",
+			"time": 14,
+			"responseCode": {
+				"code": 204,
+				"name": "No Content"
+			},
+			"tests": {
+				"Status 204": true
+			},
+			"testPassFailCounts": {
+				"Status 204": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status 204": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1576,
+	"collection": {
+		"requests": [
+			{
+				"id": "3aab905d-d560-4769-986c-0388fa810c10",
+				"method": "POST"
+			},
+			{
+				"id": "d4c8ad21-c81f-4603-b716-a89ffa72b588",
+				"method": "GET"
+			},
+			{
+				"id": "3c4293ed-0f82-4e7c-94bf-06ab81f6c9b8",
+				"method": "GET"
+			},
+			{
+				"id": "c72c09d7-256e-4951-a2e4-909ecf8fbefd",
+				"method": "GET"
+			},
+			{
+				"id": "a9624f2c-e10a-4771-bd06-7470e9b0388d",
+				"method": "GET"
+			},
+			{
+				"id": "e888c81f-118c-4eae-bf3f-eb5959e8cd8d",
+				"method": "GET"
+			},
+			{
+				"id": "eab3880e-b228-44d3-b9e9-ce6f9c86230a",
+				"method": "GET"
+			},
+			{
+				"id": "50979b31-b131-444d-a90e-ce96a8c2a11c",
+				"method": "POST"
+			},
+			{
+				"id": "91d6031e-f44e-4f2e-9ce4-75da84fd4ab4",
+				"method": "DELETE"
+			},
+			{
+				"id": "8d9e514d-57cd-4877-b4fe-42d83dff881d",
+				"method": "GET"
+			},
+			{
+				"id": "7da0051e-2039-4891-be3a-b2aaf2a3e110",
+				"method": "GET"
+			},
+			{
+				"id": "0ae2497c-4e7b-4cf1-a107-db71c5d672a1",
+				"method": "GET"
+			},
+			{
+				"id": "d0b4ab2d-ee82-4b38-bcdb-9c18378ba81f",
+				"method": "POST"
+			},
+			{
+				"id": "2f1eb744-a9d8-4afc-ba7d-90f8eff1bc11",
+				"method": "POST"
+			},
+			{
+				"id": "5b59d585-35d3-4280-b800-f9ded49c0948",
+				"method": "POST"
+			},
+			{
+				"id": "cb00a318-5673-4add-927f-f6bde707ee62",
+				"method": "GET"
+			},
+			{
+				"id": "d9bd971f-23d3-4513-8af0-aa0e45111ba7",
+				"method": "GET"
+			},
+			{
+				"id": "dafe8360-1a30-468f-9e4c-526400d506d2",
+				"method": "POST"
+			},
+			{
+				"id": "fa6aaaba-8ec5-447a-8f20-65ef5b6d37c0",
+				"method": "PATCH"
+			},
+			{
+				"id": "95f61bf1-5959-42f2-92a1-f2ef865198c0",
+				"method": "PUT"
+			},
+			{
+				"id": "aaa6fa82-8e45-4d3c-9850-67c796fab5a2",
+				"method": "POST"
+			},
+			{
+				"id": "12ddd3d0-7612-409d-a3e3-c413cf48bdae",
+				"method": "POST"
+			},
+			{
+				"id": "05126a0d-90e1-4a5f-9069-4007ed59456e",
+				"method": "POST"
+			},
+			{
+				"id": "484ce008-003e-4d25-a157-26d7d54ef15d",
+				"method": "POST"
+			},
+			{
+				"id": "156e6ed2-5728-4287-8305-186cb8997347",
+				"method": "POST"
+			},
+			{
+				"id": "afb0da62-abfa-4c82-b846-9befb15c37c5",
+				"method": "POST"
+			},
+			{
+				"id": "4173184d-e390-4de0-a009-86a8d2037cce",
+				"method": "GET"
+			},
+			{
+				"id": "2dc6039c-e541-4957-9c05-12bb58845c27",
+				"method": "GET"
+			},
+			{
+				"id": "1b744281-686a-43dc-8c69-7da8e5e9224e",
+				"method": "POST"
+			},
+			{
+				"id": "90ae1d19-a5b5-4e5a-be51-cd05867d6335",
+				"method": "GET"
+			},
+			{
+				"id": "67e21a74-d335-453d-b828-4976c0ac623b",
+				"method": "POST"
+			},
+			{
+				"id": "a504952c-be4e-4b8a-9d4f-f5d9c062f3d4",
+				"method": "POST"
+			},
+			{
+				"id": "2ba9e97f-be33-44e8-9db7-2ba4634ed081",
+				"method": "GET"
+			},
+			{
+				"id": "e980a4ee-7e75-4ed0-b1a0-c4d7a0259dbd",
+				"method": "GET"
+			},
+			{
+				"id": "603b2534-0441-4b9a-adc4-5a4d86695667",
+				"method": "GET"
+			},
+			{
+				"id": "9b566860-92b8-4353-8549-1b979e563b3e",
+				"method": "PATCH"
+			},
+			{
+				"id": "e29d7226-08ce-4b8e-986f-19ee6153fff7",
+				"method": "POST"
+			}
+		]
+	}
+}

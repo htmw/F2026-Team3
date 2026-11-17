@@ -5,7 +5,8 @@ from core.config import settings as env
 from core.deps import get_current_user
 from database import get_db
 from models import User
-from schemas.auth import AuthOut, ConfigOut, LinkOut, LoginIn, MeOut, OkOut, ResetConfirmIn, ResetRequestIn, SignupIn
+from schemas.auth import (AuthOut, ConfigOut, LinkOut, LoginIn, MeOut, OkOut, PasswordChangeOut, ResetConfirmIn,
+                          ResetRequestIn, SignupIn)
 from services import auth, settings
 from services.audit import request_ip
 
@@ -35,12 +36,18 @@ def config(db: Session = Depends(get_db)):
         "accent": settings.get(db, "branding")["accent"],
         "institution_name": institution["name"],
         "self_signup": institution["selfSignup"],
+        "support_email": institution["supportEmail"],
     }
 
 
-@router.post("/login", response_model=AuthOut)
+@router.post("/login", response_model=AuthOut | PasswordChangeOut)
 def login(body: LoginIn, request: Request, response: Response, db: Session = Depends(get_db)):
     user = auth.authenticate(db, body.email, body.password, request_ip(request))
+    if user.must_change_password:
+        # Temporary password from an admin (spec 31): no session until the user picks their own password.
+        token = auth.password_change_token(db, user)
+        db.commit()
+        return {"password_change_required": True, "token": token, "email": user.email}
     # Phase B: if auth.needs_mfa(db, user), answer {"mfaRequired": true, ...} instead of signing in.
     return _signed_in(db, request, response, user, body.remember)
 

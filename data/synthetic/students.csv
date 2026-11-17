@@ -1,4 +1,5 @@
 student_id,user_id,name,email,program_id
+101,1,Santos Shel,santos.shel@pac.edu,1
 10000,10000,Avery Vale,student.10000@example.invalid,2
 10001,10001,Briar Vale,student.10001@example.invalid,2
 10002,10002,Cedar Vale,student.10002@example.invalid,2

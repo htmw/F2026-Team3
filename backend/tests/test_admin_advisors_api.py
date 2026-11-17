@@ -14,7 +14,7 @@ from test_foundation import assert_envelope
 
 ADVISORS = "/api/v1/admin/advisors"
 JORDAN = "jordan.lee@pac.edu"
-ROW_KEYS = {"id", "userId", "name", "dept", "load", "cap", "pending", "resp", "status", "active"}
+ROW_KEYS = {"id", "userId", "name", "dept", "load", "cap", "pending", "resp", "status", "active", "temporaryPassword"}
 
 
 @pytest.fixture
@@ -56,25 +56,29 @@ def test_list_shape(admin):
     assert (kim["load"], kim["cap"], kim["status"]) == (3, 2, "Over capacity")
 
 
-def test_add_then_accept_invite(admin, client, mail):
+def test_add_advisor_gets_temporary_password(admin, client, mail):
     email = f"advisor.{uuid.uuid4().hex[:8]}@pac.edu"
     response = admin.post(ADVISORS, json={"name": "Dr. Lena Ortiz", "email": email, "department": "Statistics",
                                           "capacity": 35})
     assert response.status_code == 201
     row = response.json()
     assert (row["name"], row["dept"], row["cap"], row["active"], row["status"]) == ("Dr. Lena Ortiz", "Statistics",
-                                                                                    35, False, "Has room")
-    assert any(r["id"] == row["id"] and not r["active"] for r in admin.get(ADVISORS).json()["advisors"])
+                                                                                    35, True, "Has room")
+    temporary = row["temporaryPassword"]
+    assert re.search(r"Temporary password: (\S+)", mail[-1][2]).group(1) == temporary
+    listed = next(r for r in admin.get(ADVISORS).json()["advisors"] if r["id"] == row["id"])
+    assert listed["active"] is True and listed["temporaryPassword"] is None  # shown once
 
-    token = re.search(r"token=([\w-]+)", mail[-1][2]).group(1)
-    assert admin.get(f"/api/v1/auth/password-reset/{token}").json() == {"email": email, "purpose": "invite"}
-    assert admin.post("/api/v1/auth/password-reset/confirm",
-                      json={"token": token, "password": "advisor-pass-1"}).status_code == 204
-    row = next(r for r in admin.get(ADVISORS).json()["advisors"] if r["id"] == row["id"])
-    assert row["active"] is True  # accepting the invite activates the account
+    newcomer = client.__class__(client.app)
+    token = login(newcomer, email, temporary).json()["token"]
+    assert newcomer.post("/api/v1/auth/password-reset/confirm",
+                         json={"token": token, "password": "advisor-pass-1"}).status_code == 204
+    assert login(newcomer, email, "advisor-pass-1").json()["home"] == "/advisor"
+    with SessionLocal() as session:  # keep the overview's "not yet signed in" note as seeded
+        assert session.query(User).filter(User.email == email).one().must_change_password is False
 
     assert_envelope(admin.post(ADVISORS, json={"name": "Copy", "email": email.upper(), "department": "Statistics"}),
-                    409, "CONFLICT")
+                    409, "EMAIL_TAKEN")
 
 
 def test_validation(admin):

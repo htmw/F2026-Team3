@@ -8,7 +8,8 @@ import { api, errorText } from '../../lib/api.js'
 const MAX_BYTES = 1024 * 1024 // matches services/admin_users.MAX_IMPORT_BYTES
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`
 
-// Admin users: upsert users from a CSV (spec 31). `onDone()` reloads the list after an import.
+// Admin users: upsert users from a CSV (spec 31). New users get their login details by email (no passwords are
+// shown here; Reset password issues a new one). `onDone()` reloads the list after an import.
 export default function ImportPanel({ onDone, onCancel }) {
   const input = useRef(null)
   const [file, setFile] = useState(null)
@@ -39,8 +40,8 @@ export default function ImportPanel({ onDone, onCancel }) {
       const imported = data.created + data.updated
       setResult({
         tone: imported ? (data.skipped.length ? 'amber' : 'teal') : 'pink',
-        text: `Imported ${plural(imported, 'user')} from ${file.name}.`
-          + (data.created ? ` ${data.created} new ${data.created === 1 ? 'person was' : 'people were'} invited.` : ''),
+        text: `Imported ${plural(imported, 'user')} from ${file.name} (${data.created} new, ${data.updated} updated).`
+          + (data.emailed ? ` Login details were emailed to the ${plural(data.emailed, 'new user')}.` : ''),
         skipped: data.skipped,
       })
       if (imported) onDone()
@@ -54,7 +55,7 @@ export default function ImportPanel({ onDone, onCancel }) {
   return (
     <Card as="section" aria-label="Import users" className="gap-4">
       <CardHeader title="Import users from a CSV file"
-        subtitle="Columns: name, email, role, program. Existing emails are updated, not duplicated." />
+        subtitle="Columns: name, email, role, program. New users get their login details by email; existing emails are updated, not duplicated." />
       <input ref={input} type="file" accept=".csv,text/csv" className="sr-only" tabIndex={-1} aria-hidden="true" onChange={pick} />
       <div className="flex flex-wrap items-center gap-2">
         <Button variant="secondary" onClick={() => input.current?.click()}>

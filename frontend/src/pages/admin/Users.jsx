@@ -2,8 +2,9 @@ import { useEffect, useId, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import PageHeader from '../../components/layout/PageHeader.jsx'
 import MasterDetail, { DetailEmpty, ListRow } from '../../components/layout/MasterDetail.jsx'
-import InvitePanel from '../../components/admin/InvitePanel.jsx'
+import CreateUserPanel from '../../components/admin/CreateUserPanel.jsx'
 import ImportPanel from '../../components/admin/ImportPanel.jsx'
+import TempPasswordNotice from '../../components/admin/TempPasswordNotice.jsx'
 import Avatar from '../../components/ui/Avatar.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Card from '../../components/ui/Card.jsx'
@@ -18,7 +19,6 @@ import { useAuth } from '../../auth/AuthContext.jsx'
 import { api, errorText } from '../../lib/api.js'
 import { useApi } from '../../lib/useApi.js'
 import { useDebounced } from '../../lib/useDebounced.js'
-import { useFlash } from '../../lib/useSaveState.js'
 import { ROLE_TONE, USER_STATUS_TONE } from '../../lib/status.js'
 
 const PAGE_SIZE = 50
@@ -31,14 +31,14 @@ const TABS = [
 const ROLE_VALUE = { Student: 'student', Advisor: 'advisor', Admin: 'admin' }
 const SELF_HINT = "You can't change your own account here."
 
-// Admin users (spec 31): list with role tabs, search and paging; invite and CSV import panels; details aside.
+// Admin users (spec 31 revision 2): list with role tabs, search and paging; Add user and CSV import panels; details aside.
 export default function AdminUsers() {
   const { user: me } = useAuth()
   const [params, setParams] = useSearchParams()
   const [role, setRole] = useState(TABS.some((t) => t.value === params.get('role')) ? params.get('role') : 'all')
   const [search, setSearch] = useState(params.get('q') ?? '')
   const [page, setPage] = useState(1)
-  const [panel, setPanel] = useState(params.get('invite') === '1' ? 'invite' : null)
+  const [panel, setPanel] = useState(params.get('new') === '1' ? 'new' : null)
   const [selected, setSelected] = useState(null)
   const [wantedId, setWantedId] = useState(() => Number(params.get('id')) || null) // from a shared ?id= link
   const q = useDebounced(search.trim())
@@ -46,7 +46,7 @@ export default function AdminUsers() {
   const path = `/admin/users?role=${role}&q=${encodeURIComponent(q)}&page=${page}&pageSize=${PAGE_SIZE}`
   const { data, error, loading, reload, setData } = useApi(path)
 
-  // Keep role / q / id in the URL so a view can be shared or reloaded; the invite flag is one-shot.
+  // Keep role / q / id in the URL so a view can be shared or reloaded; the ?new=1 flag is one-shot.
   useEffect(() => {
     const next = new URLSearchParams()
     if (role !== 'all') next.set('role', role)
@@ -64,6 +64,11 @@ export default function AdminUsers() {
   }, [data, wantedId])
 
   useEffect(() => { setPage(1) }, [role, q])
+
+  const created = (row) => {
+    setSelected(row)
+    reload()
+  }
 
   const changed = (row) => {
     setSelected(row)
@@ -91,11 +96,13 @@ export default function AdminUsers() {
         actions={(
           <>
             <Button variant="secondary" onClick={() => togglePanel('import')} aria-expanded={panel === 'import'}>Import CSV</Button>
-            <Button onClick={() => togglePanel('invite')} aria-expanded={panel === 'invite'}>Invite users</Button>
+            <Button onClick={() => togglePanel('new')} aria-expanded={panel === 'new'}>Add user</Button>
           </>
         )} />
 
-      {panel === 'invite' && <InvitePanel onDone={reload} onCancel={() => setPanel(null)} />}
+      {panel === 'new' && (
+        <CreateUserPanel programs={data.programs} advisors={data.advisors} onCreated={created} onCancel={() => setPanel(null)} />
+      )}
       {panel === 'import' && <ImportPanel onDone={reload} onCancel={() => setPanel(null)} />}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -188,14 +195,15 @@ function UserDetail({ user, advisors, programs, self, onChanged }) {
   const id = useId()
   const toast = useToast()
   const [saving, setSaving] = useState(false)
-  const [resetSent, flashReset] = useFlash()
-  const invited = user.status === 'Invited'
+  const [issued, setIssued] = useState(null) // { password, reset } after a reset or a reactivation, shown once
   const isStudent = user.role === 'Student'
 
   const patch = async (body, message) => {
     setSaving(true)
     try {
-      onChanged(await api(`/admin/users/${user.id}`, { method: 'PATCH', body }))
+      const row = await api(`/admin/users/${user.id}`, { method: 'PATCH', body })
+      if (row.temporaryPassword) setIssued({ password: row.temporaryPassword, reset: false })
+      onChanged(row)
       if (message) toast.show({ message })
       return true
     } catch (err) {
@@ -206,12 +214,14 @@ function UserDetail({ user, advisors, programs, self, onChanged }) {
     }
   }
 
-  const sendReset = async () => {
+  const resetPassword = async () => {
     try {
-      await api(`/admin/users/${user.id}/reset`, { method: 'POST' })
-      flashReset()
+      const data = await api(`/admin/users/${user.id}/reset-password`, { method: 'POST' })
+      setIssued({ password: data.temporaryPassword, reset: true })
+      return true
     } catch (err) {
       toast.show({ message: errorText(err) })
+      return false
     }
   }
 
@@ -265,17 +275,26 @@ function UserDetail({ user, advisors, programs, self, onChanged }) {
       <Fact label="Last active" value={user.lastActive} />
 
       <div className="flex flex-col items-start gap-3 border-t border-canvas pt-4">
-        {user.status !== 'Deactivated' && (
-          <Button variant="secondary" size="sm" onClick={sendReset} aria-live="polite">
-            {resetSent ? (invited ? 'Invite sent' : 'Reset link sent') : (invited ? 'Re-send invite' : 'Send password reset')}
-          </Button>
+        {issued && (
+          <div role="status" className="flex w-full flex-col gap-2">
+            <span className="text-sm text-slate">
+              {issued.reset ? 'Password reset. ' : 'Account reactivated. '}Emailed to {user.email}.
+              {issued.reset ? ' Their sessions were signed out.' : ''}
+            </span>
+            <TempPasswordNotice password={issued.password} firstName={user.name.split(' ')[0]} />
+          </div>
+        )}
+        {user.status !== 'Deactivated' && !self && !issued && (
+          <ConfirmInline label="Reset password" triggerVariant="secondary" confirmLabel="Yes, reset" busyLabel="Resetting…"
+            warning={`${user.name} gets a new temporary password by email and is signed out everywhere.`}
+            onConfirm={resetPassword} />
         )}
         {self ? (
           <span className="text-[13px] text-muted">{SELF_HINT}</span>
         ) : user.status === 'Deactivated' ? (
           <Button variant="secondary" size="sm" disabled={saving}
             onClick={() => patch({ status: 'Active' }, 'Account reactivated')}>Reactivate account</Button>
-        ) : !invited && (
+        ) : (
           <ConfirmInline label="Deactivate account" confirmLabel="Deactivate" busyLabel="Deactivating…"
             warning={`${user.name} is signed out right away and can't sign in until the account is reactivated.`}
             onConfirm={() => patch({ status: 'Deactivated' }, 'Account deactivated')} />

@@ -1,4 +1,5 @@
-"""Sign-in, cookie sessions, sign-up and password reset / invite links (spec 02 Phase A).
+"""Sign-in, cookie sessions, sign-up, password reset links and the forced change after an admin-issued temporary
+password (spec 02 Phase A, spec 31 revision 2).
 Phase B (TOTP two-step, Google sign-in) is not built yet: needs_mfa() is always False."""
 import re
 from datetime import timedelta
@@ -17,7 +18,6 @@ HOMES = {"student": "/student", "advisor": "/advisor", "admin": "/admin"}
 RATE_LIMIT = 5
 RATE_WINDOW = timedelta(minutes=15)
 RESET_LINK_LIFETIME = timedelta(minutes=30)
-INVITE_LIFETIME = timedelta(days=7)
 SLIDE_GRANULARITY = timedelta(minutes=1)
 DEFAULT_PROGRAM_ID = 1
 
@@ -151,7 +151,7 @@ def revoke_session(db: Session, raw: str, ip: str | None) -> None:
 def signup_student(db: Session, name: str, email: str, password: str) -> User:
     institution = settings.get(db, "institution")
     if not institution["selfSignup"]:
-        raise ApiError(403, "SIGNUP_CLOSED", "Self sign-up is turned off. Ask your administrator for an invite.")
+        raise ApiError(403, "SIGNUP_CLOSED", "Self sign-up is turned off. Contact your administrator for an account.")
     email = normalize_email(email)
     domain = institution["domain"]
     if not email.endswith(f"@{domain}"):
@@ -201,13 +201,24 @@ def issue_reset_link(db: Session, user: User) -> mailer.Mail:
                        f"{env.FRONTEND_ORIGIN}/reset-password?token={raw}")
 
 
-def issue_invite(db: Session, user: User, inviter_name: str) -> mailer.Mail:
-    """Adds a 7-day invite link (spec 31) and returns the email; send it after the caller commits. Opening the link
-    shows "Set up your account" and confirm_reset activates the user."""
-    raw = _issue_token(db, user, "invite", INVITE_LIFETIME)
-    return mailer.Mail(user.email, "You're invited to Acadmate",
-                       f"{inviter_name} invited you to Acadmate. Set up your account here (the link expires in 7 days):\n"
-                       f"{env.FRONTEND_ORIGIN}/reset-password?token={raw}")
+def password_change_token(db: Session, user: User) -> str:
+    """A 30-minute reset token for the forced password change after a temporary-password sign-in. Doesn't commit."""
+    return _issue_token(db, user, "reset", RESET_LINK_LIFETIME)
+
+
+def login_details_mail(user: User, password: str, admin_name: str, support_email: str,
+                       reset: bool = False) -> mailer.Mail:
+    """The email with a temporary password (spec 31). Send it after the caller commits."""
+    first = user.preferred_name or user.first_name or user.name
+    what = (f"{admin_name} reset your Acadmate password." if reset
+            else f"{admin_name} created an Acadmate account for you.")
+    return mailer.Mail(user.email, "Your Acadmate password was reset" if reset else "Your Acadmate account",
+                       f"Hi {first},\n\n{what}\n\n"
+                       f"Sign in at {env.FRONTEND_ORIGIN}/login\n"
+                       f"Email: {user.email}\n"
+                       f"Temporary password: {password}\n\n"
+                       "You'll choose your own password the first time you sign in. "
+                       f"Questions? Contact {support_email}.")
 
 
 def _valid_token(db: Session, raw: str) -> AuthToken:
@@ -225,12 +236,19 @@ def check_link(db: Session, raw: str) -> dict:
 def confirm_reset(db: Session, raw: str, password: str, ip: str | None) -> None:
     token = _valid_token(db, raw)
     user = db.get(User, token.user_id)
+    forced = user.must_change_password
+    if forced and verify_password(password, user.password_hash):
+        same = "Choose a password different from the temporary one."
+        raise ApiError(422, "VALIDATION_ERROR", same, [{"field": "password", "message": same}])
     user.password_hash = hash_password(password)
+    user.must_change_password = False
     token.used_at = now()
-    if token.purpose == "invite":
+    if token.purpose == "invite":  # links issued before spec 31 revision 2
         user.is_active = True
     db.query(UserSession).filter(UserSession.user_id == user.user_id, UserSession.revoked_at.is_(None)) \
         .update({UserSession.revoked_at: now()})
-    summary = f"{user.name} activated their account" if token.purpose == "invite" else f"{user.name} reset their password"
+    summary = (f"{user.name} chose a new password" if forced
+               else f"{user.name} activated their account" if token.purpose == "invite"
+               else f"{user.name} reset their password")
     audit.record(db, user, "auth.password_reset", summary, target=("user", user.user_id), ip=ip)
     db.commit()

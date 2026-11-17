@@ -1,15 +1,19 @@
-"""Spec 02 Phase A acceptance: login, sessions, logout, signup, password reset / invite, badges, config."""
+"""Spec 02 Phase A acceptance: login, sessions, logout, signup, password reset, the forced change after a temporary
+password (spec 31 revision 2), badges, config."""
 import logging
 import re
 from datetime import timedelta
 
+import pytest
+
 from conftest import login
+from seed_data import DEMO_PASSWORD
 from core.config import settings
-from core.security import sha256_hex
+from core.security import hash_password, sha256_hex
 from core.time import now
-from models import Advisor, AuditEvent, AuthToken, Student, User, UserSession
-from seed_data import DEMO_INVITE_TOKEN
-from services import auth, mailer
+from models import Advisor, AuditEvent, Student, User, UserSession
+from services import auth
+from services import settings as settings_service
 
 AMARA = "amara.okafor@pac.edu"
 SARAH = "sarah.smith@pac.edu"
@@ -129,8 +133,20 @@ def test_session_of_deactivated_user_stops_working(client, db, make_user):
 
 
 # --- signup -----------------------------------------------------------------------------------------------------
+# Self sign-up is off by default (admins create accounts, spec 31); these tests open it to cover the code path.
 
-def test_signup_creates_student_and_signs_in(client, db):
+@pytest.fixture
+def open_signup(monkeypatch):
+    monkeypatch.setitem(settings_service.DEFAULTS["institution"], "selfSignup", True)
+
+
+def test_signup_is_closed_by_default(client):
+    response = client.post("/api/v1/auth/signup", json={"name": "Lena Park", "email": "lena.park@pac.edu", "password": "longenough"})
+    assert response.status_code == 403 and error_code(response) == "SIGNUP_CLOSED"
+    assert response.json()["error"]["message"] == "Self sign-up is turned off. Contact your administrator for an account."
+
+
+def test_signup_creates_student_and_signs_in(open_signup, client, db):
     response = client.post("/api/v1/auth/signup", json={"name": "  Lena   Park ", "email": "Lena.Park@pac.edu", "password": "longenough"})
     assert response.status_code == 201
     body = response.json()
@@ -141,24 +157,24 @@ def test_signup_creates_student_and_signs_in(client, db):
     assert client.get("/api/v1/auth/me").status_code == 200
 
 
-def test_signup_rejects_taken_email(client):
+def test_signup_rejects_taken_email(open_signup, client):
     response = client.post("/api/v1/auth/signup", json={"name": "Amara Two", "email": AMARA, "password": "longenough"})
     assert response.status_code == 409 and error_code(response) == "EMAIL_TAKEN"
 
 
-def test_signup_requires_school_email(client):
+def test_signup_requires_school_email(open_signup, client):
     response = client.post("/api/v1/auth/signup", json={"name": "Out Sider", "email": "out.sider@gmail.com", "password": "longenough"})
     assert response.status_code == 422
     assert response.json()["error"]["details"] == [{"field": "email", "message": "Use your school email (pac.edu)."}]
 
 
-def test_signup_short_password_message(client):
+def test_signup_short_password_message(open_signup, client):
     response = client.post("/api/v1/auth/signup", json={"name": "Short Pw", "email": "short.pw@pac.edu", "password": "short"})
     assert response.status_code == 422
     assert {"field": "password", "message": "Use at least 8 characters for your password."} in response.json()["error"]["details"]
 
 
-# --- password reset / invite ------------------------------------------------------------------------------------
+# --- password reset / forced change ------------------------------------------------------------------------------------
 
 def reset_link(caplog) -> str:
     match = re.search(r"/reset-password\?token=([\w-]+)", caplog.text)
@@ -212,14 +228,27 @@ def test_reset_requests_are_rate_limited(client):
     assert response.status_code == 429 and error_code(response) == "RATE_LIMITED"
 
 
-def test_invite_activates_account(client):
-    link = client.get(f"/api/v1/auth/password-reset/{DEMO_INVITE_TOKEN}")
-    assert link.json() == {"email": "priya.natarajan@pac.edu", "purpose": "invite"}
-    assert login(client, "priya.natarajan@pac.edu").status_code == 401  # no password yet
-    confirm = client.post("/api/v1/auth/password-reset/confirm", json={"token": DEMO_INVITE_TOKEN, "password": "priya-password"})
+def test_temporary_password_forces_a_new_one(client, db):
+    """Priya Natarajan (user 5) was created by an admin and hasn't signed in: her password is temporary."""
+    first = login(client, "priya.natarajan@pac.edu")
+    body = first.json()
+    assert first.status_code == 200 and body["passwordChangeRequired"] is True and body["email"] == "priya.natarajan@pac.edu"
+    assert client.get("/api/v1/auth/me").status_code == 401  # no session yet
+    assert client.get(f"/api/v1/auth/password-reset/{body['token']}").json() == {"email": "priya.natarajan@pac.edu",
+                                                                                 "purpose": "reset"}
+    confirm = client.post("/api/v1/auth/password-reset/confirm", json={"token": body["token"], "password": "priya-password"})
     assert confirm.status_code == 204
+    assert db.query(AuditEvent).filter(AuditEvent.actor_id == 5).order_by(AuditEvent.id.desc()).first().summary == \
+        "Dr. Priya Natarajan chose a new password"
     response = login(client, "priya.natarajan@pac.edu", "priya-password")
     assert response.status_code == 200 and response.json()["home"] == "/advisor"
+    assert login(client, "priya.natarajan@pac.edu").status_code == 401  # the temporary password is gone
+
+    # Put Priya back as seeded, so other tests (the overview's "1 not yet signed in") don't depend on the order.
+    priya = db.get(User, 5)
+    db.refresh(priya)
+    priya.password_hash, priya.must_change_password = hash_password(DEMO_PASSWORD), True
+    db.commit()
 
 
 def test_unknown_link(client):
@@ -241,7 +270,8 @@ def test_badges_per_role(client):
 
 def test_public_config(client):
     assert client.get("/api/v1/auth/config").json() == {
-        "googleEnabled": False, "accent": "#0F766E", "institutionName": "Pace University", "selfSignup": True}
+        "googleEnabled": False, "accent": "#0F766E", "institutionName": "Pace University", "selfSignup": False,
+        "supportEmail": "acadmate-help@pac.edu"}
 
 
 def test_sign_ins_are_audited(client, db):
@@ -269,7 +299,7 @@ def test_academic_profile_access(client, db, make_user):
     assert response.status_code == 403 and error_code(response) == "FORBIDDEN"
 
 
-# --- invite / reset helpers for admin users (spec 31) ---------------------------------------------------------------
+# --- helpers for admin users (spec 31) -----------------------------------------------------------------------------
 
 def test_name_from_email():
     assert auth.name_from_email("priya.natarajan@pac.edu") == "Priya Natarajan"
@@ -277,27 +307,15 @@ def test_name_from_email():
     assert auth.name_from_email("x@pac.edu") == "X"
 
 
-def test_issue_invite_waits_for_the_caller(client, db, make_user, monkeypatch):
-    sent = []
-    monkeypatch.setattr(mailer, "send", lambda *mail: sent.append(mail))
+def test_login_details_mail(db, make_user):
     user = db.get(User, make_user("advisor").user_id)
-
-    first = auth.issue_invite(db, user, "Jordan Lee")
-    db.commit()
-    assert sent == []  # nothing is mailed until the caller sends it
-    first_token = re.search(r"token=([\w-]+)", first.text).group(1)
-    assert first.to == user.email and first.subject == "You're invited to Acadmate"
-    assert first.text.startswith("Jordan Lee invited you to Acadmate.")
-
-    second = auth.issue_invite(db, user, "Jordan Lee")
-    db.commit()
-    mailer.send_all([second])
-    assert sent == [tuple(second)]
-    second_token = re.search(r"token=([\w-]+)", second.text).group(1)
-    assert client.get(f"/api/v1/auth/password-reset/{first_token}").status_code == 410  # older link stops working
-    assert client.get(f"/api/v1/auth/password-reset/{second_token}").json() == {"email": user.email, "purpose": "invite"}
-    token = db.query(AuthToken).filter(AuthToken.token_hash == sha256_hex(second_token)).one()
-    assert timedelta(days=6, hours=23) < token.expires_at - token.created_at <= timedelta(days=7, minutes=1)
+    created = auth.login_details_mail(user, "Tmp#Pass2345", "Jordan Lee", "help@pac.edu")
+    assert (created.to, created.subject) == (user.email, "Your Acadmate account")
+    assert "Jordan Lee created an Acadmate account for you." in created.text
+    assert f"Email: {user.email}" in created.text and "Temporary password: Tmp#Pass2345" in created.text
+    assert "/login" in created.text and "help@pac.edu" in created.text
+    reset = auth.login_details_mail(user, "Tmp#Pass2345", "Jordan Lee", "help@pac.edu", reset=True)
+    assert reset.subject == "Your Acadmate password was reset" and "Jordan Lee reset your Acadmate password." in reset.text
 
 
 def test_issue_reset_link_rolls_back_cleanly(client, db, make_user):

@@ -1,4 +1,7 @@
 course_id,course_code,course_name,credits
+11,CS501,Programming Foundations with Java,3
+12,CS510,Data Structures and Algorithms,3
+13,CS620,Database Management Systems,3
 10000,CS701,Software Engineering,3
 10001,CS702,Operating Systems,3
 10002,CS703,Computer Networks,3

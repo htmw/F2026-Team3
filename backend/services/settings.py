@@ -22,7 +22,7 @@ DEFAULTS = {
         "supportEmail": "acadmate-help@pac.edu",
         "currentTermId": None,  # None: the term that contains today (services/catalog.current_term)
         "timeZone": "Eastern",
-        "selfSignup": True,
+        "selfSignup": False,  # admins create accounts (spec 31); the login page has no sign-up
     },
     "security": {"google": True, "mfa": True, "ipLog": True, "timeout": "2 hours"},
     "retention": {"ai": "1 year", "audit": "1 year"},

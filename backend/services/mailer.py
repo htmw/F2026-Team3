@@ -101,4 +101,4 @@ def health() -> tuple[str, str]:
     cutoff = now() - HEALTH_WINDOW
     if any(at > cutoff for at in _failures):
         return "Degraded", "Delays of up to 15 minutes"
-    return "Healthy", "Meeting confirmations, reminders and invites"
+    return "Healthy", "Meeting confirmations, reminders and login details"

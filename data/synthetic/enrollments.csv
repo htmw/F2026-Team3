@@ -1,4 +1,12 @@
 enrollment_id,student_id,course_id,term,status,grade,grade_points
+301,101,11,Fall 2026,completed,A,4
+302,101,12,Fall 2026,completed,B,3
+303,101,13,Spring 2027,in_progress,,
+20000,101,10000,Fall 2025,completed,B,3.0
+20001,101,10001,Fall 2025,completed,B+,3.3
+20002,101,10002,Spring 2026,completed,B,3.0
+20003,101,10003,Spring 2026,completed,B+,3.3
+20004,101,10004,Summer 2026,completed,B,3.0
 20005,10000,11,Fall 2025,completed,A,4.0
 20006,10000,12,Fall 2025,completed,A,4.0
 20007,10000,13,Fall 2025,completed,A-,3.7

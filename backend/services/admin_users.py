@@ -1,5 +1,7 @@
-"""Admin users (spec 31): the user list, invites, CSV import, edits and password resets.
-Status: Active = is_active; Invited = inactive and never set a password; Deactivated = inactive with a password.
+"""Admin users (spec 31 revision 2): the user list, Add user, CSV import, edits and password resets.
+Admins create accounts with a temporary password that is emailed and shown once; the next sign-in must choose a new
+one (`must_change_password`, spec 02). Status: Active = is_active, else Deactivated (old Invited rows without a
+password count as Deactivated; reactivating them issues a temporary password).
 "Program or department" is the student's program, an advisor's department (spec 32), else the staff title."""
 import csv
 import io
@@ -10,15 +12,16 @@ from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
 from core.errors import ApiError, bad_request, conflict, not_found
+from core.security import hash_password, temporary_password
 from core.time import MONTH_NAMES, iso_z, local_zone, now, short_date, today
-from models import Advisor, AdvisorStudentAssignment, Enrollment, Program, Student, User, UserSession
-from services import audit, mailer, messages
-from services.auth import DEFAULT_PROGRAM_ID, issue_invite, issue_reset_link, name_from_email, split_name, user_payload
+from models import Advisor, AdvisorStudentAssignment, AuthToken, Enrollment, Program, Student, User, UserSession
+from services import audit, mailer, messages, settings
+from services.auth import DEFAULT_PROGRAM_ID, login_details_mail, name_from_email, split_name, user_payload
 
 ROLES = ("student", "advisor", "admin")
 ROLE_LABELS = {"student": "Student", "advisor": "Advisor", "admin": "Admin"}
 TAB_KEYS = {"student": "Students", "advisor": "Advisors", "admin": "Admins"}
-STATUSES = ("Active", "Invited", "Deactivated")
+STATUSES = ("Active", "Deactivated")
 MAX_IMPORT_ROWS = 5000
 MAX_IMPORT_BYTES = 1024 * 1024
 IMPORT_HEADER = ["name", "email", "role", "program"]
@@ -29,17 +32,11 @@ SELF_CHANGE = "You can't change your own account here."
 # --- status, labels and rows ---------------------------------------------------------------------------------------
 
 def status_of(user: User) -> str:
-    if user.is_active:
-        return "Active"
-    return "Invited" if user.password_hash is None else "Deactivated"
+    return "Active" if user.is_active else "Deactivated"
 
 
 def _status_filter(status: str):
-    if status == "Active":
-        return User.is_active.is_(True)
-    if status == "Invited":
-        return (User.is_active.is_(False)) & (User.password_hash.is_(None))
-    return (User.is_active.is_(False)) & (User.password_hash.isnot(None))
+    return User.is_active.is_(status == "Active")
 
 
 def _last_active(at) -> str:
@@ -172,20 +169,34 @@ def _ensure_role_rows(db: Session, user: User, program_id: int = DEFAULT_PROGRAM
     db.flush()
 
 
-def create_invited(db: Session, admin: User, email: str, role: str, name: str | None = None,
-                   program_id: int = DEFAULT_PROGRAM_ID, title: str | None = None,
-                   department: str | None = None) -> tuple[User, mailer.Mail]:
-    """An inactive user with the row their role needs and a fresh invite. Send the mail after the caller commits.
-    Shared with admin advisors (spec 32)."""
+def _new_password(db: Session, admin: User, user: User, reset: bool = False) -> tuple[str, mailer.Mail]:
+    """Gives `user` a fresh temporary password they must replace at the next sign-in. Doesn't commit; send the mail
+    after the caller commits so a rollback never mails a password that doesn't work."""
+    password = temporary_password()
+    user.password_hash = hash_password(password)
+    user.must_change_password = True
+    support = settings.get(db, "institution")["supportEmail"]
+    return password, login_details_mail(user, password, admin.name, support, reset=reset)
+
+
+def create_user(db: Session, admin: User, *, email: str, role: str, name: str | None = None,
+                program_id: int = DEFAULT_PROGRAM_ID, advisor_id: int | None = None, title: str | None = None,
+                department: str | None = None) -> tuple[User, str, mailer.Mail]:
+    """An Active user with the row their role needs and a temporary password. Doesn't commit; send the mail after the
+    caller commits. Shared with admin advisors (spec 32) and the CSV import."""
     full, first, last = split_name(name or name_from_email(email))
-    user = User(name=full, first_name=first, last_name=last, email=email, role=role, is_active=False,
-                password_hash=None, title=title if role != "student" else None)
+    user = User(name=full, first_name=first, last_name=last, email=email, role=role, is_active=True,
+                title=title if role != "student" else None)
+    password, mail = _new_password(db, admin, user)
     db.add(user)
     db.flush()
     _ensure_role_rows(db, user, program_id)
     if role == "advisor" and department:
         db.query(Advisor).filter(Advisor.user_id == user.user_id).one().department = department
-    return user, issue_invite(db, user, admin.name)
+    if role == "student" and advisor_id is not None:
+        student = db.query(Student).filter(Student.user_id == user.user_id).one()
+        _set_advisor(db, user, student, advisor_id)
+    return user, password, mail
 
 
 def _apply_role(db: Session, user: User, new_role: str) -> None:
@@ -212,27 +223,28 @@ def _plural(n: int, word: str) -> str:
     return f"{n} {word}" if n == 1 else f"{n} {word}s"
 
 
-def invite(db: Session, admin: User, emails: list[str], role: str, ip: str | None = None) -> dict:
-    sent, skipped, seen, mails = [], [], set(), []
-    for raw in emails:
-        email = _valid_email(raw)
-        if email is None:
-            skipped.append({"email": raw.strip(), "reason": "not a valid email"})
-        elif email in seen:
-            skipped.append({"email": email, "reason": "listed twice"})
-        elif _email_taken(db, email):
-            skipped.append({"email": email, "reason": "already has an account"})
-        else:
-            mails.append(create_invited(db, admin, email, role)[1])
-            sent.append(email)
-        if email:
-            seen.add(email)
-    if sent:
-        audit.record(db, admin, "user.invite", f"Invited {_plural(len(sent), ROLE_LABELS[role].lower())}",
-                     changes={"emails": sent, "role": role}, ip=ip)
+def create(db: Session, admin: User, data: dict, ip: str | None = None) -> dict:
+    """Add user: `data` has name, email, role, programId, advisorId (camelCase keys from CreateUserIn)."""
+    email = _valid_email(data["email"])
+    if email is None:
+        raise ApiError(422, "VALIDATION_ERROR", "Enter a valid email address.",
+                       [{"field": "email", "message": "Enter a valid email address."}])
+    if _email_taken(db, email):
+        raise ApiError(409, "EMAIL_TAKEN", f"{email} already has an account.")
+    role = data["role"]
+    program_id, advisor_id = data.get("programId"), data.get("advisorId")
+    if role != "student" and (program_id is not None or advisor_id is not None):
+        raise bad_request("Only students have an advisor and a program.")
+    program_id = program_id or DEFAULT_PROGRAM_ID
+    if role == "student" and db.get(Program, program_id) is None:
+        raise bad_request("Unknown program.")
+    user, password, mail = create_user(db, admin, email=email, role=role, name=data["name"], program_id=program_id,
+                                       advisor_id=advisor_id)
+    audit.record(db, admin, "user.create", f"Created {user.name} ({ROLE_LABELS[role]})", ("user", user.user_id),
+                 {"role": [None, role], "email": [None, email]}, ip=ip)
     db.commit()
-    mailer.send_all(mails)
-    return {"sent": len(sent), "skipped": skipped}
+    mailer.send_all([mail])
+    return {"user": get_row(db, user.user_id), "temporaryPassword": password}
 
 
 def import_csv(db: Session, admin: User, text: str, ip: str | None = None) -> dict:
@@ -276,9 +288,9 @@ def import_csv(db: Session, admin: User, text: str, ip: str | None = None) -> di
 
         user = db.query(User).filter(func.lower(User.email) == email).one_or_none()
         if user is None:
-            mails.append(create_invited(db, admin, email, role, name=name, program_id=program_id,
-                                        title=dept if role == "admin" else None,
-                                        department=dept if role == "advisor" else None)[1])
+            mails.append(create_user(db, admin, email=email, role=role, name=name, program_id=program_id,
+                                     title=dept if role == "admin" else None,
+                                     department=dept if role == "advisor" else None)[2])
             created += 1
             continue
         try:
@@ -302,7 +314,7 @@ def import_csv(db: Session, admin: User, text: str, ip: str | None = None) -> di
                  changes={"created": created, "updated": updated, "skipped": len(skipped)}, ip=ip)
     db.commit()
     mailer.send_all(mails)
-    return {"created": created, "updated": updated, "skipped": skipped, "file": None}
+    return {"created": created, "updated": updated, "emailed": len(mails), "skipped": skipped, "file": None}
 
 
 def update(db: Session, admin: User, user_id: int, patch: dict, ip: str | None = None) -> dict:
@@ -312,7 +324,7 @@ def update(db: Session, admin: User, user_id: int, patch: dict, ip: str | None =
         raise not_found("User")
     if user.user_id == admin.user_id and ({"role", "status"} & patch.keys()):
         raise conflict(SELF_CHANGE)
-    changes = {}
+    changes, mails, password = {}, [], None
 
     if "role" in patch and patch["role"] != user.role:
         before = user.role
@@ -337,17 +349,20 @@ def update(db: Session, admin: User, user_id: int, patch: dict, ip: str | None =
             user.is_active = False
             db.query(UserSession).filter(UserSession.user_id == user.user_id, UserSession.revoked_at.is_(None)) \
                 .update({UserSession.revoked_at: now()})
-        elif user.password_hash is None:
-            raise conflict("Invited users activate through their invite link. Re-send the invite instead.")
         else:
             user.is_active = True
+            if user.password_hash is None:  # an Invited account from spec 31 revision 1
+                password, mail = _new_password(db, admin, user)
+                mails.append(mail)
         changes["status"] = [before, status_of(user)]
 
     if changes:
         audit.record(db, admin, "user.update", f"Updated {user.name}: {', '.join(changes)}", ("user", user.user_id),
                      changes, ip=ip)
     db.commit()
-    return get_row(db, user.user_id)
+    mailer.send_all(mails)
+    row = get_row(db, user.user_id)
+    return {**row, "temporaryPassword": password} if password else row
 
 
 def _set_advisor(db: Session, user: User, student: Student, advisor_id: int | None) -> dict:
@@ -370,16 +385,22 @@ def _set_advisor(db: Session, user: User, student: Student, advisor_id: int | No
     return {"advisor": [before, advisor_id]}
 
 
-def send_reset(db: Session, admin: User, user_id: int, ip: str | None = None) -> None:
-    """Active: a password reset link. Invited: a fresh invite. Deactivated: refused."""
+def reset_password(db: Session, admin: User, user_id: int, ip: str | None = None) -> dict:
+    """A new temporary password for someone who forgot theirs: emailed, shown to the admin once, every session of
+    the user signed out and unused reset links expired. Deactivated accounts and your own account are refused."""
     user = db.get(User, user_id)
     if user is None:
         raise not_found("User")
-    status = status_of(user)
-    if status == "Deactivated":
+    if user.user_id == admin.user_id:
+        raise conflict("Change your own password in Settings.")
+    if not user.is_active:
         raise conflict("Reactivate the account first.")
-    mail = issue_invite(db, user, admin.name) if status == "Invited" else issue_reset_link(db, user)
-    summary = f"Re-sent the invite to {user.name}" if status == "Invited" else f"Sent a password reset to {user.name}"
-    audit.record(db, admin, "user.reset", summary, ("user", user.user_id), ip=ip)
+    password, mail = _new_password(db, admin, user, reset=True)
+    db.query(UserSession).filter(UserSession.user_id == user.user_id, UserSession.revoked_at.is_(None)) \
+        .update({UserSession.revoked_at: now()})
+    db.query(AuthToken).filter(AuthToken.user_id == user.user_id, AuthToken.used_at.is_(None)) \
+        .update({AuthToken.used_at: now()})
+    audit.record(db, admin, "user.reset", f"Reset the password for {user.name}", ("user", user.user_id), ip=ip)
     db.commit()
     mailer.send_all([mail])
+    return {"temporaryPassword": password, "emailed": True}
