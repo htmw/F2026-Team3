@@ -1,0 +1,2 @@
+﻿# Preserve original bytes of ML source files.
+src/acadmate_ml/*.py -text
