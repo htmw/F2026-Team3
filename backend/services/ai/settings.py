@@ -14,7 +14,7 @@ DEFAULTS = {
     "sources": {"catalog": True, "audits": True, "grades": True, "schedules": True},
     "style": "Balanced",  # Concise / Balanced / Detailed
     "blockedTopics": ["Visa and immigration", "Mental health", "Financial aid", "Grade appeals"],
-    "engine": "Claude",  # Claude / Rules
+    "engine": "Claude",  # Claude / Gemini / Rules
     "dailyLimit": 25,
 }
 GROUPS = ("features", "sources")  # merged per key; every other setting is replaced whole
@@ -54,11 +54,12 @@ def ai_settings(db: Session) -> dict:
 def claude_available() -> bool:
     return bool(env.ANTHROPIC_API_KEY)
 
+def gemini_available() -> bool:
+    return bool(env.GEMINI_API_KEY)
 
 def public(db: Session) -> dict:
     """The GET /admin/ai/settings shape."""
-    return {**ai_settings(db), "claudeAvailable": claude_available()}
-
+    return {**ai_settings(db), "claudeAvailable": claude_available(), "geminiAvailable": gemini_available()}
 
 def _flat(cfg: dict) -> dict:
     flat = {}
@@ -73,6 +74,8 @@ def _flat(cfg: dict) -> dict:
 def update(db: Session, admin: User, patch: dict, ip: str | None = None) -> dict:
     if patch.get("engine") == "Claude" and not claude_available():
         raise ApiError(400, "CLAUDE_UNAVAILABLE", "Claude isn't configured on this server.")
+    if patch.get("engine") == "Gemini" and not gemini_available():
+        raise ApiError(400, "GEMINI_UNAVAILABLE", "Gemini isn't configured on this server.")
     current = ai_settings(db)
     new = merge(current, patch)
     before, after = _flat(current), _flat(new)

@@ -4,32 +4,35 @@ test_answer() is the admin test box (spec 34): the same answer path with unsaved
 import logging
 
 import anthropic
+import httpx
 from sqlalchemy.orm import Session
 
 from core.errors import ApiError, not_found
 from core.time import now
 from models import AiMessage, AiThread, Student, User
-from services.ai import claude_engine, context, guard, plans, quota, rules_engine, threads
+from services.ai import claude_engine, context, gemini_engine, guard, plans, quota, rules_engine, threads
 from services.ai import settings as ai_config
 
 log = logging.getLogger(__name__)
 
 SLOW_NOTE = "(Answered from your records — the AI service was slow.)"
-
+ENGINES = {"Claude": claude_engine, "Gemini": gemini_engine}
 
 def _engine_answer(db: Session, student: Student, label: str, text: str, ctx: dict, history: list) -> dict:
-    if ctx["engine"] == "Claude":
+    name = ctx["engine"]
+    engine = ENGINES.get(name)
+    if engine is not None:
         try:
-            result = claude_engine.answer(db, student, text, ctx, history)
+            result = engine.answer(db, student, text, ctx, history)
             if result is not None:
-                return {**result, "engine": "Claude"}
-            log.warning("Claude declined or gave no answer for %s; using the rules engine", label)
-        except anthropic.APITimeoutError:
-            log.warning("Claude timed out for %s; using the rules engine", label)
+                return {**result, "engine": name}
+            log.warning("%s declined or gave no answer for %s; using the rules engine", name, label)
+        except (anthropic.APITimeoutError, httpx.TimeoutException):
+            log.warning("%s timed out for %s; using the rules engine", name, label)
             result = rules_engine.answer(db, student, text, ctx)
             return {**result, "text": f"{result['text']}\n\n{SLOW_NOTE}", "engine": "Rules"}
         except Exception:
-            log.exception("Claude engine failed for %s; using the rules engine", label)
+            log.exception("%s engine failed for %s; using the rules engine", name, label)
     return {**rules_engine.answer(db, student, text, ctx), "engine": "Rules"}
 
 

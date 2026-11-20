@@ -22,8 +22,12 @@ def effective_sources(db: Session, student: Student, cfg: dict, prefs: dict) -> 
 
 
 def engine_name(cfg: dict) -> str:
-    """"Claude" only when the setting asks for it and an API key is configured."""
-    return "Claude" if cfg["engine"] == "Claude" and ai_config.claude_available() else "Rules"
+    """The engine the setting asks for when its API key is configured, else "Rules"."""
+    if cfg["engine"] == "Claude" and ai_config.claude_available():
+        return "Claude"
+    if cfg["engine"] == "Gemini" and ai_config.gemini_available():
+        return "Gemini"
+    return "Rules"
 
 
 def catalog_label(db: Session) -> str:

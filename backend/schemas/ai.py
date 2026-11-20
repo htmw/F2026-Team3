@@ -22,7 +22,7 @@ class NextMeetingOut(ApiModel):
 
 class AiContextOut(ApiModel):
     enabled: bool
-    engine: Literal["Claude", "Rules"]
+    engine: Literal["Claude","Gemini", "Rules"]
     daily_limit: int
     remaining_today: int
     prompts: list[str]
@@ -144,7 +144,7 @@ class FlagResultOut(ApiModel):
 # --- admin AI settings and test box (spec 34) ----------------------------------------------------------------------
 
 Style = Literal["Concise", "Balanced", "Detailed"]
-Engine = Literal["Claude", "Rules"]
+Engine = Literal["Claude", "Gemini", "Rules"]
 Topic = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=80)]
 
 
@@ -170,6 +170,7 @@ class AiSettingsOut(ApiModel):
     engine: Engine
     daily_limit: int
     claude_available: bool
+    gemini_available: bool
 
 
 class AiFeaturesPatch(ApiModel):
