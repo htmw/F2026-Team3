@@ -102,7 +102,7 @@ function TestBox({ settings }) {
       {result && (
         <div className="flex flex-col gap-2 border-t border-canvas pt-3">
           <span className="text-xs font-semibold text-muted">
-            Test only, not saved · {result.engine === 'Claude' ? 'Answered by Claude' : 'Rule-based answer'}
+                        Test only, not saved · {result.engine === 'Rules' ? 'Rule-based answer' : `Answered by ${result.engine}`}
             {!result.advisorOn && ' · Students can’t ask right now: the AI advisor is turned off'}
           </span>
           <AiMessage message={result.reply} />
@@ -181,12 +181,18 @@ export default function AdminAiSettings() {
           <div className="flex flex-col gap-2">
             <span className="text-sm font-semibold">Answered by</span>
             <SegmentedTabs label="Answer engine" value={current.engine} onChange={(engine) => set({ engine })}
-              options={[{ value: 'Claude', label: 'Claude (AI)' }, { value: 'Rules', label: 'Rule-based' }]} />
-            {!data.claudeAvailable && (
+                           options={[{ value: 'Claude', label: 'Claude (AI)' }, { value: 'Gemini', label: 'Gemini (AI)' }, { value: 'Rules', label: 'Rule-based' }]} />
+            {current.engine === 'Claude' && !data.claudeAvailable && (
               <span className="text-[13px] text-muted">Claude isn’t configured on the server (ANTHROPIC_API_KEY), so answers are rule-based.</span>
+            )}
+            {current.engine === 'Gemini' && !data.geminiAvailable && (
+              <span className="text-[13px] text-muted">Gemini isn’t configured on the server (GEMINI_API_KEY), so answers are rule-based.</span>
             )}
             {data.claudeAvailable && current.engine === 'Claude' && (
               <span className="text-[13px] text-muted">Questions and the student data needed to answer them are sent to Anthropic. Blocked topics never are.</span>
+            )}
+            {data.geminiAvailable && current.engine === 'Gemini' && (
+              <span className="text-[13px] text-muted">Questions and the student data needed to answer them are sent to Google. Blocked topics never are.</span>
             )}
           </div>
           <div className="flex flex-col gap-2">

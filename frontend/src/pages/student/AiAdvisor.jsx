@@ -49,7 +49,7 @@ function ContextPanel({ context }) {
     ['Goal', context.goal],
     ['Preferences', context.preferences.join(' · ') || 'None set'],
     ['Data sources', context.sources.join(', ') || 'None — all turned off'],
-    ['Answers', context.engine === 'Claude' ? 'Claude (AI), checked against your records' : 'Rule-based, from your records'],
+    ['Answers', context.engine === 'Rules' ? 'Rule-based, from your records' : `${context.engine} (AI), checked against your records`],
   ]
   return (
     <div className="flex min-w-0 flex-[1_1_240px] flex-col gap-4 self-start">
