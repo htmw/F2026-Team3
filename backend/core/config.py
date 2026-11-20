@@ -51,6 +51,8 @@ class Settings:
         self.MICROSOFT_CLIENT_ID: str | None = _str("MICROSOFT_CLIENT_ID")  # Outlook Calendar (spec 35)
         self.MICROSOFT_CLIENT_SECRET: str | None = _str("MICROSOFT_CLIENT_SECRET")
         self.ANTHROPIC_API_KEY: str | None = _str("ANTHROPIC_API_KEY")
+        self.GEMINI_API_KEY: str | None = _str("GEMINI_API_KEY")
+        self.GEMINI_MODEL: str = _str("GEMINI_MODEL", "gemini-3.5-flash")
         self.PUBLIC_API_URL: str | None = _str("PUBLIC_API_URL")  # base for calendar feed links; default: the request URL
         self.ACADMATE_TODAY: date | None = _date("ACADMATE_TODAY")
 
