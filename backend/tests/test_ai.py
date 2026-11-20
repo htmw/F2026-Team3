@@ -4,6 +4,7 @@ from copy import deepcopy
 from types import SimpleNamespace
 
 import anthropic
+import httpx
 import pytest
 
 from conftest import login
@@ -12,7 +13,7 @@ from database import SessionLocal
 from models import AiFlag, AiMessage, Student
 from seed_data import PLAN_SOURCES
 from services import ai
-from services.ai import claude_engine, recommend
+from services.ai import claude_engine, gemini_engine, recommend
 from services.ai import settings as ai_config
 from services.ai.rules_engine import FALLBACK
 from test_foundation import assert_envelope
@@ -24,6 +25,7 @@ AMARA = "amara.okafor@pac.edu"
 @pytest.fixture(autouse=True)
 def no_api_key(monkeypatch):
     monkeypatch.setattr(settings, "ANTHROPIC_API_KEY", None)
+    monkeypatch.setattr(settings, "GEMINI_API_KEY", None)
 
 
 @pytest.fixture
@@ -268,6 +270,63 @@ def test_claude_engine_tools(client, db, monkeypatch):
     assert reply["follow"] == "Your capstone needs pre-approval."
     assert reply["sources"] == ["Degree audit · updated today", "Spring 2027 schedule"]
     assert db.get(AiMessage, reply["id"]).input_tokens == 80
+
+
+def test_gemini_engine_tools(client, db, monkeypatch, ai_settings):
+    """Runs gemini_engine.answer() against a fake client: checks the request and that the plan comes from propose_plan."""
+    seen = {}
+
+    def send_message(message):
+        seen["message"] = message
+        tools = {tool.__name__: tool for tool in seen["config"].tools}
+        tools["get_degree_audit"]()
+        tools["propose_plan"](term="Spring 2027", course_codes=["CS 691", "CS 680", "CS 999"],
+                              notes="Your capstone needs pre-approval.")
+        usage = SimpleNamespace(prompt_token_count=60, candidates_token_count=25)
+        return SimpleNamespace(text="Take CS 691 and CS 680 in Spring.", usage_metadata=usage)
+
+    def create(**kwargs):
+        seen.update(kwargs)
+        return SimpleNamespace(send_message=send_message)
+
+    fake = SimpleNamespace(chats=SimpleNamespace(create=create))
+    monkeypatch.setattr(gemini_engine, "client", lambda: fake)
+    monkeypatch.setattr(settings, "GEMINI_API_KEY", "test-key")
+    ai_settings["engine"] = "Gemini"
+    login(client, AMARA)
+    reply = ask(client, "Plan my Spring 2027 semester")
+
+    assert seen["model"] == settings.GEMINI_MODEL
+    assert [tool.__name__ for tool in seen["config"].tools] == [
+        "get_degree_audit", "search_catalog", "get_course_sections", "check_prerequisites",
+        "get_transcript", "get_schedule", "propose_plan"]
+    assert seen["history"] == []
+    assert seen["message"].startswith("Plan my Spring 2027 semester\n\n(Today is 2026-10-01.")
+    assert reply["text"] == "Take CS 691 and CS 680 in Spring."
+    assert [(row["code"], row["fulfills"]) for row in reply["plan"]] == [("CS 691", "Capstone"), ("CS 680", "Electives")]
+    assert reply["sources"] == ["Degree audit · updated today", "Spring 2027 schedule"]
+    stored = db.get(AiMessage, reply["id"])
+    assert stored.engine == "Gemini" and stored.input_tokens == 60 and stored.output_tokens == 25
+
+
+def test_gemini_failures_fall_back_to_rules(client, db, monkeypatch, ai_settings):
+    monkeypatch.setattr(settings, "GEMINI_API_KEY", "test-key")
+    ai_settings["engine"] = "Gemini"
+    login(client, AMARA)
+
+    def broken(*args):
+        raise RuntimeError("API unavailable")
+    monkeypatch.setattr(gemini_engine, "answer", broken)
+    reply = ask(client, "Hello")
+    assert reply["text"] == FALLBACK and db.get(AiMessage, reply["id"]).engine == "Rules"
+
+    def slow(*args):
+        raise httpx.ReadTimeout("timed out")
+    monkeypatch.setattr(gemini_engine, "answer", slow)
+    assert ask(client, "Hello")["text"] == f"{FALLBACK}\n\n{ai.SLOW_NOTE}"
+
+    monkeypatch.setattr(gemini_engine, "answer", lambda *args: None)  # blocked or empty answer
+    assert ask(client, "Hello")["text"] == FALLBACK
 
 
 def test_dashboard_recommendation(client):

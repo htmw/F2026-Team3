@@ -25,6 +25,7 @@ def _clear():
 @pytest.fixture(autouse=True)
 def stored_settings(monkeypatch):
     monkeypatch.setattr(settings, "ANTHROPIC_API_KEY", None)
+    monkeypatch.setattr(settings, "GEMINI_API_KEY", None)
     _clear()
     yield
     _clear()
@@ -55,7 +56,7 @@ def test_settings_routes_need_an_admin(client, as_user):
 
 
 def test_get_returns_defaults(admin):
-    assert admin.get(f"{AI}/settings").json() == {**ai_config.DEFAULTS, "claudeAvailable": False}
+    assert admin.get(f"{AI}/settings").json() == {**ai_config.DEFAULTS, "claudeAvailable": False, "geminiAvailable": False}
 
 
 def test_patch_merges_dedupes_and_audits(admin):
@@ -88,6 +89,14 @@ def test_claude_needs_a_key(admin, monkeypatch):
     monkeypatch.setattr(settings, "ANTHROPIC_API_KEY", "test-key")
     body = admin.patch(f"{AI}/settings", json={"engine": "Claude"}).json()
     assert (body["engine"], body["claudeAvailable"]) == ("Claude", True)
+
+
+def test_gemini_needs_a_key(admin, monkeypatch):
+    error = assert_envelope(admin.patch(f"{AI}/settings", json={"engine": "Gemini"}), 400, "GEMINI_UNAVAILABLE")
+    assert error["message"] == "Gemini isn't configured on this server."
+    monkeypatch.setattr(settings, "GEMINI_API_KEY", "test-key")
+    body = admin.patch(f"{AI}/settings", json={"engine": "Gemini"}).json()
+    assert (body["engine"], body["geminiAvailable"]) == ("Gemini", True)
 
 
 def test_turning_the_advisor_off_reaches_students(admin, client):
